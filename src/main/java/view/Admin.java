@@ -22,6 +22,7 @@ public class Admin extends javax.swing.JFrame {
      */
     public Admin() {
         initComponents();
+        setTitle("Trang admin");
         JButton[] btns = { jButton1, jButton2, jButton3, jButton4, jButton5, jButton6};
         for (JButton btn : btns) {
             btn.setBackground(new Color(21, 25, 28));
@@ -137,8 +138,11 @@ public class Admin extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setAutoRequestFocus(false);
+        setMinimumSize(new java.awt.Dimension(700, 600));
+        setResizable(false);
+        setSize(new java.awt.Dimension(1000, 600));
 
-        pnlRoot.setPreferredSize(new java.awt.Dimension(700, 600));
+        pnlRoot.setPreferredSize(new java.awt.Dimension(1000, 600));
         pnlRoot.setLayout(new java.awt.BorderLayout());
 
         pnlSide.setBackground(new java.awt.Color(21, 25, 28));
@@ -259,7 +263,7 @@ public class Admin extends javax.swing.JFrame {
                 .addGroup(pnlBottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(1106, Short.MAX_VALUE))
         );
         pnlBottomLayout.setVerticalGroup(
             pnlBottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -291,6 +295,11 @@ public class Admin extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(44, 52, 58));
         jPanel2.setPreferredSize(new java.awt.Dimension(250, 400));
+        jPanel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel2MouseClicked(evt);
+            }
+        });
 
         jLabel17.setBackground(new java.awt.Color(54, 81, 207));
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -470,6 +479,11 @@ public class Admin extends javax.swing.JFrame {
 
         jPanel6.setBackground(new java.awt.Color(44, 52, 58));
         jPanel6.setPreferredSize(new java.awt.Dimension(250, 400));
+        jPanel6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel6MouseClicked(evt);
+            }
+        });
 
         jLabel23.setBackground(new java.awt.Color(54, 81, 207));
         jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -883,7 +897,7 @@ public class Admin extends javax.swing.JFrame {
                     .addComponent(jLabel7))
                 .addGap(209, 209, 209)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(940, Short.MAX_VALUE))
         );
         pnlTopLayout.setVerticalGroup(
             pnlTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -939,6 +953,16 @@ public class Admin extends javax.swing.JFrame {
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jPanel2MouseClicked
+
+    private void jPanel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel6MouseClicked
+        // TODO add your handling code here:
+        QLPhim ql = new QLPhim();
+        QLPhim.main(null);
+    }//GEN-LAST:event_jPanel6MouseClicked
 
     /**
      * @param args the command line arguments

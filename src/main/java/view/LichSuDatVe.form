@@ -25,7 +25,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <EmptySpace min="0" pref="740" max="32767" attributes="0"/>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jPanel6" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
@@ -68,14 +68,14 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Group type="102" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
                                   <Component id="btBack2" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="btBack" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="32767" attributes="0"/>
                                   <Component id="btBack1" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="jScrollPane1" min="-2" pref="691" max="-2" attributes="0"/>
+                              <Component id="jScrollPane1" alignment="0" min="-2" pref="691" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -122,39 +122,10 @@
                   <Table columnCount="5" rowCount="0">
                     <Column editable="true" title="M&#xe3;" type="java.lang.Object"/>
                     <Column editable="true" title="T&#xea;n phim" type="java.lang.Object"/>
-                    <Column editable="true" title="H&#xec;nh &#x1ea2;nh" type="java.lang.Object"/>
-                    <Column editable="true" title="Trailer" type="java.lang.Object"/>
+                    <Column editable="true" title="Th&#x1edd;i l&#x1b0;&#x1ee3;ng" type="java.lang.Object"/>
+                    <Column editable="true" title="Th&#x1ec3; lo&#x1ea1;i" type="java.lang.Object"/>
                     <Column editable="true" title="Ng&#xe0;y ph&#xe1;t h&#xe0;nh" type="java.lang.Object"/>
                   </Table>
-                </Property>
-                <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
-                  <TableColumnModel selectionModel="0">
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                      <Title/>
-                      <Editor/>
-                      <Renderer/>
-                    </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                      <Title/>
-                      <Editor/>
-                      <Renderer/>
-                    </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                      <Title/>
-                      <Editor/>
-                      <Renderer/>
-                    </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                      <Title/>
-                      <Editor/>
-                      <Renderer/>
-                    </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                      <Title/>
-                      <Editor/>
-                      <Renderer/>
-                    </Column>
-                  </TableColumnModel>
                 </Property>
                 <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                   <TableHeader reorderingAllowed="true" resizingAllowed="true"/>

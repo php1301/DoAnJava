@@ -82,7 +82,6 @@
                           </Group>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jDateChooser1" alignment="1" max="32767" attributes="0"/>
-                              <Component id="thoiLuongVal" alignment="1" max="32767" attributes="0"/>
                               <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
                               <Component id="tenPhimVal" alignment="0" max="32767" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
@@ -100,6 +99,7 @@
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                               </Group>
+                              <Component id="jSpinner1" alignment="1" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -134,12 +134,12 @@
                   <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel10" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                      <Component id="thoiLuongVal" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="jSpinner1" alignment="3" pref="31" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPane1" min="-2" pref="17" max="-2" attributes="0"/>
-                      <Component id="jLabel11" min="-2" pref="30" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="jLabel11" pref="30" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" pref="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
@@ -156,7 +156,7 @@
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="image" min="-2" pref="132" max="-2" attributes="0"/>
-                  <EmptySpace pref="14" max="32767" attributes="0"/>
+                  <EmptySpace pref="12" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btSua" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btXoa" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -250,19 +250,6 @@
           </Properties>
         </Component>
         <Component class="com.toedter.calendar.JDateChooser" name="jDateChooser1">
-        </Component>
-        <Component class="javax.swing.JSpinner" name="thoiLuongVal">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Tahoma" size="14" style="0"/>
-            </Property>
-          </Properties>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="try {&#xa;    Date start_Time = new SimpleDateFormat(&quot;HH:mm&quot;).parse(&quot;00:00&quot;);&#xa;    Calendar cal = Calendar.getInstance();&#xa;    cal.setTime(start_Time);&#xa;    thoiLuongVal.setValue(cal.getTime());&#xa;} catch (ParseException ex) {&#xa;    Logger.getLogger(QLPHIM.class.getName()).log(Level.SEVERE, null, ex);&#xa;}"/>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JSpinner(sm_TLuong)"/>
-            <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="Date TLuong = new Date();&#xa;SpinnerDateModel sm_TLuong = &#xa;new SpinnerDateModel(TLuong, null, null, Calendar.HOUR_OF_DAY);"/>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="JSpinner.DateEditor de_TLuong = new JSpinner.DateEditor(thoiLuongVal, &quot;HH:mm&quot;);&#xa;thoiLuongVal.setEditor(de_TLuong);"/>
-          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel13">
           <Properties>
@@ -360,6 +347,13 @@
               <Color blue="ff" green="66" red="66" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="S&#x1eec;A HO&#x1eb6;C X&#xd3;A PHIM"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JSpinner" name="jSpinner1">
+          <Properties>
+            <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+              <SpinnerModel initial="0" maximum="480" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
+            </Property>
           </Properties>
         </Component>
       </SubComponents>

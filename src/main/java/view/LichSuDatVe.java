@@ -5,36 +5,21 @@
  */
 package view;
 
-import javax.swing.RowFilter;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
-import controller.PhimController;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import model.Phim;
-
 /**
  *
  * @author Admin
  */
-public class QLPhim extends javax.swing.JFrame {
-
-    private PhimController phimController;
-    private DefaultTableModel modelPhim = null;
+public class LichSuDatVe extends javax.swing.JFrame {
 
     /**
-     * Creates new form QLPhim
+     * Creates new form LichSuDatVe
      */
-    public QLPhim() throws SQLException, ClassNotFoundException, ParseException, InterruptedException {
-        phimController = new PhimController();
+    public LichSuDatVe(){
+    initComponents();
+}
+    public LichSuDatVe(String status) {
         initComponents();
-        phimController = new PhimController();
-        createTablePhim();
+        System.out.println("view.LichSuDatVe.<init>()" + status);
     }
 
     /**
@@ -66,7 +51,7 @@ public class QLPhim extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Mã", "Tên phim", "Hình Ảnh", "Trailer", "Ngày phát hành"
+                "Mã", "Tên phim", "Thời lượng", "Thể loại", "Ngày phát hành"
             }
         ));
         tbPhim.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -188,18 +173,10 @@ public class QLPhim extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-private void connect() {
-        try {
-            phimController.connect();
-            System.out.println("Da connect Phim");
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(QLPhim.this, "Cannot connect to the database", "Database connection Error",
-                    JOptionPane.ERROR_MESSAGE);
-        }
-    }
+
     private void tbPhimMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbPhimMouseClicked
         // TODO add your handling code here:
-//        getRowPhim(tbPhim.getSelectedRow());
+        //        getRowPhim(tbPhim.getSelectedRow());
     }//GEN-LAST:event_tbPhimMouseClicked
 
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
@@ -212,51 +189,31 @@ private void connect() {
 
     private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
         // TODO add your handling code here:
-        DefaultTableModel SearchTable = (DefaultTableModel) tbPhim.getModel();
-        String search = txtSearch.getText();
-        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<>(SearchTable);
-        tbPhim.setRowSorter(tr);
-        tr.setRowFilter(RowFilter.regexFilter(search));
+//        DefaultTableModel SearchTable = (DefaultTableModel) tbPhim.getModel();
+//        String search = txtSearch.getText();
+//        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<>(SearchTable);
+//        tbPhim.setRowSorter(tr);
+//        tr.setRowFilter(RowFilter.regexFilter(search));
     }//GEN-LAST:event_txtSearchKeyReleased
 
     private void btBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBackActionPerformed
-//        try {
-//            // TODO add your handling code here:
-//            setTablePhim();
-//        } catch (InterruptedException ex) {
-//            Logger.getLogger(QLPHIM.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        //        try {
+            //            // TODO add your handling code here:
+            //            setTablePhim();
+            //        } catch (InterruptedException ex) {
+            //            Logger.getLogger(QLPHIM.class.getName()).log(Level.SEVERE, null, ex);
+            //        }
     }//GEN-LAST:event_btBackActionPerformed
 
     private void btBack1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBack1ActionPerformed
         // TODO add your handling code here:
         hide();
-//        AdminPage_new.main(null);
+        //        AdminPage_new.main(null);
     }//GEN-LAST:event_btBack1ActionPerformed
 
     private void btBack2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBack2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btBack2ActionPerformed
-    public void createTablePhim() throws InterruptedException {
-        try {
-            connect();
-            SimpleDateFormat DateFormatter = new SimpleDateFormat("dd-MM-yyyy");
-            List<Phim> phim = phimController.getPhim();
-            modelPhim = (DefaultTableModel) tbPhim.getModel();
-            modelPhim.setRowCount(0);
-            for (Phim p : phim) {
-                Object[] o = new Object[5];
-                o[0] = p.getMaPhim();
-                o[1] = p.getTenPhim();
-                o[2] = p.getHinhAnh();
-                o[3] = p.getTrailer();
-                o[4] = DateFormatter.format(p.getNgayKhoiChieu());
-                modelPhim.addRow(o);
-            }
-        } catch (NumberFormatException | SQLException ex) {
-            Logger.getLogger(QLPhim.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
     /**
      * @param args the command line arguments
@@ -275,26 +232,20 @@ private void connect() {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(QLPhim.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LichSuDatVe.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(QLPhim.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LichSuDatVe.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(QLPhim.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LichSuDatVe.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(QLPhim.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LichSuDatVe.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                try {
-                    new QLPhim().setVisible(true);
-                    Thread.sleep(5000);
-                   
-                } catch (SQLException | ClassNotFoundException | ParseException | InterruptedException ex) {
-                    Logger.getLogger(QLPhim.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                new LichSuDatVe().setVisible(true);
             }
         });
     }
