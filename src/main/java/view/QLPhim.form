@@ -122,8 +122,8 @@
                   <Table columnCount="5" rowCount="0">
                     <Column editable="true" title="M&#xe3;" type="java.lang.Object"/>
                     <Column editable="true" title="T&#xea;n phim" type="java.lang.Object"/>
-                    <Column editable="true" title="Th&#x1edd;i l&#x1b0;&#x1ee3;ng" type="java.lang.Object"/>
-                    <Column editable="true" title="Th&#x1ec3; lo&#x1ea1;i" type="java.lang.Object"/>
+                    <Column editable="true" title="H&#xec;nh &#x1ea2;nh" type="java.lang.Object"/>
+                    <Column editable="true" title="Trailer" type="java.lang.Object"/>
                     <Column editable="true" title="Ng&#xe0;y ph&#xe1;t h&#xe0;nh" type="java.lang.Object"/>
                   </Table>
                 </Property>

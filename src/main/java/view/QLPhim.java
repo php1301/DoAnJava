@@ -5,11 +5,18 @@
  */
 package view;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import controller.PhimController;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import model.Phim;
 
 /**
  *
@@ -17,11 +24,17 @@ import javax.swing.table.TableRowSorter;
  */
 public class QLPhim extends javax.swing.JFrame {
 
+    private PhimController phimController;
+    private DefaultTableModel modelPhim = null;
+
     /**
      * Creates new form QLPhim
      */
-    public QLPhim() {
+    public QLPhim() throws SQLException, ClassNotFoundException, ParseException, InterruptedException {
+        phimController = new PhimController();
         initComponents();
+        phimController = new PhimController();
+        createTablePhim();
     }
 
     /**
@@ -53,7 +66,7 @@ public class QLPhim extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Mã", "Tên phim", "Thời lượng", "Thể loại", "Ngày phát hành"
+                "Mã", "Tên phim", "Hình Ảnh", "Trailer", "Ngày phát hành"
             }
         ));
         tbPhim.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -175,7 +188,15 @@ public class QLPhim extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+private void connect() {
+        try {
+            phimController.connect();
+            System.out.println("Da connect Phim");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(QLPhim.this, "Cannot connect to the database", "Database connection Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
     private void tbPhimMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbPhimMouseClicked
         // TODO add your handling code here:
 //        getRowPhim(tbPhim.getSelectedRow());
@@ -216,6 +237,26 @@ public class QLPhim extends javax.swing.JFrame {
     private void btBack2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBack2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btBack2ActionPerformed
+    public void createTablePhim() throws InterruptedException {
+        try {
+            connect();
+            SimpleDateFormat DateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+            List<Phim> phim = phimController.getPhim();
+            modelPhim = (DefaultTableModel) tbPhim.getModel();
+            modelPhim.setRowCount(0);
+            for (Phim p : phim) {
+                Object[] o = new Object[5];
+                o[0] = p.getMaPhim();
+                o[1] = p.getTenPhim();
+                o[2] = p.getHinhAnh();
+                o[3] = p.getTrailer();
+                o[4] = DateFormatter.format(p.getNgayKhoiChieu());
+                modelPhim.addRow(o);
+            }
+        } catch (NumberFormatException | SQLException ex) {
+            Logger.getLogger(QLPhim.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -247,7 +288,13 @@ public class QLPhim extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new QLPhim().setVisible(true);
+                try {
+                    new QLPhim().setVisible(true);
+                    Thread.sleep(5000);
+                   
+                } catch (SQLException | ClassNotFoundException | ParseException | InterruptedException ex) {
+                    Logger.getLogger(QLPhim.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
