@@ -159,7 +159,7 @@ public class PhimController {
         try {
             db.connect();
             String url = "jdbc:mysql://localhost:3306/doanjavalb";
-            con = DriverManager.getConnection(url, "admin2", "java123");
+            con = DriverManager.getConnection(url, "root", "0984016356"); 
             System.out.println("Connected " + con);
         } catch (Exception e) {
             // TODO Auto-generated catch block
