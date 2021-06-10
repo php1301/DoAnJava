@@ -27,6 +27,7 @@ public class QLPhim extends javax.swing.JFrame {
 
     private PhimController phimController;
     private DefaultTableModel modelPhim = null;
+
     /**
      * Creates new form QLPhim
      */
@@ -116,7 +117,7 @@ public class QLPhim extends javax.swing.JFrame {
 
         btThem.setBackground(new java.awt.Color(204, 255, 204));
         btThem.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btThem.setForeground(new java.awt.Color(0, 204, 255));
+        btThem.setForeground(new java.awt.Color(0, 153, 102));
         btThem.setText("Thêm phim");
         btThem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -219,13 +220,17 @@ private void connect() {
     }//GEN-LAST:event_txtSearchKeyReleased
 
     private void btSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSuaActionPerformed
-        SuaPhim.main(null);
-//        try {
-//            // TODO add your handling code here:
-//            setTablePhim();
-//        } catch (InterruptedException ex) {
-//            Logger.getLogger(QLPHIM.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        try {
+            int selectedRow = tbPhim.getSelectedRow();
+            int maPhim = (int) tbPhim.getValueAt(selectedRow, 0);
+            System.out.println(maPhim);
+            SuaPhim sp = new SuaPhim();
+            sp.setMaPhim(maPhim);
+            sp.setVisible(true);
+ 
+        } catch (SQLException | ClassNotFoundException | ParseException | InterruptedException ex) {
+            Logger.getLogger(QLPhim.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btSuaActionPerformed
 
     private void btBack1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBack1ActionPerformed
@@ -292,7 +297,7 @@ private void connect() {
                 try {
                     new QLPhim().setVisible(true);
                     Thread.sleep(5000);
-                   
+
                 } catch (SQLException | ClassNotFoundException | ParseException | InterruptedException ex) {
                     Logger.getLogger(QLPhim.class.getName()).log(Level.SEVERE, null, ex);
                 }
