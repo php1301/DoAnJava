@@ -5,8 +5,6 @@
  */
 package view;
 
-import GUIandBUS.AdminPage_new;
-import dao.ConnectionUtils;
 import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -38,77 +36,67 @@ public class QLKH extends javax.swing.JFrame {
     String username;
     
     private void getRowKH (int index){
-        cbb_LKH.setEnabled(true);
-        txtDTL.setEnabled(true);
-        try{
-            ma = (String) tbKH.getValueAt(index,0);
-            txtHoKH.setText((String)(tbKH.getValueAt(index,1)));
-            txtTenKH.setText((String)(tbKH.getValueAt(index,2)));
-            java.util.Date d_NgSinhKH = new SimpleDateFormat("dd-MM-yyyy").parse((String)(tbKH.getValueAt(index,3)));
-            txtNgS.setDate(d_NgSinhKH);
-            cbb_GTKH.setSelectedItem(tbKH.getValueAt(index,4));
-            cbb_LKH.setSelectedItem(tbKH.getValueAt(index,5));
-            txtDTL.setText(String.valueOf(tbKH.getValueAt(index,6)));
-        }catch(ParseException e){System.out.println(e);} 
+//        cbb_LKH.setEnabled(true);
+//        txtDTL.setEnabled(true);
+//        try{
+//            ma = (String) tbKH.getValueAt(index,0);
+//            txtHoKH.setText((String)(tbKH.getValueAt(index,1)));
+//            txtTenKH.setText((String)(tbKH.getValueAt(index,2)));
+//            java.util.Date d_NgSinhKH = new SimpleDateFormat("dd-MM-yyyy").parse((String)(tbKH.getValueAt(index,3)));
+//            txtNgS.setDate(d_NgSinhKH);
+//            cbb_GTKH.setSelectedItem(tbKH.getValueAt(index,4));
+//            cbb_LKH.setSelectedItem(tbKH.getValueAt(index,5));
+//            txtDTL.setText(String.valueOf(tbKH.getValueAt(index,6)));
+//        }catch(ParseException e){System.out.println(e);} 
     }
     
     private void clearKH(){
-        txtHoKH.setText("");
-        txtTenKH.setText("");
-        txtDTL.setText("0");
-        txtNgS.setDate(null);
-        cbb_GTKH.setSelectedItem(null);
-        cbb_LKH.setSelectedItem(null);
-        cbb_LKH.setEnabled(false);
-        txtDTL.setEnabled(false);
-        txtDTL.setEditable(false);
+//        txtHoKH.setText("");
+//        txtTenKH.setText("");
+//        txtDTL.setText("0");
+//        txtNgS.setDate(null);
+//        cbb_GTKH.setSelectedItem(null);
+//        cbb_LKH.setSelectedItem(null);
+//        cbb_LKH.setEnabled(false);
+//        txtDTL.setEnabled(false);
+//        txtDTL.setEditable(false);
         
     }
     
     private void setTableKH() {
-        try (Connection con = ConnectionUtils.getMyConnection()){
-            String SQL = "SELECT MAKH,HO,TEN,NGAYSINH,GIOITINH,LOAIKH,TICHLUY,username FROM KHACHHANG ORDER BY MAKH";
-            Statement statement= con.createStatement();
-            ResultSet rs=statement.executeQuery(SQL);
-            modelKH = (DefaultTableModel) tbKH.getModel();
-            modelKH.setRowCount(0);
-            while(rs.next())
-            {
-                String MaKH = rs.getString(1);
-                String HoKH = rs.getString(2);
-                String TenKH = rs.getString(3);
-                java.util.Date d_NgSinhKH = rs.getDate(4);
-//                String S_NgSinhKH = String.format("%1$td-%1$tm-%1$tY", d_NgSinhKH);
-                String S_NgSinhKH = new SimpleDateFormat("dd-MM-yyyy").format(d_NgSinhKH);
-                String GTKH = rs.getString(5);
-                String LOAIKH = rs.getString(6);
-                String TL = rs.getString(7);
-                modelKH.addRow(new Object[]{MaKH,HoKH,TenKH,S_NgSinhKH,GTKH,LOAIKH,TL});
-            }
-            con.close();
-        } 
-    catch (ClassNotFoundException | NumberFormatException | SQLException ex) {
-        Logger.getLogger(QLKH.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try (Connection con = ConnectionUtils.getMyConnection()){
+//            String SQL = "SELECT MAKH,HO,TEN,NGAYSINH,GIOITINH,LOAIKH,TICHLUY,username FROM KHACHHANG ORDER BY MAKH";
+//            Statement statement= con.createStatement();
+//            ResultSet rs=statement.executeQuery(SQL);
+//            modelKH = (DefaultTableModel) tbKH.getModel();
+//            modelKH.setRowCount(0);
+//            while(rs.next())
+//            {
+//                String MaKH = rs.getString(1);
+//                String HoKH = rs.getString(2);
+//                String TenKH = rs.getString(3);
+//                java.util.Date d_NgSinhKH = rs.getDate(4);
+////                String S_NgSinhKH = String.format("%1$td-%1$tm-%1$tY", d_NgSinhKH);
+//                String S_NgSinhKH = new SimpleDateFormat("dd-MM-yyyy").format(d_NgSinhKH);
+//                String GTKH = rs.getString(5);
+//                String LOAIKH = rs.getString(6);
+//                String TL = rs.getString(7);
+//                modelKH.addRow(new Object[]{MaKH,HoKH,TenKH,S_NgSinhKH,GTKH,LOAIKH,TL});
+//            }
+//            con.close();
+//        } 
+//    catch (ClassNotFoundException | NumberFormatException | SQLException ex) {
+//        Logger.getLogger(QLKH.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
     
     public QLKH() {
         initComponents();
         setTableKH();
         clearKH();
-        
-        //Các bước set giao diện
-        /*1. Set kích thước giao diện*/
         setLocation(100,40);
-        /*2. Set nút chọn tắt mặc định EXIT_ON_CLOSE*/ 
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        /*3. Tiêu đề*/
-      
-        /*4. Không cho phóng to*/
-       
         setResizable(false);
-        /*5. Vị trí trang*/
-        setSize(1035,560);
+        setSize(1200,560);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setTitle("Trang admin: quản lý khách hàng");
     }
@@ -416,31 +404,31 @@ public class QLKH extends javax.swing.JFrame {
 
     private void btSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSuaActionPerformed
         // TODO add your handling code here:
-        try(Connection con = ConnectionUtils.getMyConnection()){
-            java.util.Date d_NgSinhKH = txtNgS.getDate();
-            String S_NgSinhKH = String.format("%1$td-%1$tm-%1$tY", d_NgSinhKH);
-            String SQL_KH = "UPDATE KHACHHANG SET HO = '"+txtHoKH.getText()+"',TEN = '"+txtTenKH.getText()+"',NGAYSINH = to_date('"+S_NgSinhKH+"','dd-mm-yyyy'),GIOITINH = '"+cbb_GTKH.getSelectedItem()+"' WHERE MAKH = "+ma;
-            Statement stat_KH = con.createStatement();
-            stat_KH.executeUpdate(SQL_KH);
-            setTableKH();
-            con.close();
-            JOptionPane.showMessageDialog(this,"Sửa thành công!");
-        }
-        catch (SQLException e){
-            if(e.getErrorCode()==20002)
-            {
-                JOptionPane.showMessageDialog(this,"Ngày sinh của khách hàng phải bé hơn tất cả các ngày đặt vé","Lỗi sửa ngày sinh",JOptionPane.ERROR_MESSAGE);
-            }
-           
-            System.out.println(e);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(QLKH.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try(Connection con = ConnectionUtils.getMyConnection()){
+//            java.util.Date d_NgSinhKH = txtNgS.getDate();
+//            String S_NgSinhKH = String.format("%1$td-%1$tm-%1$tY", d_NgSinhKH);
+//            String SQL_KH = "UPDATE KHACHHANG SET HO = '"+txtHoKH.getText()+"',TEN = '"+txtTenKH.getText()+"',NGAYSINH = to_date('"+S_NgSinhKH+"','dd-mm-yyyy'),GIOITINH = '"+cbb_GTKH.getSelectedItem()+"' WHERE MAKH = "+ma;
+//            Statement stat_KH = con.createStatement();
+//            stat_KH.executeUpdate(SQL_KH);
+//            setTableKH();
+//            con.close();
+//            JOptionPane.showMessageDialog(this,"Sửa thành công!");
+//        }
+//        catch (SQLException e){
+//            if(e.getErrorCode()==20002)
+//            {
+//                JOptionPane.showMessageDialog(this,"Ngày sinh của khách hàng phải bé hơn tất cả các ngày đặt vé","Lỗi sửa ngày sinh",JOptionPane.ERROR_MESSAGE);
+//            }
+//           
+//            System.out.println(e);
+//        } catch (ClassNotFoundException ex) {
+//            Logger.getLogger(QLKH.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }//GEN-LAST:event_btSuaActionPerformed
 
     private void btLamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLamMoiActionPerformed
         // TODO add your handling code here:
-        clearKH();
+//        clearKH();
     }//GEN-LAST:event_btLamMoiActionPerformed
 
     private void txtTenKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTenKHActionPerformed
@@ -449,7 +437,7 @@ public class QLKH extends javax.swing.JFrame {
 
     private void tbKHMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbKHMouseClicked
         // TODO add your handling code here:
-        getRowKH(tbKH.getSelectedRow());
+//        getRowKH(tbKH.getSelectedRow());
     }//GEN-LAST:event_tbKHMouseClicked
 
     private void cbb_LKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbb_LKHActionPerformed
@@ -459,7 +447,7 @@ public class QLKH extends javax.swing.JFrame {
     private void btBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBackActionPerformed
         // TODO add your handling code here:
         hide();
-        AdminPage_new.main(null);
+        Admin.main(null);
     }//GEN-LAST:event_btBackActionPerformed
 
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
@@ -482,37 +470,34 @@ public class QLKH extends javax.swing.JFrame {
     }//GEN-LAST:event_txtSearchKeyReleased
  public void LayReportQLKH(String a) throws SQLException, JRException {
         // TODO code application logic here
-        String makh = a;
-        HashMap hs= new HashMap();
-        hs.put("makh", makh);
-        String localDir = System.getProperty("user.dir");
-
-      MyreportViewer viewer = new MyreportViewer(localDir+"\\src\\report\\report2.jrxml",hs);
-        viewer.setVisible(true);
+//        String makh = a;
+//        HashMap hs= new HashMap();
+//        hs.put("makh", makh);
+//        String localDir = System.getProperty("user.dir");
     }
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        try{
-               Connection con = ConnectionUtils.getMyConnection();
-               String SQL = "SELECT username from khachhang where makh="+ma;
-               Statement s = con.createStatement();
-               ResultSet rs = s.executeQuery(SQL);
-               while(rs.next())
-               {
-                   username = rs.getString(1);
-               }
-               }catch(HeadlessException | SQLException ex)
-                {
-                    System.out.println(ex);
-                } catch (ClassNotFoundException ex) {
-            Logger.getLogger(QLKH.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        System.out.println(username);
-        try {
-            LayReportQLKH(username);
-        } catch (SQLException | JRException ex) {
-            Logger.getLogger(QLKH.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try{
+//               Connection con = ConnectionUtils.getMyConnection();
+//               String SQL = "SELECT username from khachhang where makh="+ma;
+//               Statement s = con.createStatement();
+//               ResultSet rs = s.executeQuery(SQL);
+//               while(rs.next())
+//               {
+//                   username = rs.getString(1);
+//               }
+//               }catch(HeadlessException | SQLException ex)
+//                {
+//                    System.out.println(ex);
+//                } catch (ClassNotFoundException ex) {
+//            Logger.getLogger(QLKH.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        System.out.println(username);
+//        try {
+//            LayReportQLKH(username);
+//        } catch (SQLException | JRException ex) {
+//            Logger.getLogger(QLKH.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**

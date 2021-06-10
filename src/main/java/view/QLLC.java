@@ -5,7 +5,6 @@
  */
 package view;
 
-import dao.ConnectionUtils;
 import java.awt.Color;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -46,109 +45,109 @@ public class QLLC extends javax.swing.JFrame {
     ArrayList<String> ngc = new ArrayList<>();
     
     private void setTableLC(){    
-        try (Connection con = ConnectionUtils.getMyConnection()){
-            String SQL = "SELECT MALICHCHIEU,TENPHIM,TENPHONG,THOIGIANBD,NGAYCHIEU,THOILUONG \n" 
-            + "FROM LICHCHIEU,PHIM,PHONG,SUATCHIEU \n" 
-            + "WHERE LICHCHIEU.MASUAT=SUATCHIEU.MASUAT AND LICHCHIEU.MASUAT = SUATCHIEU.MASUAT AND LICHCHIEU.MAPHIM = PHIM.MAPHIM AND LICHCHIEU.MAPHONG = PHONG.MAPHONG\n" 
-            + "ORDER BY MALICHCHIEU";
-            Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery(SQL);
-            SimpleDateFormat TimeFormatter = new SimpleDateFormat("HH:mm");
-            SimpleDateFormat DateFormatter = new SimpleDateFormat("dd-MM-yyyy");
-            modelLich = (DefaultTableModel) tbLC.getModel();
-            modelLich.setRowCount(0);
-            while(rs.next()){
-                    String MaLich = rs.getString("MALICHCHIEU");
-                    String Phim = rs.getString("TENPHIM");
-                    String Phong = rs.getString("TENPHONG");
-                    Date t_TGBD = rs.getTime("THOIGIANBD");
-                    Date t_TLuong = rs.getTime("THOILUONG");
-                    String S_TGBD = TimeFormatter.format(t_TGBD);
-                    String S_TLuong = TimeFormatter.format(t_TLuong);
-                    int h = Integer.parseInt(S_TLuong.substring(0,2));
-                    int m = Integer.parseInt(S_TLuong.substring(3,5));
-                    Date TGBD = TimeFormatter.parse(S_TGBD);
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTime(TGBD);
-                    cal.add(Calendar.MINUTE, m);
-                    cal.add(Calendar.HOUR_OF_DAY, h);
-                    String time = TimeFormatter.format(cal.getTime());
-                    String d_NgChieu = DateFormatter.format(rs.getDate("NGAYCHIEU"));
-                    modelLich.addRow(new Object[]{MaLich,Phim,Phong,S_TGBD,time,d_NgChieu});
-                }
-            con.close();
-        } 
-        catch (Exception ex){
-            Logger.getLogger(AdminPage.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try (Connection con = ConnectionUtils.getMyConnection()){
+//            String SQL = "SELECT MALICHCHIEU,TENPHIM,TENPHONG,THOIGIANBD,NGAYCHIEU,THOILUONG \n" 
+//            + "FROM LICHCHIEU,PHIM,PHONG,SUATCHIEU \n" 
+//            + "WHERE LICHCHIEU.MASUAT=SUATCHIEU.MASUAT AND LICHCHIEU.MASUAT = SUATCHIEU.MASUAT AND LICHCHIEU.MAPHIM = PHIM.MAPHIM AND LICHCHIEU.MAPHONG = PHONG.MAPHONG\n" 
+//            + "ORDER BY MALICHCHIEU";
+//            Statement statement = con.createStatement();
+//            ResultSet rs = statement.executeQuery(SQL);
+//            SimpleDateFormat TimeFormatter = new SimpleDateFormat("HH:mm");
+//            SimpleDateFormat DateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+//            modelLich = (DefaultTableModel) tbLC.getModel();
+//            modelLich.setRowCount(0);
+//            while(rs.next()){
+//                    String MaLich = rs.getString("MALICHCHIEU");
+//                    String Phim = rs.getString("TENPHIM");
+//                    String Phong = rs.getString("TENPHONG");
+//                    Date t_TGBD = rs.getTime("THOIGIANBD");
+//                    Date t_TLuong = rs.getTime("THOILUONG");
+//                    String S_TGBD = TimeFormatter.format(t_TGBD);
+//                    String S_TLuong = TimeFormatter.format(t_TLuong);
+//                    int h = Integer.parseInt(S_TLuong.substring(0,2));
+//                    int m = Integer.parseInt(S_TLuong.substring(3,5));
+//                    Date TGBD = TimeFormatter.parse(S_TGBD);
+//                    Calendar cal = Calendar.getInstance();
+//                    cal.setTime(TGBD);
+//                    cal.add(Calendar.MINUTE, m);
+//                    cal.add(Calendar.HOUR_OF_DAY, h);
+//                    String time = TimeFormatter.format(cal.getTime());
+//                    String d_NgChieu = DateFormatter.format(rs.getDate("NGAYCHIEU"));
+//                    modelLich.addRow(new Object[]{MaLich,Phim,Phong,S_TGBD,time,d_NgChieu});
+//                }
+//            con.close();
+//        } 
+//        catch (Exception ex){
+//            Logger.getLogger(AdminPage.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
     
     private void setCbb_Phim(){
-        try (Connection con = ConnectionUtils.getMyConnection()){
-            String SQL = "SELECT DISTINCT MAPHIM,TENPHIM FROM PHIM ORDER BY MAPHIM";
-            Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery(SQL);
-            cbbPhim.removeAllItems();
-            maphim.clear();
-            tenphim.clear();
-            while(rs.next()){
-                maphim.add(rs.getString("MAPHIM"));
-                tenphim.add(rs.getString("TENPHIM"));
-            }
-            cbbPhim.setModel(new DefaultComboBoxModel(tenphim.toArray()));
-        } catch (Exception ex) {
-            Logger.getLogger(QLLC.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try (Connection con = ConnectionUtils.getMyConnection()){
+//            String SQL = "SELECT DISTINCT MAPHIM,TENPHIM FROM PHIM ORDER BY MAPHIM";
+//            Statement statement = con.createStatement();
+//            ResultSet rs = statement.executeQuery(SQL);
+//            cbbPhim.removeAllItems();
+//            maphim.clear();
+//            tenphim.clear();
+//            while(rs.next()){
+//                maphim.add(rs.getString("MAPHIM"));
+//                tenphim.add(rs.getString("TENPHIM"));
+//            }
+//            cbbPhim.setModel(new DefaultComboBoxModel(tenphim.toArray()));
+//        } catch (Exception ex) {
+//            Logger.getLogger(QLLC.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
     
     private void setCbb_Phong(){
-        try (Connection con = ConnectionUtils.getMyConnection()){
-            String SQL = "SELECT DISTINCT MAPHONG,TENPHONG FROM PHONG ORDER BY MAPHONG";
-            Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery(SQL);
-            cbbPhong.removeAllItems();
-            maphong.clear();
-            tenphong.clear();
-            while(rs.next()){
-                maphong.add(rs.getString("MAPHONG"));
-                tenphong.add(rs.getString("TENPHONG"));
-            }
-            cbbPhong.setModel(new DefaultComboBoxModel(tenphong.toArray()));
-        } catch (Exception ex) {
-            Logger.getLogger(QLLC.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try (Connection con = ConnectionUtils.getMyConnection()){
+//            String SQL = "SELECT DISTINCT MAPHONG,TENPHONG FROM PHONG ORDER BY MAPHONG";
+//            Statement statement = con.createStatement();
+//            ResultSet rs = statement.executeQuery(SQL);
+//            cbbPhong.removeAllItems();
+//            maphong.clear();
+//            tenphong.clear();
+//            while(rs.next()){
+//                maphong.add(rs.getString("MAPHONG"));
+//                tenphong.add(rs.getString("TENPHONG"));
+//            }
+//            cbbPhong.setModel(new DefaultComboBoxModel(tenphong.toArray()));
+//        } catch (Exception ex) {
+//            Logger.getLogger(QLLC.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     } 
     
     private void setCbb_NgC(){
-        try (Connection con = ConnectionUtils.getMyConnection()){
-            SimpleDateFormat DateFormatter = new SimpleDateFormat("dd-MM-yyyy");
-            String SQL = "SELECT DISTINCT NGAYCHIEU FROM SUATCHIEU ORDER BY NGAYCHIEU";
-            Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery(SQL);
-            cbbNgC.removeAllItems();
-            ngc.clear();
-            while(rs.next()){
-                String ngchieu = DateFormatter.format(rs.getDate("NGAYCHIEU"));
-                ngc.add(ngchieu);
-            }
-            cbbNgC.setModel(new DefaultComboBoxModel(ngc.toArray()));
-        } catch (Exception ex) {
-            Logger.getLogger(QLLC.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try (Connection con = ConnectionUtils.getMyConnection()){
+//            SimpleDateFormat DateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+//            String SQL = "SELECT DISTINCT NGAYCHIEU FROM SUATCHIEU ORDER BY NGAYCHIEU";
+//            Statement statement = con.createStatement();
+//            ResultSet rs = statement.executeQuery(SQL);
+//            cbbNgC.removeAllItems();
+//            ngc.clear();
+//            while(rs.next()){
+//                String ngchieu = DateFormatter.format(rs.getDate("NGAYCHIEU"));
+//                ngc.add(ngchieu);
+//            }
+//            cbbNgC.setModel(new DefaultComboBoxModel(ngc.toArray()));
+//        } catch (Exception ex) {
+//            Logger.getLogger(QLLC.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
     
     private void getRowLC (int index){
-        try{
-            ma = (String)tbLC.getValueAt(index,0);
-            cbbPhim.setSelectedItem(tbLC.getValueAt(index,1));
-            cbbPhong.setSelectedItem(tbLC.getValueAt(index,2));
-            String date = (String)tbLC.getValueAt(index,5);
-            cbbNgC.setSelectedItem(date);
-            String time = (String)tbLC.getValueAt(index,3);
-            cbbSC.setSelectedItem(time);
-        }catch(Exception e){
-            System.out.println(e);
-        }
+//        try{
+//            ma = (String)tbLC.getValueAt(index,0);
+//            cbbPhim.setSelectedItem(tbLC.getValueAt(index,1));
+//            cbbPhong.setSelectedItem(tbLC.getValueAt(index,2));
+//            String date = (String)tbLC.getValueAt(index,5);
+//            cbbNgC.setSelectedItem(date);
+//            String time = (String)tbLC.getValueAt(index,3);
+//            cbbSC.setSelectedItem(time);
+//        }catch(Exception e){
+//            System.out.println(e);
+//        }
     }
     
     private void clearLC(){
@@ -495,52 +494,52 @@ public class QLLC extends javax.swing.JFrame {
 
     private void btThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btThemActionPerformed
         // TODO add your handling code here:
-        try(Connection con = ConnectionUtils.getMyConnection()){          
-            String MaSC = masc.get(cbbSC.getSelectedIndex());
-            String MaPhong = maphong.get(cbbPhong.getSelectedIndex());
-            String MaPhim = maphim.get(cbbPhim.getSelectedIndex());
-            String SQL = "INSERT INTO LICHCHIEU(MALICHCHIEU,MASUAT,MAPHIM,MAPHONG)"
-            +"VALUES(MALICHCHIEU_SEQ7.NEXTVAL,"+MaSC+","+MaPhim+","+MaPhong+")";
-            Statement stat = con.createStatement();
-            stat.executeUpdate(SQL);
-            setTableLC();
-            getRowLC(tbLC.getRowCount()-1);
-            con.close();
-            JOptionPane.showMessageDialog(this,"Thành công!");
-        }
-        catch (SQLException ex){
-            if(ex.getErrorCode()==20005)
-             {
-                 JOptionPane.showMessageDialog(this,"Lịch này đã có rồi","Lỗi trùng lịch chiếu",JOptionPane.ERROR_MESSAGE);
-             }
-
-        } catch (ClassNotFoundException ex) {
-           
-        }  
-       
+//        try(Connection con = ConnectionUtils.getMyConnection()){          
+//            String MaSC = masc.get(cbbSC.getSelectedIndex());
+//            String MaPhong = maphong.get(cbbPhong.getSelectedIndex());
+//            String MaPhim = maphim.get(cbbPhim.getSelectedIndex());
+//            String SQL = "INSERT INTO LICHCHIEU(MALICHCHIEU,MASUAT,MAPHIM,MAPHONG)"
+//            +"VALUES(MALICHCHIEU_SEQ7.NEXTVAL,"+MaSC+","+MaPhim+","+MaPhong+")";
+//            Statement stat = con.createStatement();
+//            stat.executeUpdate(SQL);
+//            setTableLC();
+//            getRowLC(tbLC.getRowCount()-1);
+//            con.close();
+//            JOptionPane.showMessageDialog(this,"Thành công!");
+//        }
+//        catch (SQLException ex){
+//            if(ex.getErrorCode()==20005)
+//             {
+//                 JOptionPane.showMessageDialog(this,"Lịch này đã có rồi","Lỗi trùng lịch chiếu",JOptionPane.ERROR_MESSAGE);
+//             }
+//
+//        } catch (ClassNotFoundException ex) {
+//           
+//        }  
+//       
     }//GEN-LAST:event_btThemActionPerformed
 
     private void btSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSuaActionPerformed
         // TODO add your handling code here:
-        try(Connection con = ConnectionUtils.getMyConnection()){          
-            String MaSC = masc.get(cbbSC.getSelectedIndex());
-            String MaPhong = maphong.get(cbbPhong.getSelectedIndex());
-            String MaPhim = maphim.get(cbbPhim.getSelectedIndex());
-            String SQL = "UPDATE LICHCHIEU SET MASUAT = " +MaSC+ ", MAPHIM = "+MaPhim+", MAPHONG = "+MaPhong+" WHERE MALICHCHIEU = "+ ma;
-            Statement stat = con.createStatement();
-            stat.executeUpdate(SQL);
-            setTableLC();
-            con.close();
-            JOptionPane.showMessageDialog(this,"Thành công!");
-        }
-        catch (SQLException ex){
-            if(ex.getErrorCode()==20005)
-             {
-                 JOptionPane.showMessageDialog(this,"Lịch này đã có rồi","Lỗi trùng lịch chiếu",JOptionPane.ERROR_MESSAGE);
-             }
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(QLLC.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+//        try(Connection con = ConnectionUtils.getMyConnection()){          
+//            String MaSC = masc.get(cbbSC.getSelectedIndex());
+//            String MaPhong = maphong.get(cbbPhong.getSelectedIndex());
+//            String MaPhim = maphim.get(cbbPhim.getSelectedIndex());
+//            String SQL = "UPDATE LICHCHIEU SET MASUAT = " +MaSC+ ", MAPHIM = "+MaPhim+", MAPHONG = "+MaPhong+" WHERE MALICHCHIEU = "+ ma;
+//            Statement stat = con.createStatement();
+//            stat.executeUpdate(SQL);
+//            setTableLC();
+//            con.close();
+//            JOptionPane.showMessageDialog(this,"Thành công!");
+//        }
+//        catch (SQLException ex){
+//            if(ex.getErrorCode()==20005)
+//             {
+//                 JOptionPane.showMessageDialog(this,"Lịch này đã có rồi","Lỗi trùng lịch chiếu",JOptionPane.ERROR_MESSAGE);
+//             }
+//        } catch (ClassNotFoundException ex) {
+//            Logger.getLogger(QLLC.class.getName()).log(Level.SEVERE, null, ex);
+//        } 
     }//GEN-LAST:event_btSuaActionPerformed
 
     private void btLamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLamMoiActionPerformed
@@ -550,45 +549,45 @@ public class QLLC extends javax.swing.JFrame {
 
     private void btXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btXoaActionPerformed
         // TODO add your handling code here:
-        try(Connection con = ConnectionUtils.getMyConnection()){
-            String SQL = "DELETE FROM LICHCHIEU WHERE MALICHCHIEU = "+ ma;
-            Statement stat = con.createStatement();
-            stat.executeUpdate(SQL);
-            setTableLC();
-            clearLC();
-            con.close();
-            JOptionPane.showMessageDialog(this,"Thành công!");
-        } catch (Exception ex){
-            Logger.getLogger(QLLC.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(this,"Xóa không thành công!","Lỗi",JOptionPane.ERROR_MESSAGE);
-            System.out.println(ex);
-        }
+//        try(Connection con = ConnectionUtils.getMyConnection()){
+//            String SQL = "DELETE FROM LICHCHIEU WHERE MALICHCHIEU = "+ ma;
+//            Statement stat = con.createStatement();
+//            stat.executeUpdate(SQL);
+//            setTableLC();
+//            clearLC();
+//            con.close();
+//            JOptionPane.showMessageDialog(this,"Thành công!");
+//        } catch (Exception ex){
+//            Logger.getLogger(QLLC.class.getName()).log(Level.SEVERE, null, ex);
+//            JOptionPane.showMessageDialog(this,"Xóa không thành công!","Lỗi",JOptionPane.ERROR_MESSAGE);
+//            System.out.println(ex);
+//        }
     }//GEN-LAST:event_btXoaActionPerformed
 
     private void cbbNgCItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbbNgCItemStateChanged
         // TODO add your handling code here:
-        cbbSC.setVisible(true);
-        try (Connection con = ConnectionUtils.getMyConnection()){
-            SimpleDateFormat DateFormatter = new SimpleDateFormat("dd-MM-yyyy");
-            SimpleDateFormat TimeFormatter = new SimpleDateFormat("HH:mm");
-            Date d_NgC = DateFormatter.parse((String)cbbNgC.getSelectedItem());
-            String S_NgC = DateFormatter.format(d_NgC);
-            String SQL = "SELECT MASUAT,THOIGIANBD FROM SUATCHIEU WHERE NGAYCHIEU = TO_DATE('"+S_NgC+"','dd-MM-yyyy') ORDER BY MASUAT";
-            Statement statement = con.createStatement();
-            ResultSet rs = statement.executeQuery(SQL);
-            cbbSC.removeAllItems();
-            masc.clear();
-            sc.clear();
-            while(rs.next()){
-                masc.add(rs.getString("MASUAT"));
-                String tgbd = TimeFormatter.format(rs.getTime("THOIGIANBD"));
-                sc.add(tgbd);
-            }
-            cbbSC.setModel(new DefaultComboBoxModel(sc.toArray()));
-            cbbSC.setSelectedItem(null);
-        } catch (Exception ex) {
-            Logger.getLogger(QLLC.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        cbbSC.setVisible(true);
+//        try (Connection con = ConnectionUtils.getMyConnection()){
+//            SimpleDateFormat DateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+//            SimpleDateFormat TimeFormatter = new SimpleDateFormat("HH:mm");
+//            Date d_NgC = DateFormatter.parse((String)cbbNgC.getSelectedItem());
+//            String S_NgC = DateFormatter.format(d_NgC);
+//            String SQL = "SELECT MASUAT,THOIGIANBD FROM SUATCHIEU WHERE NGAYCHIEU = TO_DATE('"+S_NgC+"','dd-MM-yyyy') ORDER BY MASUAT";
+//            Statement statement = con.createStatement();
+//            ResultSet rs = statement.executeQuery(SQL);
+//            cbbSC.removeAllItems();
+//            masc.clear();
+//            sc.clear();
+//            while(rs.next()){
+//                masc.add(rs.getString("MASUAT"));
+//                String tgbd = TimeFormatter.format(rs.getTime("THOIGIANBD"));
+//                sc.add(tgbd);
+//            }
+//            cbbSC.setModel(new DefaultComboBoxModel(sc.toArray()));
+//            cbbSC.setSelectedItem(null);
+//        } catch (Exception ex) {
+//            Logger.getLogger(QLLC.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }//GEN-LAST:event_cbbNgCItemStateChanged
 
     private void tbLCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbLCMouseClicked
@@ -603,7 +602,7 @@ public class QLLC extends javax.swing.JFrame {
     private void btBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBackActionPerformed
         // TODO add your handling code here:
         hide();
-        AdminPage_new.main(null);
+        Admin.main(null);
     }//GEN-LAST:event_btBackActionPerformed
 
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed

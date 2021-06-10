@@ -27,7 +27,7 @@ public class Admin extends javax.swing.JFrame {
     public Admin() {
         initComponents();
         setTitle("Trang admin");
-        JButton[] btns = { jButton1, jButton2, jButton3, jButton4, jButton5, jButton6};
+        JButton[] btns = {jButton1, jButton2, jButton3, jButton4, jButton5, jButton6};
         for (JButton btn : btns) {
             btn.setBackground(new Color(21, 25, 28));
             btn.setUI(new BasicButtonUI());
@@ -966,16 +966,10 @@ public class Admin extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
             QLPhim ql = new QLPhim();
-        } catch (SQLException ex) {
-            Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParseException ex) {
-            Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InterruptedException ex) {
+            QLPhim.main(null);
+        } catch (SQLException | ClassNotFoundException | ParseException | InterruptedException ex) {
             Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
         }
-        QLPhim.main(null);
     }//GEN-LAST:event_jPanel6MouseClicked
 
     /**
