@@ -9,6 +9,7 @@ import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import controller.PhimController;
+import java.io.File;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,12 +27,10 @@ public class QLPhim extends javax.swing.JFrame {
 
     private PhimController phimController;
     private DefaultTableModel modelPhim = null;
-
     /**
      * Creates new form QLPhim
      */
     public QLPhim() throws SQLException, ClassNotFoundException, ParseException, InterruptedException {
-        phimController = new PhimController();
         initComponents();
         phimController = new PhimController();
         createTablePhim();
@@ -51,9 +50,9 @@ public class QLPhim extends javax.swing.JFrame {
         tbPhim = new javax.swing.JTable();
         txtSearch = new javax.swing.JTextField();
         jLabel37 = new javax.swing.JLabel();
-        btBack = new javax.swing.JButton();
+        btSua = new javax.swing.JButton();
         btBack1 = new javax.swing.JButton();
-        btBack2 = new javax.swing.JButton();
+        btThem = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -95,13 +94,13 @@ public class QLPhim extends javax.swing.JFrame {
         jLabel37.setForeground(new java.awt.Color(0, 0, 255));
         jLabel37.setText("Tìm kiếm:");
 
-        btBack.setBackground(new java.awt.Color(204, 255, 204));
-        btBack.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btBack.setForeground(new java.awt.Color(255, 0, 255));
-        btBack.setText("Sửa thông tin phim");
-        btBack.addActionListener(new java.awt.event.ActionListener() {
+        btSua.setBackground(new java.awt.Color(204, 255, 204));
+        btSua.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btSua.setForeground(new java.awt.Color(255, 0, 255));
+        btSua.setText("Sửa thông tin phim");
+        btSua.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btBackActionPerformed(evt);
+                btSuaActionPerformed(evt);
             }
         });
 
@@ -115,13 +114,13 @@ public class QLPhim extends javax.swing.JFrame {
             }
         });
 
-        btBack2.setBackground(new java.awt.Color(204, 255, 204));
-        btBack2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btBack2.setForeground(new java.awt.Color(0, 204, 255));
-        btBack2.setText("Thêm phim");
-        btBack2.addActionListener(new java.awt.event.ActionListener() {
+        btThem.setBackground(new java.awt.Color(204, 255, 204));
+        btThem.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btThem.setForeground(new java.awt.Color(0, 204, 255));
+        btThem.setText("Thêm phim");
+        btThem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btBack2ActionPerformed(evt);
+                btThemActionPerformed(evt);
             }
         });
 
@@ -140,9 +139,9 @@ public class QLPhim extends javax.swing.JFrame {
                         .addGap(19, 19, 19)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(btBack2)
+                                .addComponent(btThem)
                                 .addGap(18, 18, 18)
-                                .addComponent(btBack)
+                                .addComponent(btSua)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btBack1))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 691, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -159,8 +158,8 @@ public class QLPhim extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btBack)
-                    .addComponent(btBack2)
+                    .addComponent(btSua)
+                    .addComponent(btThem)
                     .addComponent(btBack1))
                 .addGap(22, 22, 22))
         );
@@ -219,14 +218,15 @@ private void connect() {
         tr.setRowFilter(RowFilter.regexFilter(search));
     }//GEN-LAST:event_txtSearchKeyReleased
 
-    private void btBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBackActionPerformed
+    private void btSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSuaActionPerformed
+        SuaPhim.main(null);
 //        try {
 //            // TODO add your handling code here:
 //            setTablePhim();
 //        } catch (InterruptedException ex) {
 //            Logger.getLogger(QLPHIM.class.getName()).log(Level.SEVERE, null, ex);
 //        }
-    }//GEN-LAST:event_btBackActionPerformed
+    }//GEN-LAST:event_btSuaActionPerformed
 
     private void btBack1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBack1ActionPerformed
         // TODO add your handling code here:
@@ -234,9 +234,10 @@ private void connect() {
 //        AdminPage_new.main(null);
     }//GEN-LAST:event_btBack1ActionPerformed
 
-    private void btBack2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBack2ActionPerformed
+    private void btThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btThemActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btBack2ActionPerformed
+        ThemPhim.main(null);
+    }//GEN-LAST:event_btThemActionPerformed
     public void createTablePhim() throws InterruptedException {
         try {
             connect();
@@ -300,9 +301,9 @@ private void connect() {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btBack;
     private javax.swing.JButton btBack1;
-    private javax.swing.JButton btBack2;
+    private javax.swing.JButton btSua;
+    private javax.swing.JButton btThem;
     private javax.swing.JLabel jLabel37;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;

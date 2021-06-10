@@ -15,7 +15,11 @@ import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
 import java.util.Collections;
+import java.util.Locale;
+import java.util.regex.Pattern;
 import model.Database;
 import model.Phim;
 
@@ -27,6 +31,8 @@ public class PhimController {
 
     private Connection con;
     private List<Phim> listPhim;
+    private static final Pattern NONLATIN = Pattern.compile("[^\\w-]");
+    private static final Pattern WHITESPACE = Pattern.compile("[\\s]");
     Database db = new Database();
 
     public PhimController() {
@@ -46,7 +52,6 @@ public class PhimController {
 //prepStmt.setString(1, naam); 
 //
 //ResultSet rs = prepStmt.executeQuery();
-            System.out.println(con);
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -96,6 +101,60 @@ public class PhimController {
         }
     }
 
+    public void themPhim(Object[] o) throws SQLException {
+        System.out.println("Them Phim");
+        String sql = "insert into PHIM(tenPhim, trailer, hinhAnh, moTa, ngayKhoiChieu, danhGia, biDanh, daXoa) values(?, ?, ?, ? ,?, ?, ?, ?)";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            ps = con.prepareStatement(sql);
+            int i = Connection.TRANSACTION_READ_COMMITTED;
+            con.setAutoCommit(false);
+            con.setTransactionIsolation(i);
+            int col = 1;
+            ps.setString(col++, (String) o[0]);
+            ps.setString(col++, (String) o[4]);
+            ps.setString(col++, (String) o[5]);
+            ps.setString(col++, (String) o[6]);
+            ps.setDate(col++, (Date) o[3]);
+            ps.setInt(col++, 0);
+            ps.setString(col++, toSlug((String)o[0]));
+            ps.setBoolean(col++, false);
+            ps.executeUpdate();
+            con.commit();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
+            con.rollback();
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                    System.out.println("close RS Phim");
+                } catch (SQLException e) {
+                    Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
+                }
+            }
+            if (ps != null) {
+                try {
+                    ps.close();
+                    System.out.println("close PS Phim");
+                } catch (SQLException e) {
+                    Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
+                }
+            }
+            if (con != null) {
+                try {
+                    con.close();
+                    System.out.println("close Conn Phim");
+                } catch (SQLException e) {
+                    Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
+                }
+            }
+        }
+
+    }
+
     public void connect() throws SQLException {
         try {
             db.connect();
@@ -110,5 +169,12 @@ public class PhimController {
 
     public void disconnect() {
         db.disconnect();
+    }
+
+    public String toSlug(String input) {
+        String nowhitespace = WHITESPACE.matcher(input).replaceAll("-");
+        String normalized = Normalizer.normalize(nowhitespace, Form.NFD);
+        String slug = NONLATIN.matcher(normalized).replaceAll("");
+        return slug.toLowerCase(Locale.ENGLISH);
     }
 }

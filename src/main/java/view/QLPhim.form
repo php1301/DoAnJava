@@ -69,9 +69,9 @@
                           <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Group type="102" attributes="0">
-                                  <Component id="btBack2" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btThem" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="btBack" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btSua" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="32767" attributes="0"/>
                                   <Component id="btBack1" min="-2" max="-2" attributes="0"/>
                               </Group>
@@ -95,8 +95,8 @@
                   <Component id="jScrollPane1" min="-2" pref="188" max="-2" attributes="0"/>
                   <EmptySpace pref="46" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="btBack" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="btBack2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btSua" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btThem" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btBack1" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
@@ -196,7 +196,7 @@
             <Property name="text" type="java.lang.String" value="T&#xec;m ki&#x1ebf;m:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="btBack">
+        <Component class="javax.swing.JButton" name="btSua">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="cc" green="ff" red="cc" type="rgb"/>
@@ -210,7 +210,7 @@
             <Property name="text" type="java.lang.String" value="S&#x1eed;a th&#xf4;ng tin phim"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btBackActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btSuaActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btBack1">
@@ -230,7 +230,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btBack1ActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="btBack2">
+        <Component class="javax.swing.JButton" name="btThem">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="cc" green="ff" red="cc" type="rgb"/>
@@ -244,7 +244,7 @@
             <Property name="text" type="java.lang.String" value="Th&#xea;m phim"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btBack2ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btThemActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
