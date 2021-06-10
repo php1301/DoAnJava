@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package GUIandBUS;
+package view;
 
 import dao.ConnectionUtils;
 import java.awt.Color;
