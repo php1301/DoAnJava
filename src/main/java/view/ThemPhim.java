@@ -5,14 +5,24 @@
  */
 package view;
 
+import controller.PhimController;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerDateModel;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import kong.unirest.Unirest;
 
 /**
  *
@@ -23,9 +33,14 @@ public class ThemPhim extends javax.swing.JFrame {
     /**
      * Creates new form ThemPhim
      */
-    public ThemPhim() {
+    private File file = null;
+    private PhimController phimController;
+
+    public ThemPhim() throws SQLException, ClassNotFoundException, ParseException, InterruptedException {
         initComponents();
         setTitle("Trang Thêm Phim");
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        phimController = new PhimController();
     }
 
     /**
@@ -48,11 +63,16 @@ public class ThemPhim extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         btOpenFile = new javax.swing.JButton();
         linkImageVal = new javax.swing.JTextField();
-        tenPhimVal = new javax.swing.JTextField();
-        image = new javax.swing.JLabel();
+        trailerVal = new javax.swing.JTextField();
+        imageSection = new javax.swing.JLabel();
         btThem = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jSpinner1 = new javax.swing.JSpinner();
+        jLabel14 = new javax.swing.JLabel();
+        tenPhimVal = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        moTaVal = new javax.swing.JTextArea();
+        jLabel15 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -92,14 +112,16 @@ public class ThemPhim extends javax.swing.JFrame {
             }
         });
 
-        tenPhimVal.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        tenPhimVal.addActionListener(new java.awt.event.ActionListener() {
+        linkImageVal.setEnabled(false);
+
+        trailerVal.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        trailerVal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tenPhimValActionPerformed(evt);
+                trailerValActionPerformed(evt);
             }
         });
 
-        image.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        imageSection.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         btThem.setBackground(new java.awt.Color(255, 255, 255));
         btThem.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -117,35 +139,21 @@ public class ThemPhim extends javax.swing.JFrame {
 
         jSpinner1.setModel(new javax.swing.SpinnerNumberModel(0, 0, 480, 1));
 
+        jLabel14.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(0, 0, 255));
+        jLabel14.setText("Trailer: ");
+
+        tenPhimVal.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        tenPhimVal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tenPhimValActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(39, 39, 39)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel10)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel9)
-                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(43, 43, 43))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(image, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1)
-                    .addComponent(tenPhimVal)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(linkImageVal, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
-                        .addComponent(btOpenFile, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jSpinner1)))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btThem, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -154,17 +162,51 @@ public class ThemPhim extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(146, 146, 146))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(39, 39, 39)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel10)
+                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel9)
+                                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(37, 37, 37))
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33)))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(imageSection, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
+                    .addComponent(jSpinner1)
+                    .addComponent(trailerVal, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(linkImageVal, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
+                        .addComponent(btOpenFile, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tenPhimVal)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(jLabel1)
-                .addGap(51, 51, 51)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tenPhimVal, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(14, 14, 14)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(52, 52, 52)
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(16, 16, 16))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tenPhimVal, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -175,21 +217,35 @@ public class ThemPhim extends javax.swing.JFrame {
                     .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(trailerVal, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(linkImageVal, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btOpenFile, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(image, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(imageSection, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35)
                 .addComponent(btThem)
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
+
+        moTaVal.setColumns(20);
+        moTaVal.setRows(5);
+        jScrollPane2.setViewportView(moTaVal);
+
+        jLabel15.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(0, 0, 255));
+        jLabel15.setText("Mô tả phim: ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -198,91 +254,130 @@ public class ThemPhim extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 485, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel15)
+                .addGap(29, 29, 29)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(73, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 627, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 627, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(111, 111, 111)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    private void connect() {
+        try {
+            phimController.connect();
+            System.out.println("Da connect Phim");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(ThemPhim.this, "Cannot connect to the database", "Database connection Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
     private void btOpenFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOpenFileActionPerformed
         // TODO add your handling code here:
-//        JFileChooser fc = new JFileChooser();
-//        //        fc.setCurrentDirectory(new File(System.getProperty("user.home")));
-//        //        fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
-//        try {
-//            fc.setCurrentDirectory(new File(getClass().getResource("/GoiNguon/").toURI()));
-//        } catch (URISyntaxException ex) {
-//            Logger.getLogger(QLPHIM.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        FileNameExtensionFilter filter = new FileNameExtensionFilter("*.Images","jpg","gif","png");
-//        fc.addChoosableFileFilter(filter);
-//        fc.setDialogTitle("Chọn ảnh");
-//        int result = fc.showOpenDialog(null);
-//        if(result == JFileChooser.APPROVE_OPTION){
-//            file = fc.getSelectedFile();
+        JFileChooser fc = new JFileChooser();
+        //        fc.setCurrentDirectory(new File(System.getProperty("user.home")));
+        //        fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
+        try {
+            fc.setCurrentDirectory(new File(getClass().getResource("./").toURI()));
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(ThemPhim.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("*.Images", "jpg", "gif", "png");
+        fc.addChoosableFileFilter(filter);
+        fc.setDialogTitle("Chọn ảnh");
+        int result = fc.showOpenDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            file = fc.getSelectedFile();
+            System.out.println(file);
+            imgurRequest(file);
 //            try {
-//                if (ImageIO.read(file) != null)
-//                {
+//                if (ImageIO.read(file) != null) {
 //                    showAnh(file);
-//                }
-//                else
-//                {
+//                } else {
 //                    file = null;
-//                    JOptionPane.showMessageDialog(this,"Không phải ảnh","Lỗi",JOptionPane.ERROR_MESSAGE);
+//                    JOptionPane.showMessageDialog(this, "Vui lòng chọn file có đuôi jpg, gif, png", "Lỗi", JOptionPane.ERROR_MESSAGE);
 //                }
 //            } catch (IOException ex) {
-//                Logger.getLogger(QLPHIM.class.getName()).log(Level.SEVERE, null, ex);
+//                Logger.getLogger(ThemPhim.class.getName()).log(Level.SEVERE, null, ex);
 //            }
-//        }
+        }
     }//GEN-LAST:event_btOpenFileActionPerformed
+
+    private void trailerValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trailerValActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_trailerValActionPerformed
+    private void imgurRequest(File f) {
+        try {
+            String imgurClientId = "4d7220bef63dd30";
+            Unirest.config().connectTimeout(1000);
+            String response = Unirest.post("https://api.imgur.com/3/image")
+                    .header("Authorization", "Client-ID " + imgurClientId)
+                    .multiPartContent()
+                    .field("image", file)
+                    .asJson()
+                    .getBody()
+                    .getObject()
+                    .getJSONObject("data")
+                    .get("link")
+                    .toString();
+            linkImageVal.setText(response);
+            showAnh(response);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(ThemPhim.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void showAnh(String name) throws MalformedURLException {
+        try {
+            URL url = new URL(name);
+            Image img = ImageIO.read(url);
+            Image newImg = img.getScaledInstance(imageSection.getWidth(), imageSection.getHeight(), Image.SCALE_SMOOTH);
+            ImageIcon image = new ImageIcon(newImg);
+            imageSection.setIcon(image);
+        } catch (IOException ex) {
+            Logger.getLogger(ThemPhim.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    private void btThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btThemActionPerformed
+        // TODO add your handling code here:
+//        SimpleDateFormat DateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+        connect();
+        java.sql.Date ngayKhoiChieuVal = new java.sql.Date(jDateChooser1.getDate().getTime());
+        Object[] o = new Object[7];
+        o[0] = tenPhimVal.getText();
+        o[1] = jSpinner1.getValue();
+        o[2] = jList1.getSelectedValuesList();
+        o[3] = ngayKhoiChieuVal;
+        o[4] = trailerVal.getText();
+        o[5] = linkImageVal.getText();
+        o[6] = moTaVal.getText();
+        try {
+            phimController.themPhim(o);
+            JOptionPane.showMessageDialog(ThemPhim.this, "Thành công", "Thêm phim thành công",
+                    JOptionPane.INFORMATION_MESSAGE);
+            this.setVisible(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(ThemPhim.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btThemActionPerformed
 
     private void tenPhimValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tenPhimValActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tenPhimValActionPerformed
-
-    private void btThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btThemActionPerformed
-        // TODO add your handling code here:
-//        try (Connection con = ConnectionUtils.getMyConnection()) {
-//            SimpleDateFormat DateFormatter = new SimpleDateFormat("dd-MM-yyyy");
-//            SimpleDateFormat TimeFormatter = new SimpleDateFormat("HH:mm");
-//            java.util.Date d_NgPH = txtNgPH.getDate();
-//            java.util.Date t_TLuong = (Date)spin_TLuong.getValue();
-//            String S_NgPH = DateFormatter.format(d_NgPH);
-//            String S_TLuong = TimeFormatter.format(t_TLuong);
-//            MaTL = matl.get(cbbTL.getSelectedIndex());
-//            String SQL_PHIM;
-//            if(file == null)
-//            SQL_PHIM="INSERT INTO PHIM(MAPHIM,TENPHIM,MATL,DAODIEN,DIENVIEN,NHAPH,NGAYPH,THOILUONG)"
-//            +"VALUES(MAPHIM_SEQ4.nextval,'"+txtTen.getText()+"',"+MaTL+",'"+txtDD.getText()+"','"+txtDV.getText()+"','"+txtNPH.getText()+"',to_date('"+S_NgPH+"','dd-mm-yyyy'),to_date('"+S_TLuong+"','hh24:mi'))";
-//            else
-//            {
-//                String filename = file.getName();
-//                SQL_PHIM="INSERT INTO PHIM(MAPHIM,TENPHIM,MATL,DAODIEN,DIENVIEN,NHAPH,NGAYPH,THOILUONG,HINHANH)"
-//                +"VALUES(MAPHIM_SEQ4.nextval,'"+txtTen.getText()+"',"+MaTL+",'"+txtDD.getText()+"','"+txtDV.getText()+"','"+txtNPH.getText()+"',to_date('"+S_NgPH+"','dd-mm-yyyy'),to_date('"+S_TLuong+"','hh24:mi'),'"+filename+"')";
-//                File s = new File(getClass().getResource("/GoiNguon/")+filename);
-//                //                String localDir = System.getProperty("user.dir");
-//                String local = System.getProperty("user.dir")+"\\src\\GoiNguon\\";
-//                File f = new File(local+s.getName());
-//                copyFile(file,f);
-//            }
-//            Statement stat_PHIM = con.createStatement();
-//            stat_PHIM.executeUpdate(SQL_PHIM);
-//            setTablePhim();
-//            getRowPhim(tbPhim.getRowCount()-1);
-//            JOptionPane.showMessageDialog(this,"Thành công!");
-//        }
-//        catch(Exception e){
-//            JOptionPane.showMessageDialog(this,"Một trong các thông tin bị sai","Lỗi",JOptionPane.ERROR_MESSAGE);
-//            System.out.println(e);
-//        }
-    }//GEN-LAST:event_btThemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -314,7 +409,13 @@ public class ThemPhim extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ThemPhim().setVisible(true);
+                try {
+                    new ThemPhim().setVisible(true);
+                    Thread.sleep(5000);
+
+                } catch (SQLException | ClassNotFoundException | ParseException | InterruptedException ex) {
+                    Logger.getLogger(QLPhim.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -322,19 +423,24 @@ public class ThemPhim extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btOpenFile;
     private javax.swing.JButton btThem;
-    private javax.swing.JLabel image;
+    private javax.swing.JLabel imageSection;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTextField linkImageVal;
+    private javax.swing.JTextArea moTaVal;
     private javax.swing.JTextField tenPhimVal;
+    private javax.swing.JTextField trailerVal;
     // End of variables declaration//GEN-END:variables
 }
