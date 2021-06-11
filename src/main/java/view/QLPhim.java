@@ -10,6 +10,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import controller.PhimController;
 import java.io.File;
+import java.net.MalformedURLException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -51,9 +52,10 @@ public class QLPhim extends javax.swing.JFrame {
         tbPhim = new javax.swing.JTable();
         txtSearch = new javax.swing.JTextField();
         jLabel37 = new javax.swing.JLabel();
-        btSua = new javax.swing.JButton();
+        btLamMoi = new javax.swing.JButton();
         btBack1 = new javax.swing.JButton();
         btThem = new javax.swing.JButton();
+        btSua = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -66,17 +68,28 @@ public class QLPhim extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Mã", "Tên phim", "Hình Ảnh", "Trailer", "Ngày phát hành"
+                "Mã", "Tên phim", "Thời lượng(phút)", "Hình Ảnh", "Trailer", "Ngày phát hành"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tbPhim.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbPhimMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(tbPhim);
+        if (tbPhim.getColumnModel().getColumnCount() > 0) {
+            tbPhim.getColumnModel().getColumn(2).setResizable(false);
+        }
 
-        txtSearch.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(51, 51, 255), new java.awt.Color(255, 51, 0), new java.awt.Color(255, 255, 0), new java.awt.Color(0, 204, 0)));
+        txtSearch.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(255, 255, 0), new java.awt.Color(153, 153, 153)));
         txtSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtSearchActionPerformed(evt);
@@ -95,13 +108,13 @@ public class QLPhim extends javax.swing.JFrame {
         jLabel37.setForeground(new java.awt.Color(0, 0, 255));
         jLabel37.setText("Tìm kiếm:");
 
-        btSua.setBackground(new java.awt.Color(204, 255, 204));
-        btSua.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btSua.setForeground(new java.awt.Color(255, 0, 255));
-        btSua.setText("Sửa thông tin phim");
-        btSua.addActionListener(new java.awt.event.ActionListener() {
+        btLamMoi.setBackground(new java.awt.Color(204, 255, 204));
+        btLamMoi.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btLamMoi.setForeground(new java.awt.Color(0, 51, 255));
+        btLamMoi.setText("Làm mới");
+        btLamMoi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btSuaActionPerformed(evt);
+                btLamMoiActionPerformed(evt);
             }
         });
 
@@ -125,6 +138,16 @@ public class QLPhim extends javax.swing.JFrame {
             }
         });
 
+        btSua.setBackground(new java.awt.Color(204, 255, 204));
+        btSua.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btSua.setForeground(new java.awt.Color(255, 0, 255));
+        btSua.setText("Sửa thông tin phim");
+        btSua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btSuaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -135,13 +158,15 @@ public class QLPhim extends javax.swing.JFrame {
                         .addGap(200, 200, 200)
                         .addComponent(jLabel37)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(34, 34, 34)
+                        .addComponent(btLamMoi))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(19, 19, 19)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addComponent(btThem)
-                                .addGap(18, 18, 18)
+                                .addGap(27, 27, 27)
                                 .addComponent(btSua)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btBack1))
@@ -154,14 +179,15 @@ public class QLPhim extends javax.swing.JFrame {
                 .addGap(23, 23, 23)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel37, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel37, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btLamMoi))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btSua)
                     .addComponent(btThem)
-                    .addComponent(btBack1))
+                    .addComponent(btBack1)
+                    .addComponent(btSua))
                 .addGap(22, 22, 22))
         );
 
@@ -178,7 +204,7 @@ public class QLPhim extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 375, Short.MAX_VALUE)
+            .addGap(0, 377, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
@@ -219,23 +245,17 @@ private void connect() {
         tr.setRowFilter(RowFilter.regexFilter(search));
     }//GEN-LAST:event_txtSearchKeyReleased
 
-    private void btSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSuaActionPerformed
+    private void btLamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btLamMoiActionPerformed
         try {
-            int selectedRow = tbPhim.getSelectedRow();
-            int maPhim = (int) tbPhim.getValueAt(selectedRow, 0);
-            System.out.println(maPhim);
-            SuaPhim sp = new SuaPhim();
-            sp.setMaPhim(maPhim);
-            sp.setVisible(true);
- 
-        } catch (SQLException | ClassNotFoundException | ParseException | InterruptedException ex) {
+            this.createTablePhim();
+        } catch (InterruptedException ex) {
             Logger.getLogger(QLPhim.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_btSuaActionPerformed
+    }//GEN-LAST:event_btLamMoiActionPerformed
 
     private void btBack1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBack1ActionPerformed
         // TODO add your handling code here:
-        hide();
+        dispose();
 //        AdminPage_new.main(null);
     }//GEN-LAST:event_btBack1ActionPerformed
 
@@ -243,6 +263,27 @@ private void connect() {
         // TODO add your handling code here:
         ThemPhim.main(null);
     }//GEN-LAST:event_btThemActionPerformed
+
+    private void btSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSuaActionPerformed
+        try {
+            int selectedRow = tbPhim.getSelectedRow();
+            if (selectedRow < 1) {
+                JOptionPane.showMessageDialog(QLPhim.this, "Chua chon phim", "Vui long chon phim",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+            int maPhim = (int) tbPhim.getValueAt(selectedRow, 0);
+            SuaPhim sp = new SuaPhim();
+            sp.setMaPhim(maPhim);
+            sp.setSelectedIndex(selectedRow);
+            sp.renderThongTinPhim();
+            sp.setVisible(true);
+
+        } catch (SQLException | ClassNotFoundException | ParseException | InterruptedException ex) {
+            Logger.getLogger(QLPhim.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(QLPhim.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btSuaActionPerformed
     public void createTablePhim() throws InterruptedException {
         try {
             connect();
@@ -251,12 +292,13 @@ private void connect() {
             modelPhim = (DefaultTableModel) tbPhim.getModel();
             modelPhim.setRowCount(0);
             for (Phim p : phim) {
-                Object[] o = new Object[5];
+                Object[] o = new Object[6];
                 o[0] = p.getMaPhim();
                 o[1] = p.getTenPhim();
-                o[2] = p.getHinhAnh();
-                o[3] = p.getTrailer();
-                o[4] = DateFormatter.format(p.getNgayKhoiChieu());
+                o[2] = p.getThoiLuong();
+                o[3] = p.getHinhAnh();
+                o[4] = p.getTrailer();
+                o[5] = DateFormatter.format(p.getNgayKhoiChieu());
                 modelPhim.addRow(o);
             }
         } catch (NumberFormatException | SQLException ex) {
@@ -307,6 +349,7 @@ private void connect() {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btBack1;
+    private javax.swing.JButton btLamMoi;
     private javax.swing.JButton btSua;
     private javax.swing.JButton btThem;
     private javax.swing.JLabel jLabel37;
