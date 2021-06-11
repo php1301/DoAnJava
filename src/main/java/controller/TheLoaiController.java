@@ -1,0 +1,105 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package controller;
+
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.Database;
+import model.TheLoai;
+
+/**
+ *
+ * @author Admin
+ */
+public class TheLoaiController {
+
+    private Connection con;
+    private List<TheLoai> listTheLoai;
+    Database db = new Database();
+
+    public TheLoaiController() {
+        listTheLoai = new LinkedList<TheLoai>();
+        System.out.println("Chay constructor TheLoai");
+    }
+
+    public List<TheLoai> layDanhSachTheLoai() throws SQLException {
+        System.out.println("Lay danh sach phim");
+        listTheLoai.clear();
+        String sql = "select * from TheLoai order by maTheLoai";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            connect();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int maTheLoai = rs.getInt(1);
+                String tenTheLoai = rs.getString(2);
+                TheLoai tl = new TheLoai(maTheLoai, tenTheLoai);
+                listTheLoai.add(tl);
+            }
+            return Collections.unmodifiableList(listTheLoai);
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
+            return null;
+        } finally {
+            disconnect(rs, ps);
+        }
+    }
+
+    public void connect() throws SQLException {
+        try {
+            db.connect();
+            String url = "jdbc:mysql://localhost:3306/doanjavalb";
+            String remoteUrl = "jdbc:mysql://remotemysql.com:3306/Rv7rkcnTMx";
+            con = DriverManager.getConnection(remoteUrl, "Rv7rkcnTMx", "ZJ0Pp56kEi");
+            System.out.println("Connected " + con);
+            System.out.println("Da connect the loai");
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+
+    public void disconnect(ResultSet rs, PreparedStatement ps) {
+        if (rs != null) {
+            try {
+                rs.close();
+                System.out.println("close RS Phim");
+            } catch (SQLException e) {
+                Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+        if (ps != null) {
+            try {
+                ps.close();
+                System.out.println("close PS Phim");
+            } catch (SQLException e) {
+                Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+        if (con != null) {
+            try {
+                con.close();
+                System.out.println("close Conn Phim");
+            } catch (SQLException e) {
+                Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+    }
+
+}

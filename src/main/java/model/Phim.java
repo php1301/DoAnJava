@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package model;
+
 import java.sql.Date;
 
 /**
@@ -19,9 +20,11 @@ public class Phim {
     private String moTa;
     private Date ngayKhoiChieu;
     private int danhGia;
+    private int thoiLuong;
     private String biDanh;
     private boolean daXoa;
-        public Phim(int maPhim, String tenPhim, String trailer, String hinhAnh, String moTa, Date ngayKhoiChieu, int danhGia, String biDanh, boolean daXoa) {
+
+    public Phim(int maPhim, String tenPhim, String trailer, String hinhAnh, String moTa, Date ngayKhoiChieu, int danhGia, int thoiLuong, String biDanh, boolean daXoa) {
         this.maPhim = maPhim;
         this.tenPhim = tenPhim;
         this.trailer = trailer;
@@ -29,6 +32,7 @@ public class Phim {
         this.moTa = moTa;
         this.ngayKhoiChieu = ngayKhoiChieu;
         this.danhGia = danhGia;
+        this.thoiLuong = thoiLuong;
         this.biDanh = biDanh;
         this.daXoa = daXoa;
     }
@@ -89,6 +93,14 @@ public class Phim {
         this.danhGia = danhGia;
     }
 
+    public int getThoiLuong() {
+        return thoiLuong;
+    }
+
+    public void setThoiLuong(int thoiLuong) {
+        this.thoiLuong = thoiLuong;
+    }
+
     public String getBiDanh() {
         return biDanh;
     }
@@ -104,6 +116,5 @@ public class Phim {
     public void setDaXoa(boolean daXoa) {
         this.daXoa = daXoa;
     }
-        
 
 }

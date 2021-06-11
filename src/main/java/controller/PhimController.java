@@ -31,19 +31,19 @@ public class PhimController {
 
     private Connection con;
     private List<Phim> listPhim;
+    Database db = new Database();
     private static final Pattern NONLATIN = Pattern.compile("[^\\w-]");
     private static final Pattern WHITESPACE = Pattern.compile("[\\s]");
-    Database db = new Database();
 
     public PhimController() {
         listPhim = new LinkedList<Phim>();
         System.out.println("Chay constructor Phim");
     }
 
-    public List<Phim> getPhim() throws SQLException {
+    public List<Phim> layDanhSachPhim() throws SQLException {
         System.out.println("Lay danh sach phim");
         listPhim.clear();
-        String sql = "select * from phim order by maPhim";
+        String sql = "select * from Phim order by maPhim";
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
@@ -52,6 +52,7 @@ public class PhimController {
 //prepStmt.setString(1, naam); 
 //
 //ResultSet rs = prepStmt.executeQuery();
+            connect();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -62,9 +63,10 @@ public class PhimController {
                 String moTa = rs.getString(5);
                 Date ngayKhoiChieu = rs.getDate(6);
                 int danhGia = rs.getInt(7);
-                String biDanh = rs.getString(8);
-                boolean daXoa = rs.getBoolean(9);
-                Phim phim = new Phim(maPhim, tenPhim, trailer, hinhAnh, moTa, ngayKhoiChieu, danhGia, biDanh, daXoa);
+                int thoiLuong = rs.getInt(8);
+                String biDanh = rs.getString(9);
+                boolean daXoa = rs.getBoolean(10);
+                Phim phim = new Phim(maPhim, tenPhim, trailer, hinhAnh, moTa, ngayKhoiChieu, danhGia, thoiLuong, biDanh, daXoa);
                 listPhim.add(phim);
             }
             return Collections.unmodifiableList(listPhim);
@@ -74,39 +76,17 @@ public class PhimController {
             Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
             return null;
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                    System.out.println("close RS Phim");
-                } catch (SQLException e) {
-                    Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
-                }
-            }
-            if (ps != null) {
-                try {
-                    ps.close();
-                    System.out.println("close PS Phim");
-                } catch (SQLException e) {
-                    Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
-                }
-            }
-            if (con != null) {
-                try {
-                    con.close();
-                    System.out.println("close Conn Phim");
-                } catch (SQLException e) {
-                    Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
-                }
-            }
+            disconnect(rs, ps);
         }
     }
 
     public void themPhim(Object[] o) throws SQLException {
         System.out.println("Them Phim");
-        String sql = "insert into PHIM(tenPhim, trailer, hinhAnh, moTa, ngayKhoiChieu, danhGia, biDanh, daXoa) values(?, ?, ?, ? ,?, ?, ?, ?)";
+        String sql = "insert into Phim(tenPhim, trailer, hinhAnh, moTa, ngayKhoiChieu, danhGia, biDanh, daXoa, thoiLuong) values(?, ?, ?, ? ,?, ?, ?, ?, ?)";
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
+            connect();
             ps = con.prepareStatement(sql);
             int i = Connection.TRANSACTION_READ_COMMITTED;
             con.setAutoCommit(false);
@@ -118,57 +98,162 @@ public class PhimController {
             ps.setString(col++, (String) o[6]);
             ps.setDate(col++, (Date) o[3]);
             ps.setInt(col++, 0);
-            ps.setString(col++, toSlug((String)o[0]));
+            ps.setString(col++, toSlug((String) o[0]));
             ps.setBoolean(col++, false);
+            ps.setInt(col++, (int) o[1]);
             ps.executeUpdate();
             con.commit();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
             con.rollback();
+            throw new SQLException();
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                    System.out.println("close RS Phim");
-                } catch (SQLException e) {
-                    Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
-                }
-            }
-            if (ps != null) {
-                try {
-                    ps.close();
-                    System.out.println("close PS Phim");
-                } catch (SQLException e) {
-                    Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
-                }
-            }
-            if (con != null) {
-                try {
-                    con.close();
-                    System.out.println("close Conn Phim");
-                } catch (SQLException e) {
-                    Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
-                }
-            }
+            disconnect(rs, ps);
         }
 
+    }
+
+    public Object[] getThongTinPhim(int maPhimArg) throws SQLException {
+        System.out.println("Lay thong tin phim");
+        String sql = "select * from Phim where maPhim = ?";
+        System.out.println(maPhimArg);
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Object[] o = new Object[10];
+        try {
+            connect();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, maPhimArg);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                System.out.println(rs.getInt(1));
+                o[0] = rs.getInt(1);
+                o[1] = rs.getString(2);
+                o[2] = rs.getString(3);
+                o[3] = rs.getString(4);
+                o[4] = rs.getString(5);
+                o[5] = rs.getDate(6);
+                o[6] = rs.getInt(7);
+                o[7] = rs.getInt(8);
+                o[8] = rs.getString(9);
+                o[9] = rs.getBoolean(10);
+            }
+            return o;
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
+            return null;
+        } finally {
+            disconnect(rs, ps);
+        }
+    }
+
+    public void suaThongTinPhim(int maPhimArg, Object[] o) throws SQLException {
+        System.out.println("Sua thong tin phim");
+        String sql = "update Phim "
+                + "set tenPhim = ?, "
+                + "trailer = ?, "
+                + "hinhAnh = ?, "
+                + "moTa = ?, "
+                + "ngayKhoiChieu = ?, "
+                + "biDanh = ?, "
+                + "thoiLuong = ? "
+                + "where maPhim = ?";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            connect();
+            ps = con.prepareStatement(sql);
+            int i = Connection.TRANSACTION_READ_COMMITTED;
+            con.setAutoCommit(false);
+            con.setTransactionIsolation(i);
+            int col = 1;
+            ps.setString(col++, (String) o[0]);
+            ps.setString(col++, (String) o[4]);
+            ps.setString(col++, (String) o[5]);
+            ps.setString(col++, (String) o[6]);
+            ps.setDate(col++, (Date) o[3]);
+            ps.setString(col++, toSlug((String) o[0]));
+            ps.setInt(col++, (int) o[1]);
+            ps.setInt(col++, maPhimArg);
+            ps.executeUpdate();
+            con.commit();
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
+            con.rollback();
+            throw new SQLException();
+        } finally {
+            disconnect(rs, ps);
+        }
+    }
+
+    public void xoaPhim(int maPhimArg, int index) throws SQLException {
+        System.out.println("Xoa phim");
+        String sql = "Delete from Phim where maPhim = ?";
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            connect();
+            ps = con.prepareStatement(sql);
+            int i = Connection.TRANSACTION_READ_COMMITTED;
+            con.setAutoCommit(false);
+            con.setTransactionIsolation(i);
+            ps.setInt(1, maPhimArg);
+            ps.executeUpdate();
+            con.commit();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
+            con.rollback();
+            throw new SQLException();
+        } finally {
+            disconnect(rs, ps);
+        }
     }
 
     public void connect() throws SQLException {
         try {
             db.connect();
             String url = "jdbc:mysql://localhost:3306/doanjavalb";
-            con = DriverManager.getConnection(url, "admin2", "java123"); 
+            String remoteUrl = "jdbc:mysql://remotemysql.com:3306/Rv7rkcnTMx";
+            con = DriverManager.getConnection(remoteUrl, "Rv7rkcnTMx", "ZJ0Pp56kEi");
             System.out.println("Connected " + con);
+            System.out.println("Da connect Phim");
         } catch (Exception e) {
             // TODO Auto-generated catch block
             Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
-    public void disconnect() {
-        db.disconnect();
+    public void disconnect(ResultSet rs, PreparedStatement ps) {
+        if (rs != null) {
+            try {
+                rs.close();
+                System.out.println("close RS Phim");
+            } catch (SQLException e) {
+                Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+        if (ps != null) {
+            try {
+                ps.close();
+                System.out.println("close PS Phim");
+            } catch (SQLException e) {
+                Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+        if (con != null) {
+            try {
+                con.close();
+                System.out.println("close Conn Phim");
+            } catch (SQLException e) {
+                Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
     }
 
     public String toSlug(String input) {

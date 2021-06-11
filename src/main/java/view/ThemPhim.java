@@ -6,6 +6,7 @@
 package view;
 
 import controller.PhimController;
+import controller.TheLoaiController;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +15,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -23,6 +25,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import kong.unirest.Unirest;
+import model.TheLoai;
 
 /**
  *
@@ -35,12 +38,17 @@ public class ThemPhim extends javax.swing.JFrame {
      */
     private File file = null;
     private PhimController phimController;
+    private TheLoaiController theLoaiController;
+    private ArrayList<String> tenTheLoai;
 
     public ThemPhim() throws SQLException, ClassNotFoundException, ParseException, InterruptedException {
         initComponents();
         setTitle("Trang Thêm Phim");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         phimController = new PhimController();
+        theLoaiController = new TheLoaiController();
+        tenTheLoai = new ArrayList<>();
+        renderListTheLoai();
     }
 
     /**
@@ -214,10 +222,10 @@ public class ThemPhim extends javax.swing.JFrame {
                         .addGap(7, 7, 7)
                         .addComponent(jSpinner1, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -237,7 +245,7 @@ public class ThemPhim extends javax.swing.JFrame {
                 .addComponent(imageSection, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35)
                 .addComponent(btThem)
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         moTaVal.setColumns(20);
@@ -291,15 +299,7 @@ public class ThemPhim extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    private void connect() {
-        try {
-            phimController.connect();
-            System.out.println("Da connect Phim");
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(ThemPhim.this, "Cannot connect to the database", "Database connection Error",
-                    JOptionPane.ERROR_MESSAGE);
-        }
-    }
+
     private void btOpenFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOpenFileActionPerformed
         // TODO add your handling code here:
         JFileChooser fc = new JFileChooser();
@@ -318,16 +318,6 @@ public class ThemPhim extends javax.swing.JFrame {
             file = fc.getSelectedFile();
             System.out.println(file);
             imgurRequest(file);
-//            try {
-//                if (ImageIO.read(file) != null) {
-//                    showAnh(file);
-//                } else {
-//                    file = null;
-//                    JOptionPane.showMessageDialog(this, "Vui lòng chọn file có đuôi jpg, gif, png", "Lỗi", JOptionPane.ERROR_MESSAGE);
-//                }
-//            } catch (IOException ex) {
-//                Logger.getLogger(ThemPhim.class.getName()).log(Level.SEVERE, null, ex);
-//            }
         }
     }//GEN-LAST:event_btOpenFileActionPerformed
 
@@ -352,13 +342,15 @@ public class ThemPhim extends javax.swing.JFrame {
             showAnh(response);
         } catch (MalformedURLException ex) {
             Logger.getLogger(ThemPhim.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(ThemPhim.this, "Xảy ra lỗi khi chọn ảnh phim vui lòng thử lại", "Có lỗi",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void showAnh(String name) throws MalformedURLException {
         try {
             URL url = new URL(name);
-            Image img = ImageIO.read(url);
+            Image img = ImageIO.read(url.openStream());
             Image newImg = img.getScaledInstance(imageSection.getWidth(), imageSection.getHeight(), Image.SCALE_SMOOTH);
             ImageIcon image = new ImageIcon(newImg);
             imageSection.setIcon(image);
@@ -369,7 +361,6 @@ public class ThemPhim extends javax.swing.JFrame {
     private void btThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btThemActionPerformed
         // TODO add your handling code here:
 //        SimpleDateFormat DateFormatter = new SimpleDateFormat("dd-MM-yyyy");
-        connect();
         java.sql.Date ngayKhoiChieuVal = new java.sql.Date(jDateChooser1.getDate().getTime());
         Object[] o = new Object[7];
         o[0] = tenPhimVal.getText();
@@ -383,20 +374,36 @@ public class ThemPhim extends javax.swing.JFrame {
             phimController.themPhim(o);
             JOptionPane.showMessageDialog(ThemPhim.this, "Thành công", "Thêm phim thành công",
                     JOptionPane.INFORMATION_MESSAGE);
-            this.setVisible(false);
+            dispose();
         } catch (SQLException ex) {
             Logger.getLogger(ThemPhim.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(ThemPhim.this, "Xảy ra lỗi khi thêm  phim vui lòng thử lại", "Có lỗi",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btThemActionPerformed
 
     private void tenPhimValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tenPhimValActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tenPhimValActionPerformed
+    private void renderListTheLoai() {
+        try {
+            List<TheLoai> tloai = theLoaiController.layDanhSachTheLoai();
+            for (TheLoai tl : tloai) {
+                tenTheLoai.add(tl.getTenTheLoai());
+            }
+            jList1.setListData((String[]) tenTheLoai.toArray(new String[0]));
+        } catch (SQLException ex) {
+            Logger.getLogger(ThemPhim.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
+    }
     private void btBack1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBack1ActionPerformed
         // TODO add your handling code here:
-        hide();
-        //        AdminPage_new.main(null);
+//        dispose();
+        List<String> values = jList1.getSelectedValuesList();
+        for (String v : values){
+            System.out.println(v);
+        }
     }//GEN-LAST:event_btBack1ActionPerformed
 
     /**
