@@ -5,19 +5,30 @@
  */
 package view;
 
+import controller.Helper;
 import controller.PhimController;
+import controller.TheLoaiController;
+import java.awt.Image;
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerDateModel;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
+import kong.unirest.Unirest;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import model.TheLoai;
 
 /**
  *
@@ -31,6 +42,10 @@ public class SuaPhim extends javax.swing.JFrame {
     private File file = null;
     private PhimController phimController;
     private int maPhim;
+    private int selectedIndex;
+    private Helper helper;
+    private TheLoaiController theLoaiController;
+    private ArrayList<String> tenTheLoai;
 
     public int getMaPhim() {
         return maPhim;
@@ -40,17 +55,32 @@ public class SuaPhim extends javax.swing.JFrame {
         this.maPhim = maPhim;
     }
 
-    public SuaPhim() throws SQLException, ClassNotFoundException, ParseException, InterruptedException {
+    public int getSelectedIndex() {
+        return selectedIndex;
+    }
+
+    public void setSelectedIndex(int selectedIndex) {
+        this.selectedIndex = selectedIndex;
+    }
+
+    public SuaPhim() throws SQLException, ClassNotFoundException, ParseException, InterruptedException, MalformedURLException {
         initComponents();
         setTitle("Trang Sửa hoặc xóa Thông Tin Phim");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         phimController = new PhimController();
+        helper = new Helper();
+        theLoaiController = new TheLoaiController();
+        tenTheLoai = new ArrayList<>();
+        renderListTheLoai();
+
     }
 
     private void connect() {
         try {
             phimController.connect();
             System.out.println("Da connect Phim");
+            theLoaiController.connect();
+            System.out.println("Da connect the loai");
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(SuaPhim.this, "Cannot connect to the database", "Database connection Error",
                     JOptionPane.ERROR_MESSAGE);
@@ -81,7 +111,7 @@ public class SuaPhim extends javax.swing.JFrame {
         btSua = new javax.swing.JButton();
         jLabel14 = new javax.swing.JLabel();
         tenPhimVal = new javax.swing.JTextField();
-        image = new javax.swing.JLabel();
+        imageSection = new javax.swing.JLabel();
         btXoa = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jSpinner1 = new javax.swing.JSpinner();
@@ -144,6 +174,11 @@ public class SuaPhim extends javax.swing.JFrame {
         btSua.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btSua.setForeground(new java.awt.Color(255, 153, 0));
         btSua.setText("Sửa");
+        btSua.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                btSuaStateChanged(evt);
+            }
+        });
         btSua.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btSuaActionPerformed(evt);
@@ -161,7 +196,7 @@ public class SuaPhim extends javax.swing.JFrame {
             }
         });
 
-        image.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        imageSection.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         btXoa.setBackground(new java.awt.Color(255, 255, 255));
         btXoa.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -240,7 +275,7 @@ public class SuaPhim extends javax.swing.JFrame {
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(maPhimVal)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(image, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(imageSection, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(0, 0, Short.MAX_VALUE)))
                                 .addContainerGap())
                             .addComponent(jSpinner1)
@@ -264,10 +299,10 @@ public class SuaPhim extends javax.swing.JFrame {
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jSpinner1))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -282,7 +317,7 @@ public class SuaPhim extends javax.swing.JFrame {
                         .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btOpenFile, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(57, 57, 57)
-                .addComponent(image, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(imageSection, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btSua)
@@ -326,17 +361,17 @@ public class SuaPhim extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 627, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 178, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addGap(94, 94, 94)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 333, Short.MAX_VALUE)
                 .addComponent(btBack1)
                 .addGap(187, 187, 187))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 668, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -348,71 +383,65 @@ public class SuaPhim extends javax.swing.JFrame {
 
     private void btOpenFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOpenFileActionPerformed
         // TODO add your handling code here:
-//        JFileChooser fc = new JFileChooser();
-//        //        fc.setCurrentDirectory(new File(System.getProperty("user.home")));
-//        //        fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
-//        try {
-//            fc.setCurrentDirectory(new File(getClass().getResource("/GoiNguon/").toURI()));
-//        } catch (URISyntaxException ex) {
-//            Logger.getLogger(QLPHIM.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        FileNameExtensionFilter filter = new FileNameExtensionFilter("*.Images","jpg","gif","png");
-//        fc.addChoosableFileFilter(filter);
-//        fc.setDialogTitle("Chọn ảnh");
-//        int result = fc.showOpenDialog(null);
-//        if(result == JFileChooser.APPROVE_OPTION){
-//            file = fc.getSelectedFile();
-//            try {
-//                if (ImageIO.read(file) != null)
-//                {
-//                    showAnh(file);
-//                }
-//                else
-//                {
-//                    file = null;
-//                    JOptionPane.showMessageDialog(this,"Không phải ảnh","Lỗi",JOptionPane.ERROR_MESSAGE);
-//                }
-//            } catch (IOException ex) {
-//                Logger.getLogger(QLPHIM.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
+        JFileChooser fc = new JFileChooser();
+        try {
+            fc.setCurrentDirectory(new File(getClass().getResource("./").toURI()));
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(ThemPhim.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("*.Images", "jpg", "gif", "png");
+        fc.addChoosableFileFilter(filter);
+        fc.setDialogTitle("Chọn ảnh");
+        int result = fc.showOpenDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            file = fc.getSelectedFile();
+            System.out.println(file);
+            imgurRequest(file);
+        }
     }//GEN-LAST:event_btOpenFileActionPerformed
+    private void imgurRequest(File f) {
+        try {
+            String imgurClientId = "4d7220bef63dd30";
+            Unirest.config().connectTimeout(1000);
+            String response = Unirest.post("https://api.imgur.com/3/image")
+                    .header("Authorization", "Client-ID " + imgurClientId)
+                    .multiPartContent()
+                    .field("image", file)
+                    .asJson()
+                    .getBody()
+                    .getObject()
+                    .getJSONObject("data")
+                    .get("link")
+                    .toString();
+            linkImageVal.setText(response);
+            showAnh(response);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(ThemPhim.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     private void btSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSuaActionPerformed
         // TODO add your handling code here:
-        System.out.println(this.maPhim);
-//        try(Connection con = ConnectionUtils.getMyConnection()){
-//            SimpleDateFormat DateFormatter = new SimpleDateFormat("dd-MM-yyyy");
-//            SimpleDateFormat TimeFormatter = new SimpleDateFormat("HH:mm");
-//            java.util.Date d_NgPH = txtNgPH.getDate();
-//            java.util.Date t_TLuong = (Date)spin_TLuong.getValue();
-//            String S_NgPH = DateFormatter.format(d_NgPH);
-//            String S_TLuong = TimeFormatter.format(t_TLuong);
-//            MaTL = matl.get(cbbTL.getSelectedIndex());
-//            String CallStore;
-//            if(file == null)
-//            CallStore = "{Call update_phim("+ma+",'"+txtTen.getText()+"',"+MaTL+",to_date('"+S_NgPH+"','dd-mm-yyyy'),to_date('"+S_TLuong+"','HH24:MI'),'"+txtDD.getText()+"','"+txtDV.getText()+"','"+txtNPH.getText()+"',null)}";
-//            else
-//            {
-//                String filename = file.getName();
-//                CallStore = "{Call update_phim("+ma+",'"+txtTen.getText()+"',"+MaTL+",to_date('"+S_NgPH+"','dd-mm-yyyy'),to_date('"+S_TLuong+"','HH24:MI'),'"+txtDD.getText()+"','"+txtDV.getText()+"','"+txtNPH.getText()+"','"+filename+"')}";
-//
-//                File s = new File(getClass().getResource("/GoiNguon/")+filename);
-//                //                String localDir = System.getProperty("user.dir");
-//                String local = System.getProperty("user.dir")+"\\src\\GoiNguon\\";
-//                File f = new File(local+s.getName());
-//                copyFile(file,f);
-//            }
-//            CallableStatement cs = con.prepareCall(CallStore);
-//            cs.execute();
-//            setTablePhim();
-//            con.close();
-//            JOptionPane.showMessageDialog(this,"Thành công!");
-//        }
-//        catch (Exception e){
-//            JOptionPane.showMessageDialog(this,"Một trong các thông tin bị sai","Lỗi",JOptionPane.ERROR_MESSAGE);
-//            System.out.println(e);
-//        }
+        connect();
+        java.sql.Date ngayKhoiChieuVal = new java.sql.Date(jDateChooser1.getDate().getTime());
+        Object[] o = new Object[7];
+        o[0] = tenPhimVal.getText();
+        o[1] = jSpinner1.getValue();
+        o[2] = jList1.getSelectedValuesList();
+        o[3] = ngayKhoiChieuVal;
+        o[4] = trailerVal.getText();
+        o[5] = linkImageVal.getText();
+        o[6] = moTaVal.getText();
+        try {
+            phimController.suaThongTinPhim(maPhim, o);
+            JOptionPane.showMessageDialog(SuaPhim.this, "Sửa thông tin phim thành công", "Thành công",
+                    JOptionPane.INFORMATION_MESSAGE);
+            this.setVisible(false);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(SuaPhim.this, "Xảy ra lỗi khi sửa thông tin phim vui lòng chọn phim khác", "Có lỗi",
+                    JOptionPane.ERROR_MESSAGE);
+            this.setVisible(false);
+        }
     }//GEN-LAST:event_btSuaActionPerformed
 
     private void tenPhimValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tenPhimValActionPerformed
@@ -420,20 +449,23 @@ public class SuaPhim extends javax.swing.JFrame {
     }//GEN-LAST:event_tenPhimValActionPerformed
 
     private void btXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btXoaActionPerformed
-        // TODO add your handling code here:
-//        try(Connection con = ConnectionUtils.getMyConnection()){
-//            String SQL_Phim = "DELETE FROM PHIM WHERE MAPHIM = "+ ma;
-//            Statement stat_Phim = con.createStatement();
-//            stat_Phim.executeUpdate(SQL_Phim);
-//            setTablePhim();
-//            clearPhim();
-//            con.close();
-//            JOptionPane.showMessageDialog(this,"Thành công!");
-//        } catch (Exception ex){
-//            Logger.getLogger(QLPHIM.class.getName()).log(Level.SEVERE, null, ex);
-//            JOptionPane.showMessageDialog(this,"Xóa không thành công!","Lỗi",JOptionPane.ERROR_MESSAGE);
-//            System.out.println(ex);
-//        }
+        try {
+            int result = JOptionPane.showConfirmDialog(SuaPhim.this, "Bạn có chắc chắc muốn xóa phim này không?", "Xóa phim",
+                    JOptionPane.YES_NO_OPTION);
+            if (result == JOptionPane.YES_OPTION) {
+                connect();
+                phimController.xoaPhim(maPhim, selectedIndex);
+                JOptionPane.showMessageDialog(SuaPhim.this, "Xóa phim thành công", "Xóa phim",
+                        JOptionPane.INFORMATION_MESSAGE);
+                dispose();
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SuaPhim.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(SuaPhim.this, "Xảy ra lỗi khi xóa phim vui lòng chọn phim khác", "Có lỗi",
+                    JOptionPane.ERROR_MESSAGE);
+            dispose();
+        }
     }//GEN-LAST:event_btXoaActionPerformed
 
     private void trailerValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trailerValActionPerformed
@@ -442,9 +474,61 @@ public class SuaPhim extends javax.swing.JFrame {
 
     private void btBack1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBack1ActionPerformed
         // TODO add your handling code here:
-        hide();
+        dispose();
         //        AdminPage_new.main(null);
     }//GEN-LAST:event_btBack1ActionPerformed
+
+    private void btSuaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_btSuaStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btSuaStateChanged
+    private void showAnh(String name) throws MalformedURLException {
+        try {
+            URL url = new URL(name);
+            Image img = ImageIO.read(url.openStream());
+            Image newImg = img.getScaledInstance(imageSection.getWidth(), imageSection.getHeight(), Image.SCALE_SMOOTH);
+            ImageIcon image = new ImageIcon(newImg);
+            imageSection.setIcon(image);
+        } catch (IOException ex) {
+            Logger.getLogger(ThemPhim.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void renderThongTinPhim() throws MalformedURLException {
+        try {
+            connect();
+            Object[] o = phimController.getThongTinPhim(maPhim);
+            maPhimVal.setText(o[0].toString());
+            tenPhimVal.setText((String) o[1]);
+            jDateChooser1.setDate((Date) o[5]);
+            trailerVal.setText((String) o[2]);
+            moTaVal.setText((String) o[4]);
+            linkImageVal.setText((String) o[3]);
+            jSpinner1.setValue((int) o[7]);
+            showAnh((String) o[3]);
+            btSua.setEnabled(false);
+            helper.addChangeListener(tenPhimVal, e -> btSua.setEnabled(true));
+            helper.addChangeListener(trailerVal, e -> btSua.setEnabled(true));
+            helper.addChangeListener(linkImageVal, e -> btSua.setEnabled(true));
+            helper.addChangeListener(moTaVal, e -> btSua.setEnabled(true));
+
+        } catch (SQLException ex) {
+            Logger.getLogger(SuaPhim.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void renderListTheLoai() {
+        try {
+            connect();
+            List<TheLoai> tloai = theLoaiController.layDanhSachTheLoai();
+            for (TheLoai tl : tloai) {
+                tenTheLoai.add(tl.getTenTheLoai());
+            }
+            jList1.setListData((String[]) tenTheLoai.toArray(new String[0]));
+        } catch (SQLException ex) {
+            Logger.getLogger(ThemPhim.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
 
     /**
      * @param args the command line arguments
@@ -482,6 +566,8 @@ public class SuaPhim extends javax.swing.JFrame {
 
                 } catch (SQLException | ClassNotFoundException | ParseException | InterruptedException ex) {
                     Logger.getLogger(QLPhim.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (MalformedURLException ex) {
+                    Logger.getLogger(SuaPhim.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -492,7 +578,7 @@ public class SuaPhim extends javax.swing.JFrame {
     private javax.swing.JButton btOpenFile;
     private javax.swing.JButton btSua;
     private javax.swing.JButton btXoa;
-    private javax.swing.JLabel image;
+    private javax.swing.JLabel imageSection;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
