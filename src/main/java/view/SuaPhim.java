@@ -75,18 +75,6 @@ public class SuaPhim extends javax.swing.JFrame {
 
     }
 
-    private void connect() {
-        try {
-            phimController.connect();
-            System.out.println("Da connect Phim");
-            theLoaiController.connect();
-            System.out.println("Da connect the loai");
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(SuaPhim.this, "Cannot connect to the database", "Database connection Error",
-                    JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -422,7 +410,6 @@ public class SuaPhim extends javax.swing.JFrame {
 
     private void btSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSuaActionPerformed
         // TODO add your handling code here:
-        connect();
         java.sql.Date ngayKhoiChieuVal = new java.sql.Date(jDateChooser1.getDate().getTime());
         Object[] o = new Object[7];
         o[0] = tenPhimVal.getText();
@@ -453,7 +440,6 @@ public class SuaPhim extends javax.swing.JFrame {
             int result = JOptionPane.showConfirmDialog(SuaPhim.this, "Bạn có chắc chắc muốn xóa phim này không?", "Xóa phim",
                     JOptionPane.YES_NO_OPTION);
             if (result == JOptionPane.YES_OPTION) {
-                connect();
                 phimController.xoaPhim(maPhim, selectedIndex);
                 JOptionPane.showMessageDialog(SuaPhim.this, "Xóa phim thành công", "Xóa phim",
                         JOptionPane.INFORMATION_MESSAGE);
@@ -495,7 +481,6 @@ public class SuaPhim extends javax.swing.JFrame {
 
     public void renderThongTinPhim() throws MalformedURLException {
         try {
-            connect();
             Object[] o = phimController.getThongTinPhim(maPhim);
             maPhimVal.setText(o[0].toString());
             tenPhimVal.setText((String) o[1]);
@@ -518,7 +503,6 @@ public class SuaPhim extends javax.swing.JFrame {
 
     private void renderListTheLoai() {
         try {
-            connect();
             List<TheLoai> tloai = theLoaiController.layDanhSachTheLoai();
             for (TheLoai tl : tloai) {
                 tenTheLoai.add(tl.getTenTheLoai());

@@ -214,15 +214,15 @@ public class QLPhim extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-private void connect() {
-        try {
-            phimController.connect();
-            System.out.println("Da connect Phim");
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(QLPhim.this, "Cannot connect to the database", "Database connection Error",
-                    JOptionPane.ERROR_MESSAGE);
-        }
-    }
+//private void connect() {
+//        try {
+//            phimController.connect();
+//            System.out.println("Da connect Phim");
+//        } catch (SQLException e) {
+//            JOptionPane.showMessageDialog(QLPhim.this, "Cannot connect to the database", "Database connection Error",
+//                    JOptionPane.ERROR_MESSAGE);
+//        }
+//    }
     private void tbPhimMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbPhimMouseClicked
         // TODO add your handling code here:
 //        getRowPhim(tbPhim.getSelectedRow());
@@ -286,9 +286,8 @@ private void connect() {
     }//GEN-LAST:event_btSuaActionPerformed
     public void createTablePhim() throws InterruptedException {
         try {
-            connect();
             SimpleDateFormat DateFormatter = new SimpleDateFormat("dd-MM-yyyy");
-            List<Phim> phim = phimController.getPhim();
+            List<Phim> phim = phimController.layDanhSachPhim();
             modelPhim = (DefaultTableModel) tbPhim.getModel();
             modelPhim.setRowCount(0);
             for (Phim p : phim) {

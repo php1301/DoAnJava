@@ -299,17 +299,7 @@ public class ThemPhim extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    private void connect() {
-        try {
-            phimController.connect();
-            System.out.println("Da connect Phim");
-            theLoaiController.connect();
-            System.out.println("Da connect the loai");
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(ThemPhim.this, "Cannot connect to the database", "Database connection Error",
-                    JOptionPane.ERROR_MESSAGE);
-        }
-    }
+
     private void btOpenFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOpenFileActionPerformed
         // TODO add your handling code here:
         JFileChooser fc = new JFileChooser();
@@ -371,7 +361,6 @@ public class ThemPhim extends javax.swing.JFrame {
     private void btThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btThemActionPerformed
         // TODO add your handling code here:
 //        SimpleDateFormat DateFormatter = new SimpleDateFormat("dd-MM-yyyy");
-        connect();
         java.sql.Date ngayKhoiChieuVal = new java.sql.Date(jDateChooser1.getDate().getTime());
         Object[] o = new Object[7];
         o[0] = tenPhimVal.getText();
@@ -398,7 +387,6 @@ public class ThemPhim extends javax.swing.JFrame {
     }//GEN-LAST:event_tenPhimValActionPerformed
     private void renderListTheLoai() {
         try {
-            connect();
             List<TheLoai> tloai = theLoaiController.layDanhSachTheLoai();
             for (TheLoai tl : tloai) {
                 tenTheLoai.add(tl.getTenTheLoai());
@@ -416,7 +404,6 @@ public class ThemPhim extends javax.swing.JFrame {
         for (String v : values){
             System.out.println(v);
         }
-        //        AdminPage_new.main(null);
     }//GEN-LAST:event_btBack1ActionPerformed
 
     /**

@@ -48,14 +48,14 @@ public class Database {
         }
     }
 
-    public void disconnect() {
-        if (con != null) {
-            try {
-                con.close();
-            } catch (SQLException e) {
-                // TODO Auto-generated catch block
-                System.out.println("Can't close connection");
-            }
-        }
-    }
+//    public void disconnect() {
+//        if (con != null) {
+//            try {
+//                con.close();
+//            } catch (SQLException e) {
+//                // TODO Auto-generated catch block
+//                System.out.println("Can't close connection");
+//            }
+//        }
+//    }
 }

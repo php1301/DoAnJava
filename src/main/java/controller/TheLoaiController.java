@@ -41,6 +41,7 @@ public class TheLoaiController {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
+            connect();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -56,30 +57,7 @@ public class TheLoaiController {
             Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
             return null;
         } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                    System.out.println("close RS TheLoai");
-                } catch (SQLException e) {
-                    Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
-                }
-            }
-            if (ps != null) {
-                try {
-                    ps.close();
-                    System.out.println("close PS TheLoai");
-                } catch (SQLException e) {
-                    Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
-                }
-            }
-            if (con != null) {
-                try {
-                    con.close();
-                    System.out.println("close Conn TheLoai");
-                } catch (SQLException e) {
-                    Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
-                }
-            }
+            disconnect(rs, ps);
         }
     }
 
@@ -87,16 +65,41 @@ public class TheLoaiController {
         try {
             db.connect();
             String url = "jdbc:mysql://localhost:3306/doanjavalb";
-            con = DriverManager.getConnection(url, "admin2", "java123");
+            String remoteUrl = "jdbc:mysql://remotemysql.com:3306/Rv7rkcnTMx";
+            con = DriverManager.getConnection(remoteUrl, "Rv7rkcnTMx", "ZJ0Pp56kEi");
             System.out.println("Connected " + con);
+            System.out.println("Da connect the loai");
         } catch (Exception e) {
             // TODO Auto-generated catch block
             Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
-    public void disconnect() {
-        db.disconnect();
+    public void disconnect(ResultSet rs, PreparedStatement ps) {
+        if (rs != null) {
+            try {
+                rs.close();
+                System.out.println("close RS Phim");
+            } catch (SQLException e) {
+                Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+        if (ps != null) {
+            try {
+                ps.close();
+                System.out.println("close PS Phim");
+            } catch (SQLException e) {
+                Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+        if (con != null) {
+            try {
+                con.close();
+                System.out.println("close Conn Phim");
+            } catch (SQLException e) {
+                Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
     }
 
 }
