@@ -71,7 +71,6 @@ public class SuaPhim extends javax.swing.JFrame {
         helper = new Helper();
         theLoaiController = new TheLoaiController();
         tenTheLoai = new ArrayList<>();
-        renderListTheLoai();
 
     }
 
@@ -410,8 +409,9 @@ public class SuaPhim extends javax.swing.JFrame {
 
     private void btSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSuaActionPerformed
         // TODO add your handling code here:
+        int[] values = jList1.getSelectedIndices();
         java.sql.Date ngayKhoiChieuVal = new java.sql.Date(jDateChooser1.getDate().getTime());
-        Object[] o = new Object[7];
+        Object[] o = new Object[8];
         o[0] = tenPhimVal.getText();
         o[1] = jSpinner1.getValue();
         o[2] = jList1.getSelectedValuesList();
@@ -419,6 +419,7 @@ public class SuaPhim extends javax.swing.JFrame {
         o[4] = trailerVal.getText();
         o[5] = linkImageVal.getText();
         o[6] = moTaVal.getText();
+        o[7] = values;
         try {
             phimController.suaThongTinPhim(maPhim, o);
             JOptionPane.showMessageDialog(SuaPhim.this, "Sửa thông tin phim thành công", "Thành công",
@@ -491,6 +492,7 @@ public class SuaPhim extends javax.swing.JFrame {
             jSpinner1.setValue((int) o[7]);
             showAnh((String) o[3]);
             btSua.setEnabled(false);
+            jList1.setSelectedIndices((int[]) o[10]);
             helper.addChangeListener(tenPhimVal, e -> btSua.setEnabled(true));
             helper.addChangeListener(trailerVal, e -> btSua.setEnabled(true));
             helper.addChangeListener(linkImageVal, e -> btSua.setEnabled(true));
@@ -501,7 +503,7 @@ public class SuaPhim extends javax.swing.JFrame {
         }
     }
 
-    private void renderListTheLoai() {
+    public void renderListTheLoai() {
         try {
             List<TheLoai> tloai = theLoaiController.layDanhSachTheLoai();
             for (TheLoai tl : tloai) {

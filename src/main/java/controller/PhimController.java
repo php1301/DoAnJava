@@ -15,6 +15,7 @@ import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.util.Collections;
@@ -32,6 +33,7 @@ public class PhimController {
     private Connection con;
     private List<Phim> listPhim;
     Database db = new Database();
+    TheLoaiController theLoaiController = new TheLoaiController();
     private static final Pattern NONLATIN = Pattern.compile("[^\\w-]");
     private static final Pattern WHITESPACE = Pattern.compile("[\\s]");
 
@@ -87,7 +89,7 @@ public class PhimController {
         ResultSet rs = null;
         try {
             connect();
-            ps = con.prepareStatement(sql);
+            ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             int i = Connection.TRANSACTION_READ_COMMITTED;
             con.setAutoCommit(false);
             con.setTransactionIsolation(i);
@@ -102,6 +104,12 @@ public class PhimController {
             ps.setBoolean(col++, false);
             ps.setInt(col++, (int) o[1]);
             ps.executeUpdate();
+            ResultSet generatedKeys = ps.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                theLoaiController.themTheLoaiChoPhim(generatedKeys.getInt(1), (int[]) o[7], con);
+            } else {
+                throw new SQLException("Creating Phim failed, no ID obtained.");
+            }
             con.commit();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -120,7 +128,7 @@ public class PhimController {
         System.out.println(maPhimArg);
         PreparedStatement ps = null;
         ResultSet rs = null;
-        Object[] o = new Object[10];
+        Object[] o = new Object[11];
         try {
             connect();
             ps = con.prepareStatement(sql);
@@ -139,10 +147,12 @@ public class PhimController {
                 o[8] = rs.getString(9);
                 o[9] = rs.getBoolean(10);
             }
+            o[10] = theLoaiController.layTheLoaiCuaPhim(con, maPhimArg);
             return o;
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(PhimController.class
+                    .getName()).log(Level.SEVERE, null, e);
             return null;
         } finally {
             disconnect(rs, ps);
@@ -177,12 +187,14 @@ public class PhimController {
             ps.setString(col++, toSlug((String) o[0]));
             ps.setInt(col++, (int) o[1]);
             ps.setInt(col++, maPhimArg);
+            theLoaiController.capNhatTheLoaiCuaPhim(maPhimArg, (int[]) o[7], con);
             ps.executeUpdate();
             con.commit();
 
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(PhimController.class
+                    .getName()).log(Level.SEVERE, null, e);
             con.rollback();
             throw new SQLException();
         } finally {
@@ -207,7 +219,8 @@ public class PhimController {
             con.commit();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(PhimController.class
+                    .getName()).log(Level.SEVERE, null, e);
             con.rollback();
             throw new SQLException();
         } finally {
@@ -225,7 +238,8 @@ public class PhimController {
             System.out.println("Da connect Phim");
         } catch (Exception e) {
             // TODO Auto-generated catch block
-            Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(PhimController.class
+                    .getName()).log(Level.SEVERE, null, e);
         }
     }
 
@@ -235,7 +249,8 @@ public class PhimController {
                 rs.close();
                 System.out.println("close RS Phim");
             } catch (SQLException e) {
-                Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
+                Logger.getLogger(PhimController.class
+                        .getName()).log(Level.SEVERE, null, e);
             }
         }
         if (ps != null) {
@@ -243,7 +258,8 @@ public class PhimController {
                 ps.close();
                 System.out.println("close PS Phim");
             } catch (SQLException e) {
-                Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
+                Logger.getLogger(PhimController.class
+                        .getName()).log(Level.SEVERE, null, e);
             }
         }
         if (con != null) {
@@ -251,7 +267,8 @@ public class PhimController {
                 con.close();
                 System.out.println("close Conn Phim");
             } catch (SQLException e) {
-                Logger.getLogger(PhimController.class.getName()).log(Level.SEVERE, null, e);
+                Logger.getLogger(PhimController.class
+                        .getName()).log(Level.SEVERE, null, e);
             }
         }
     }
