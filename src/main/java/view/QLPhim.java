@@ -214,15 +214,7 @@ public class QLPhim extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-//private void connect() {
-//        try {
-//            phimController.connect();
-//            System.out.println("Da connect Phim");
-//        } catch (SQLException e) {
-//            JOptionPane.showMessageDialog(QLPhim.this, "Cannot connect to the database", "Database connection Error",
-//                    JOptionPane.ERROR_MESSAGE);
-//        }
-//    }
+
     private void tbPhimMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbPhimMouseClicked
         // TODO add your handling code here:
 //        getRowPhim(tbPhim.getSelectedRow());
@@ -275,6 +267,7 @@ public class QLPhim extends javax.swing.JFrame {
             SuaPhim sp = new SuaPhim();
             sp.setMaPhim(maPhim);
             sp.setSelectedIndex(selectedRow);
+            sp.renderListTheLoai();
             sp.renderThongTinPhim();
             sp.setVisible(true);
 

@@ -361,8 +361,9 @@ public class ThemPhim extends javax.swing.JFrame {
     private void btThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btThemActionPerformed
         // TODO add your handling code here:
 //        SimpleDateFormat DateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+        int[] values = jList1.getSelectedIndices();
         java.sql.Date ngayKhoiChieuVal = new java.sql.Date(jDateChooser1.getDate().getTime());
-        Object[] o = new Object[7];
+        Object[] o = new Object[8];
         o[0] = tenPhimVal.getText();
         o[1] = jSpinner1.getValue();
         o[2] = jList1.getSelectedValuesList();
@@ -370,6 +371,7 @@ public class ThemPhim extends javax.swing.JFrame {
         o[4] = trailerVal.getText();
         o[5] = linkImageVal.getText();
         o[6] = moTaVal.getText();
+        o[7] = values;
         try {
             phimController.themPhim(o);
             JOptionPane.showMessageDialog(ThemPhim.this, "Thành công", "Thêm phim thành công",
@@ -399,11 +401,8 @@ public class ThemPhim extends javax.swing.JFrame {
     }
     private void btBack1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBack1ActionPerformed
         // TODO add your handling code here:
-//        dispose();
-        List<String> values = jList1.getSelectedValuesList();
-        for (String v : values){
-            System.out.println(v);
-        }
+        dispose();
+       
     }//GEN-LAST:event_btBack1ActionPerformed
 
     /**
