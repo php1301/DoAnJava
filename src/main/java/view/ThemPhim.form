@@ -31,7 +31,7 @@
               <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jScrollPane2" min="-2" pref="208" max="-2" attributes="0"/>
-                  <Component id="btBack1" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnBack1" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="73" max="32767" attributes="0"/>
           </Group>
@@ -51,7 +51,7 @@
                   <Component id="jScrollPane2" min="-2" pref="177" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
-              <Component id="btBack1" min="-2" max="-2" attributes="0"/>
+              <Component id="btnBack1" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -380,7 +380,7 @@
         <Property name="text" type="java.lang.String" value="M&#xf4; t&#x1ea3; phim: "/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="btBack1">
+    <Component class="javax.swing.JButton" name="btnBack1">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="cc" green="ff" red="ff" type="rgb"/>
@@ -394,7 +394,7 @@
         <Property name="text" type="java.lang.String" value="Quay l&#x1ea1;i"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btBack1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBack1ActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

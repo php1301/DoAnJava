@@ -107,7 +107,7 @@ public class SuaPhim extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         moTaVal = new javax.swing.JTextArea();
         jLabel15 = new javax.swing.JLabel();
-        btBack1 = new javax.swing.JButton();
+        btnBack1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -320,13 +320,13 @@ public class SuaPhim extends javax.swing.JFrame {
         jLabel15.setForeground(new java.awt.Color(0, 0, 255));
         jLabel15.setText("Mô tả phim: ");
 
-        btBack1.setBackground(new java.awt.Color(255, 255, 204));
-        btBack1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btBack1.setForeground(new java.awt.Color(255, 0, 0));
-        btBack1.setText("Quay lại");
-        btBack1.addActionListener(new java.awt.event.ActionListener() {
+        btnBack1.setBackground(new java.awt.Color(255, 255, 204));
+        btnBack1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnBack1.setForeground(new java.awt.Color(255, 0, 0));
+        btnBack1.setText("Quay lại");
+        btnBack1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btBack1ActionPerformed(evt);
+                btnBack1ActionPerformed(evt);
             }
         });
 
@@ -342,7 +342,7 @@ public class SuaPhim extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btBack1))
+                    .addComponent(btnBack1))
                 .addGap(29, 29, 29))
         );
         layout.setVerticalGroup(
@@ -353,7 +353,7 @@ public class SuaPhim extends javax.swing.JFrame {
                     .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 333, Short.MAX_VALUE)
-                .addComponent(btBack1)
+                .addComponent(btnBack1)
                 .addGap(187, 187, 187))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
@@ -459,11 +459,11 @@ public class SuaPhim extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_trailerValActionPerformed
 
-    private void btBack1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBack1ActionPerformed
+    private void btnBack1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBack1ActionPerformed
         // TODO add your handling code here:
         dispose();
         //        AdminPage_new.main(null);
-    }//GEN-LAST:event_btBack1ActionPerformed
+    }//GEN-LAST:event_btnBack1ActionPerformed
 
     private void btSuaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_btSuaStateChanged
         // TODO add your handling code here:
@@ -560,10 +560,10 @@ public class SuaPhim extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btBack1;
     private javax.swing.JButton btOpenFile;
     private javax.swing.JButton btSua;
     private javax.swing.JButton btXoa;
+    private javax.swing.JButton btnBack1;
     private javax.swing.JLabel imageSection;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;

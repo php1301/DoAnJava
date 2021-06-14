@@ -232,8 +232,11 @@ public class PhimController {
         try {
             db.connect();
             String url = "jdbc:mysql://localhost:3306/doanjavalb";
+
             String remoteUrl = "jdbc:mysql://103.97.125.254:3306/doanjava_v1";
             con = DriverManager.getConnection(remoteUrl, "doanjava", "a2DpigCp7PDOyGk");
+//            String remoteUrl = "jdbc:mysql://remotemysql.com:3306/Rv7rkcnTMx";
+//            con = DriverManager.getConnection(remoteUrl, "Rv7rkcnTMx", "ZJ0Pp56kEi");
             System.out.println("Connected " + con);
             System.out.println("Da connect Phim");
         } catch (Exception e) {
