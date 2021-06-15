@@ -117,6 +117,7 @@ public class QLKH extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         txtSearch = new javax.swing.JTextField();
         btBack = new javax.swing.JButton();
+        txtSua = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -128,7 +129,7 @@ public class QLKH extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(255, 153, 51));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("QUẢN LÝ THÔNG TIN KHÁCH HÀNG");
-        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, 390, 41));
+        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 20, 390, 41));
 
         tbKH.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         tbKH.setModel(new javax.swing.table.DefaultTableModel(
@@ -136,7 +137,7 @@ public class QLKH extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Mã", "Họ và Tên", "Giới tính", "Loại", "null", "Title 6"
+                "Mã", "Họ và Tên", "Địa chỉ", "Số điện thoại", "Ngày sinh", "Ngày đăng ký", "Doanh số"
             }
         ));
         tbKH.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -150,13 +151,13 @@ public class QLKH extends javax.swing.JFrame {
             tbKH.getColumnModel().getColumn(2).setMaxWidth(80);
         }
 
-        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 546, 320));
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, 830, 320));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 153, 0));
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_search_more_32px.png"))); // NOI18N
         jLabel1.setText("Tìm kiếm");
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 80, 102, -1));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 80, 102, -1));
 
         txtSearch.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         txtSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -172,7 +173,7 @@ public class QLKH extends javax.swing.JFrame {
                 txtSearchKeyReleased(evt);
             }
         });
-        jPanel2.add(txtSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(24, 80, 440, 30));
+        jPanel2.add(txtSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 80, 440, 30));
 
         btBack.setBackground(new java.awt.Color(51, 51, 51));
         btBack.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -184,9 +185,21 @@ public class QLKH extends javax.swing.JFrame {
                 btBackActionPerformed(evt);
             }
         });
-        jPanel2.add(btBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 450, -1, 50));
+        jPanel2.add(btBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 450, -1, 50));
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 510));
+        txtSua.setBackground(new java.awt.Color(51, 51, 51));
+        txtSua.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        txtSua.setForeground(new java.awt.Color(0, 255, 0));
+        txtSua.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_screwdriver_32px.png"))); // NOI18N
+        txtSua.setText("Sửa");
+        txtSua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSuaActionPerformed(evt);
+            }
+        });
+        jPanel2.add(txtSua, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 450, 120, 50));
+
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 830, 510));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -218,6 +231,10 @@ public class QLKH extends javax.swing.JFrame {
         // TODO add your handling code here:
         //        getRowKH(tbKH.getSelectedRow());
     }//GEN-LAST:event_tbKHMouseClicked
+
+    private void txtSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSuaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSuaActionPerformed
  public void LayReportQLKH(String a) throws SQLException, JRException {
         // TODO code application logic here
 //        String makh = a;
@@ -266,6 +283,7 @@ public class QLKH extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tbKH;
     private javax.swing.JTextField txtSearch;
+    private javax.swing.JButton txtSua;
     // End of variables declaration//GEN-END:variables
 
     private void LayReport(String ma) {
