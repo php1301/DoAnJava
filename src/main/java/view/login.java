@@ -39,14 +39,135 @@ public class login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        usernametxt = new javax.swing.JTextField();
+        pswtxt = new javax.swing.JPasswordField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        regisbtn = new javax.swing.JButton();
+        loginbtn = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("CBS");
         setBackground(new java.awt.Color(0, 0, 0));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("WELCOME BACK");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 20, 190, 30));
+        jPanel1.add(usernametxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 100, 300, 30));
+
+        pswtxt.setText("jPasswordField1");
+        jPanel1.add(pswtxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 160, 300, 30));
+
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Password");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 140, -1, -1));
+
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("User name");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 80, -1, -1));
+
+        regisbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_add_user_male_32px.png"))); // NOI18N
+        regisbtn.setText("REGISTER");
+        regisbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                regisbtnActionPerformed(evt);
+            }
+        });
+        jPanel1.add(regisbtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 220, 130, 30));
+
+        loginbtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_key_32px_5.png"))); // NOI18N
+        loginbtn.setText("LOGIN");
+        loginbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loginbtnActionPerformed(evt);
+            }
+        });
+        jPanel1.add(loginbtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 220, 130, 30));
+
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/background.jpg"))); // NOI18N
+        jLabel4.setText("jLabel4");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(-20, 0, 460, 310));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 440, 300));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void regisbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regisbtnActionPerformed
+        dispose();
+        Regis register=new Regis();
+        register.setVisible(true);
+    }//GEN-LAST:event_regisbtnActionPerformed
+
+    private void loginbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginbtnActionPerformed
+         if(usernametxt.getText().equals("")||pswtxt.getText().equals(""))
+            JOptionPane.showMessageDialog(null,"Empty information. Please try again","Empty!",JOptionPane.ERROR_MESSAGE);  
+          if(pswtxt.getText().equals("admin")&&usernametxt.getText().equals("admin"))
+          {
+            JOptionPane.showMessageDialog(null,"LOGIN WITH ADMIN ACCOUNT!");
+            hide();
+            Admin ad =new Admin();
+            Admin.main(null);
+          }
+       else
+          {
+          try{
+           Class.forName(driver).newInstance();
+           String urlUnicode = "jdbc:mysql://localhost:3306/doanjavalb?user=root&password=0984016356&useUnicode=true&characterEncoding=utf8";
+           conn = DriverManager.getConnection(urlUnicode); 
+           String select="SELECT * FROM `users` WHERE `username`=?";
+           String pass=pswtxt.getText();
+           String username=usernametxt.getText();
+           pst=conn.prepareStatement(select);
+            pst.setString(1,username);      
+            ResultSet rs = pst.executeQuery();
+            while(rs.next())
+                { 
+                    String hash = rs.getString("password");
+                    String user =rs.getString("username");              
+                    boolean match = BCrypt.checkpw(pass, hash);
+                     if (match) 
+                     {
+                         JOptionPane.showMessageDialog(null,"LOGIN SUCCESSFULLY");
+                     }
+                     else
+                     {
+                          JOptionPane.showMessageDialog(null, "LOGIN UNSUCCESSFULLY","ERORR", JOptionPane.ERROR_MESSAGE);
+                     }
+                     
+                }
+            JOptionPane.showMessageDialog(null, "TRY AGAIN","ERORR", JOptionPane.ERROR_MESSAGE);
+        
+                
+          
+            }
+             catch(SQLException se)
+            {
+               se.printStackTrace();
+            }
+        catch(Exception e)
+           {
+      
+                e.printStackTrace();
+            }finally{
+         
+                        try{
+                                if(conn!=null)
+                                    conn.close();
+                            }catch(SQLException se)
+                            {
+                                    se.printStackTrace();
+                            }
+                    }
+    }//GEN-LAST:event_loginbtnActionPerformed
+  }
     /**
      * @param args the command line arguments
      */
@@ -83,5 +204,14 @@ public class login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton loginbtn;
+    private javax.swing.JPasswordField pswtxt;
+    private javax.swing.JButton regisbtn;
+    private javax.swing.JTextField usernametxt;
     // End of variables declaration//GEN-END:variables
 }
