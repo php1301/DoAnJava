@@ -194,6 +194,11 @@ public class Regis extends javax.swing.JFrame {
                 CANCELMouseClicked(evt);
             }
         });
+        CANCEL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CANCELActionPerformed(evt);
+            }
+        });
         jPanel1.add(CANCEL, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 410, -1, -1));
 
         txtconpass.setText("jPasswordField1");
@@ -320,7 +325,7 @@ public class Regis extends javax.swing.JFrame {
            conn = DriverManager.getConnection(urlUnicode); 
            String insert="INSERT INTO `users`(`password`, `username`, `email`, `soDT`, `hoTen`, `avatar`, `maLoaiNguoiDung`) VALUES (?,?,?,?,?,?,?)";
            pst=conn.prepareStatement(insert);
-           String pass=txtpass.getText().toString();
+           String pass=txtpass.getText();
           
 
             if(pass!=null && !pass.isEmpty())
@@ -328,7 +333,7 @@ public class Regis extends javax.swing.JFrame {
                String hash = BCrypt.hashpw(pass, BCrypt.gensalt(10));
                 pst.setString(1,hash);
             }
-             pst.setString(2,txtusername.getText());
+           pst.setString(2,txtusername.getText());
            pst.setString(3,txtmail.getText());
            pst.setString(4,txtphonen.getText());
            pst.setString(5,txtfullname.getText());
@@ -336,7 +341,7 @@ public class Regis extends javax.swing.JFrame {
            pst.setString(6,txtimage.getText());
            pst.setInt(7,3);
          
-           String confirmpass=txtconpass.getText().toString();
+           String confirmpass=txtconpass.getText();
  
             String mail=txtmail.getText();
             String regexmail="^[a-z0-9]*@{1}([\\w]+\\.[\\w]+|[\\w]+\\.[\\w]+\\.[\\w]+\\.[\\w]+|[\\w]+\\.[\\w]+\\.[\\w]+)$";
@@ -493,6 +498,12 @@ public class Regis extends javax.swing.JFrame {
             notifiimg.setText(null);
         }
     }//GEN-LAST:event_txtimageKeyReleased
+
+    private void CANCELActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CANCELActionPerformed
+        login lg =new login();
+           login.main(null);
+           dispose();
+    }//GEN-LAST:event_CANCELActionPerformed
 
     /**
      * @param args the command line arguments
