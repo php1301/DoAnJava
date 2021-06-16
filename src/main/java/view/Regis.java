@@ -16,7 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import org.mindrot.jbcrypt.BCrypt;
-
+import model.Database;
 /**
  *
  * @author Hp
@@ -68,6 +68,8 @@ public class Regis extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         txtimage = new javax.swing.JTextField();
         notifiimg = new javax.swing.JLabel();
+        Addresstxt = new javax.swing.JTextField();
+        Address = new javax.swing.JLabel();
         background = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -90,13 +92,13 @@ public class Regis extends javax.swing.JFrame {
         jPanel1.add(SDT, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 160, -1, -1));
 
         Hoten.setText("Password");
-        jPanel1.add(Hoten, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 260, -1, -1));
+        jPanel1.add(Hoten, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 310, -1, -1));
 
         pssw.setText("Full Name");
-        jPanel1.add(pssw, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 210, -1, -1));
+        jPanel1.add(pssw, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 260, -1, -1));
 
         confirmpssw.setText("Confirm Password");
-        jPanel1.add(confirmpssw, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 310, -1, 20));
+        jPanel1.add(confirmpssw, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 370, -1, 20));
 
         txtusername.setForeground(new java.awt.Color(153, 153, 153));
         txtusername.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -149,7 +151,7 @@ public class Regis extends javax.swing.JFrame {
                 txtfullnameFocusLost(evt);
             }
         });
-        jPanel1.add(txtfullname, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 230, 250, -1));
+        jPanel1.add(txtfullname, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 280, 250, -1));
 
         txtmail.setForeground(new java.awt.Color(153, 153, 153));
         txtmail.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -178,7 +180,7 @@ public class Regis extends javax.swing.JFrame {
                 REGISActionPerformed(evt);
             }
         });
-        jPanel1.add(REGIS, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 410, -1, -1));
+        jPanel1.add(REGIS, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 470, -1, -1));
 
         RESET.setText("RESET");
         RESET.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -186,7 +188,12 @@ public class Regis extends javax.swing.JFrame {
                 RESETMouseClicked(evt);
             }
         });
-        jPanel1.add(RESET, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 410, -1, -1));
+        RESET.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RESETActionPerformed(evt);
+            }
+        });
+        jPanel1.add(RESET, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 470, -1, -1));
 
         CANCEL.setText("CANCEL");
         CANCEL.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -199,15 +206,20 @@ public class Regis extends javax.swing.JFrame {
                 CANCELActionPerformed(evt);
             }
         });
-        jPanel1.add(CANCEL, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 410, -1, -1));
+        jPanel1.add(CANCEL, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 470, -1, -1));
 
         txtconpass.setText("jPasswordField1");
+        txtconpass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtconpassActionPerformed(evt);
+            }
+        });
         txtconpass.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtconpassKeyReleased(evt);
             }
         });
-        jPanel1.add(txtconpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 330, 250, -1));
+        jPanel1.add(txtconpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 390, 250, -1));
 
         txtpass.setText("jPasswordField1");
         txtpass.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -215,7 +227,7 @@ public class Regis extends javax.swing.JFrame {
                 txtpassKeyReleased(evt);
             }
         });
-        jPanel1.add(txtpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 280, 250, -1));
+        jPanel1.add(txtpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 330, 250, -1));
 
         notifimail.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         notifimail.setForeground(new java.awt.Color(255, 0, 0));
@@ -228,18 +240,18 @@ public class Regis extends javax.swing.JFrame {
         notifipass.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         notifipass.setForeground(new java.awt.Color(255, 0, 0));
         notifipass.setToolTipText("");
-        jPanel1.add(notifipass, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 280, 230, 20));
+        jPanel1.add(notifipass, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 330, 230, 20));
 
         notificonfirmpass.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         notificonfirmpass.setForeground(new java.awt.Color(255, 0, 0));
-        jPanel1.add(notificonfirmpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 330, 220, 20));
+        jPanel1.add(notificonfirmpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 390, 220, 20));
 
         notfiuser.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         notfiuser.setForeground(new java.awt.Color(255, 0, 0));
         jPanel1.add(notfiuser, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 80, 120, 20));
 
         jLabel1.setText("URL avatar");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 360, -1, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 420, -1, -1));
 
         txtimage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -251,17 +263,21 @@ public class Regis extends javax.swing.JFrame {
                 txtimageKeyReleased(evt);
             }
         });
-        jPanel1.add(txtimage, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 380, 250, -1));
+        jPanel1.add(txtimage, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 440, 250, -1));
 
         notifiimg.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         notifiimg.setForeground(new java.awt.Color(255, 0, 0));
-        jPanel1.add(notifiimg, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 380, 130, 20));
+        jPanel1.add(notifiimg, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 440, 130, 20));
+        jPanel1.add(Addresstxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 230, 250, -1));
+
+        Address.setText("Address");
+        jPanel1.add(Address, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 210, -1, -1));
 
         background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/background1.jpg"))); // NOI18N
         background.setText("jLabel2");
-        jPanel1.add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(-20, -20, -1, -1));
+        jPanel1.add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(-210, -10, -1, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, 450));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 540, 520));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -321,9 +337,9 @@ public class Regis extends javax.swing.JFrame {
     private void REGISActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_REGISActionPerformed
        try{
            Class.forName(driver).newInstance();
-           String urlUnicode = "jdbc:mysql://localhost:3306/doanjavalb?user=root&password=0984016356&useUnicode=true&characterEncoding=utf8";
+           String urlUnicode = "jdbc:mysql://free01.123host.vn:2083/doanjava_v1?user=root&password=a2DpigCp7PDOyGk&useUnicode=true&characterEncoding=utf8";
            conn = DriverManager.getConnection(urlUnicode); 
-           String insert="INSERT INTO `users`(`password`, `username`, `email`, `soDT`, `hoTen`, `avatar`, `maLoaiNguoiDung`) VALUES (?,?,?,?,?,?,?)";
+           String insert="INSERT INTO `users`(`password`, `username`, `email`,`diaChi`, `soDT`, `hoTen`, `avatar`, `maLoaiNguoiDung`) VALUES (?,?,?,?,?,?,?,?)";
            pst=conn.prepareStatement(insert);
            String pass=txtpass.getText();
           
@@ -335,11 +351,12 @@ public class Regis extends javax.swing.JFrame {
             }
            pst.setString(2,txtusername.getText());
            pst.setString(3,txtmail.getText());
-           pst.setString(4,txtphonen.getText());
-           pst.setString(5,txtfullname.getText());
+           pst.setString(4,Addresstxt.getText());
+           pst.setString(5,txtphonen.getText());
+           pst.setString(6,txtfullname.getText());
           
-           pst.setString(6,txtimage.getText());
-           pst.setInt(7,3);
+           pst.setString(7,txtimage.getText());
+           pst.setInt(8,3);
          
            String confirmpass=txtconpass.getText();
  
@@ -505,6 +522,21 @@ public class Regis extends javax.swing.JFrame {
            dispose();
     }//GEN-LAST:event_CANCELActionPerformed
 
+    private void txtconpassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtconpassActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtconpassActionPerformed
+
+    private void RESETActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RESETActionPerformed
+        txtpass.setText("");
+        txtusername.setText("");
+        txtphonen.setText("");
+        txtfullname.setText("");
+        Addresstxt.setText("");
+        txtmail.setText("");
+        txtconpass.setText("");
+        txtimage.setText("");
+    }//GEN-LAST:event_RESETActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -541,6 +573,8 @@ public class Regis extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Address;
+    private javax.swing.JTextField Addresstxt;
     private javax.swing.JButton CANCEL;
     private javax.swing.JLabel Email;
     private javax.swing.JLabel Hoten;

@@ -8,10 +8,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.prefs.Preferences;
 import javax.swing.JOptionPane;
 import org.mindrot.jbcrypt.BCrypt;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+
 /**
  *
  * @author Hp
@@ -21,13 +27,26 @@ public class login extends javax.swing.JFrame {
     PreparedStatement pst=null;
     String driver = "com.mysql.cj.jdbc.Driver";
     Statement stat=null;
-  
+    Preferences pref= Preferences.systemNodeForPackage(login.class);
+    final String PREF_NAME = "Phanquyen";
+    final String PREF_NAME_1 = "taikhoan";
+    final String PREF_NAME_2 = "pass";
+    final String PREF_NAME_3 = "username";
+    final String PREF_NAME_4 = "email";
+    final String PREF_NAME_5 = "Ngaysinh";
+    final String PREF_NAME_6 = "Diachi";
+    final String PREF_NAME_7 = "SDT";
+    final String PREF_NAME_8 = "Hoten";
+    final String PREF_NAME_9 = "avatar";
+    final String PREF_NAME_10 = "Maloainguoidung";
+    
     /**
      * Creates new form login
      */
     public login() {
         initComponents();
         setResizable(false);
+       
     }
 
     /**
@@ -105,22 +124,30 @@ public class login extends javax.swing.JFrame {
         Regis register=new Regis();
         register.setVisible(true);
     }//GEN-LAST:event_regisbtnActionPerformed
-
+//public void saveProperties() {
+//    try {            
+//        String USER_NAME = usernametxt.getText();       
+//        //create a properties file
+//        Properties props = new Properties();
+//        props.setProperty("User name", USER_NAME);
+//        File f = new File("D:\\CSDLwJava\\Login\\login.txt");
+//        OutputStream out = new FileOutputStream( f );
+//        //If you wish to make some comments 
+//        props.store(out, "usernametxt.getText()");
+//    }
+//    catch (Exception e ) {
+//        e.printStackTrace();
+//    }
+//}
+         
     private void loginbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginbtnActionPerformed
          if(usernametxt.getText().equals("")||pswtxt.getText().equals(""))
-            JOptionPane.showMessageDialog(null,"Empty information. Please try again","Empty!",JOptionPane.ERROR_MESSAGE);  
-          if(pswtxt.getText().equals("admin")&&usernametxt.getText().equals("admin"))
-          {
-            JOptionPane.showMessageDialog(null,"LOGIN WITH ADMIN ACCOUNT!");
-            hide();
-            Admin ad =new Admin();
-            Admin.main(null);
-          }
-       else
-          {
-          try{
+         {
+            JOptionPane.showMessageDialog(null,"Empty information. Please try again","Empty!",JOptionPane.ERROR_MESSAGE);   
+         }
+            try{
            Class.forName(driver).newInstance();
-           String urlUnicode = "jdbc:mysql://localhost:3306/doanjavalb?user=root&password=0984016356&useUnicode=true&characterEncoding=utf8";
+           String urlUnicode = "jdbc:mysql://free01.123host.vn:2083//doanjava_v1?user=root&password=a2DpigCp7PDOyGk&useUnicode=true&characterEncoding=utf8";
            conn = DriverManager.getConnection(urlUnicode); 
            String select="SELECT * FROM `users` WHERE `username`=?";
            String pass=pswtxt.getText();
@@ -131,19 +158,83 @@ public class login extends javax.swing.JFrame {
             while(rs.next())
                 { 
                     String hash = rs.getString("password");
-                    String user =rs.getString("username");              
+                    String user =rs.getString("username");  
+                    String taikhoan=rs.getString("taiKhoan");  
+                    String email=rs.getString("email");
+                    String NS=rs.getString("ngaySinh");    
+                    String diachi=rs.getString("diaChi"); 
+                    String sdt=rs.getString("soDT"); 
+                    String hoten=rs.getString("hoTen"); 
+                    String ava=rs.getString("avatar"); 
+                    String maloainguoidung=rs.getString("maLoaiNguoiDung"); 
+                    int maUser=rs.getInt("maLoaiNguoiDung");
                     boolean match = BCrypt.checkpw(pass, hash);
-                     if (match) 
+                     if (match && maUser==1) 
                      {
-                         JOptionPane.showMessageDialog(null,"LOGIN SUCCESSFULLY");
+                         JOptionPane.showMessageDialog(null,"LOGIN SUCCESSFULLY WITH ADMIN ACCOUNTS");
+                         pref.put(PREF_NAME,"admin" );
+                         pref.put(PREF_NAME_1,taikhoan );
+                         pref.put(PREF_NAME_2,pass );
+                         pref.put(PREF_NAME_3,user );
+                         pref.put(PREF_NAME_4,email );
+                         pref.put(PREF_NAME_5,NS );
+                         pref.put(PREF_NAME_6,diachi );
+                         pref.put(PREF_NAME_7,sdt );
+                         pref.put(PREF_NAME_8,hoten );
+                         pref.put(PREF_NAME_9,ava );
+                         pref.put(PREF_NAME_10,maloainguoidung );
+                         Admin admin =new Admin();
+                         Admin.main(null);
+                         String defaultValue = "default string";
+                         String propertyValue = pref.get(PREF_NAME, defaultValue);
+                         String propertyValue1 = pref.get(PREF_NAME_1, defaultValue);
+                         String propertyValue2 = pref.get(PREF_NAME_2, defaultValue);
+                         String propertyValue3 = pref.get(PREF_NAME_3, defaultValue);
+                         String propertyValue4 = pref.get(PREF_NAME_4, defaultValue);
+                         String propertyValue5 = pref.get(PREF_NAME_5, defaultValue);
+                         String propertyValue6 = pref.get(PREF_NAME_6, defaultValue);
+                         String propertyValue7 = pref.get(PREF_NAME_7, defaultValue);
+                         String propertyValue8 = pref.get(PREF_NAME_8, defaultValue);
+                         String propertyValue9 = pref.get(PREF_NAME_9, defaultValue);
+                         String propertyValue10 = pref.get(PREF_NAME_10, defaultValue);
+                         
+                     }
+                     else if (match && maUser!=1)
+                     {
+                         JOptionPane.showMessageDialog(null,"LOGIN SUCCESSFULLY WITH USERS ACCOUNTS");
+                         pref.put(PREF_NAME,"user" );
+                         pref.put(PREF_NAME_1,taikhoan );
+                         pref.put(PREF_NAME_2,pass );
+                         pref.put(PREF_NAME_3,user );
+                         pref.put(PREF_NAME_4,email );
+                         pref.put(PREF_NAME_5,NS );
+                         pref.put(PREF_NAME_6,diachi );
+                         pref.put(PREF_NAME_7,sdt );
+                         pref.put(PREF_NAME_8,hoten );
+                         pref.put(PREF_NAME_9,ava );
+                         pref.put(PREF_NAME_10,maloainguoidung );
+//                         String defaultValue = "default string";
+//                         String propertyValue = pref.get(PREF_NAME, defaultValue);
+//                         String propertyValue1 = pref.get(PREF_NAME_1, defaultValue);
+//                         String propertyValue2 = pref.get(PREF_NAME_2, defaultValue);
+//                         String propertyValue3 = pref.get(PREF_NAME_3, defaultValue);
+//                         String propertyValue4 = pref.get(PREF_NAME_4, defaultValue);
+//                         String propertyValue5 = pref.get(PREF_NAME_5, defaultValue);
+//                         String propertyValue6 = pref.get(PREF_NAME_6, defaultValue);
+//                         String propertyValue7 = pref.get(PREF_NAME_7, defaultValue);
+//                         String propertyValue8 = pref.get(PREF_NAME_8, defaultValue);
+//                         String propertyValue9 = pref.get(PREF_NAME_9, defaultValue);
+//                         String propertyValue10 = pref.get(PREF_NAME_10, defaultValue);
                      }
                      else
                      {
+                         
                           JOptionPane.showMessageDialog(null, "LOGIN UNSUCCESSFULLY","ERORR", JOptionPane.ERROR_MESSAGE);
+                           
                      }
                      
                 }
-            JOptionPane.showMessageDialog(null, "TRY AGAIN","ERORR", JOptionPane.ERROR_MESSAGE);
+           
         
                 
           
@@ -166,8 +257,9 @@ public class login extends javax.swing.JFrame {
                                     se.printStackTrace();
                             }
                     }
+          
     }//GEN-LAST:event_loginbtnActionPerformed
-  }
+  
     /**
      * @param args the command line arguments
      */
@@ -199,6 +291,9 @@ public class login extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new login().setVisible(true);
+         
+         
+                
             }
         });
     }
