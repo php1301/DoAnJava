@@ -5,7 +5,7 @@
  */
 package view;
 
-import controller.GheController;
+import controller.PhongController;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -29,30 +29,16 @@ public class ChonGhe extends javax.swing.JFrame {
      * Creates new form ChonGhe
      */
     private JButton[] buttonChonGhe;
-    private GheController gheController;
+    private PhongController phongController;
     private ArrayList<String> danhSachTenGheChon;
     private ArrayList<Integer> danhSachMaGheChon;
 
     public ChonGhe() throws SQLException, ClassNotFoundException, ParseException, InterruptedException {
         initComponents();
-        gheController = new GheController();
+        phongController = new PhongController();
         danhSachMaGheChon = new ArrayList<>();
         danhSachTenGheChon = new ArrayList<>();
         buttonChonGhe = new JButton[120];
-//        final String screenCSS = "<html>"
-//                + "<div "
-//                + "style='background: #C6FFDD; "
-//                + "background: -webkit-linear-gradient(to right, #f7797d, #FBD786, #C6FFDD); "
-//                + "background: linear-gradient(to right, #f7797d, #FBD786, #C6FFDD); "
-//                + "height: 70px; "
-//                + "width: 61%; "
-//                + "margin: 15px 0; "
-//                + "transform: rotateX(-45deg);"
-//                + "box-shadow: 0 3px 10px rgba(255, 255, 255, 0.7);"
-//                + "margin-left: 20%;'>"
-//                + "</div>"
-//                + "</html>";
-//        jLabel12.setText(screenCSS);
         fetchGhe();
     }
 
@@ -480,7 +466,7 @@ public class ChonGhe extends javax.swing.JFrame {
             screen.setLayout(gridLayout);
             int j = 0;
 
-            List<Ghe> ghe = gheController.layDanhSachGhe();
+            List<Ghe> ghe = phongController.layDanhSachGheCuaPhong();
             int i = 0;
             for (Ghe g : ghe) {
                 final int t = i;
