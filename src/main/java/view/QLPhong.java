@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -200,12 +201,32 @@ public class QLPhong extends javax.swing.JFrame {
     }//GEN-LAST:event_tblPhongMouseClicked
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
-        // TODO add your handling code here:
-        hide();
+        try {
+            // TODO add your handling code here:
+            int selectedRow = tblPhong.getSelectedRow();
+            if (selectedRow < 1) {
+                JOptionPane.showMessageDialog(QLPhong.this, "Chua chon phong", "Vui long chon phong",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+            int maPhong = (int) tblPhong.getValueAt(selectedRow, 0);
+            int result = JOptionPane.showConfirmDialog(QLPhong.this, "Bạn có chắc chắc muốn xóa phòng này không?", "Xóa phòng",
+                    JOptionPane.YES_NO_OPTION);
+            if (result == JOptionPane.YES_OPTION) {
+                phongController.xoaPhong(maPhong);
+                JOptionPane.showMessageDialog(QLPhong.this, "Xóa phòng thành công", "Xóa phòng",
+                        JOptionPane.INFORMATION_MESSAGE);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(QLPhong.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(QLPhong.this, "Xảy ra lỗi khi xóa phòng vui lòng thử lại", "Có lỗi",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
         // TODO add your handling code here:
+        createTablePhong();
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
@@ -213,10 +234,6 @@ public class QLPhong extends javax.swing.JFrame {
         dispose();
 //        comboBox.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent event) {
-//                //
-//                // Get the source of the component, which is our combo
-//                // box.
-//                //
 //                JComboBox comboBox = (JComboBox) event.getSource();
 //
 //                Object selected = comboBox.getSelectedItem();
@@ -231,6 +248,8 @@ public class QLPhong extends javax.swing.JFrame {
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
+        ThemPhong tp = new ThemPhong();
+        tp.setVisible(true);
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
