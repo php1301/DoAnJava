@@ -14,7 +14,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Random;
 import model.Database;
 import model.Ghe;
 import model.Phong;
@@ -67,7 +71,7 @@ public class PhongController {
 
     public List<Phong> layDanhSachPhong() throws SQLException {
         System.out.println("Lay danh sach phong chieu");
-        listGhe.clear();
+        listPhong.clear();
         String sql = "select * from Rap where maCumRap = 'bhd-hvt' order by maRap";
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -89,6 +93,87 @@ public class PhongController {
             return null;
         } finally {
             disconnect(rs, ps);
+        }
+    }
+
+    public void themPhong(String tenPhong) throws SQLException {
+        System.out.println("Them Phong chieu");
+        String sql = "insert into Rap(tenRap, soGhe, maCumRap) values(?, 120, 'bhd-hvt')";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            connect();
+            ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            int i = Connection.TRANSACTION_READ_COMMITTED;
+            con.setAutoCommit(false);
+            con.setTransactionIsolation(i);
+            int col = 1;
+            ps.setString(col++, tenPhong);
+            ps.executeUpdate();
+            ResultSet generatedKeys = ps.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                taoGheChoPhongChieu(generatedKeys.getInt(1), con);
+            } else {
+                throw new SQLException("Creating Phong failed, no ID obtained.");
+            }
+            con.commit();
+        } catch (SQLException e) {
+            Logger.getLogger(PhongController.class.getName()).log(Level.SEVERE, null, e);
+            con.rollback();
+            throw new SQLException();
+        } finally {
+            disconnect(rs, ps);
+        }
+    }
+
+    public void xoaPhong(int maPhong) throws SQLException {
+        System.out.println("Xoa Phong chieu");
+        String sql = "Delete from Rap where maRap = ?";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            connect();
+            ps = con.prepareStatement(sql);
+            int i = Connection.TRANSACTION_READ_COMMITTED;
+            con.setAutoCommit(false);
+            con.setTransactionIsolation(i);
+            int col = 1;
+            ps.setInt(col++, maPhong);
+            ps.executeUpdate();
+            con.commit();
+        } catch (SQLException e) {
+            Logger.getLogger(PhongController.class.getName()).log(Level.SEVERE, null, e);
+            con.rollback();
+            throw new SQLException();
+        } finally {
+            disconnect(rs, ps);
+        }
+    }
+
+    private void taoGheChoPhongChieu(int maPhongChieu, Connection conn) throws SQLException {
+        System.out.println("Tao ghe cho phong chieu");
+        String sql = "insert into Ghe(tenGhe, stt, maLoaiGhe, maRap) values(?, ?, ?, ?)";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<String> alpha = new ArrayList<>(Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H", "I", "J"));
+        try {
+            ps = conn.prepareStatement(sql);
+            int stt = 1;
+            for (String al : alpha) {
+                for (int i = 1; i <= 12; i++) {
+                    int col = 1;
+                    ps.setString(col++, al + i);
+                    ps.setInt(col++, stt);
+                    ps.setInt(col++, randomInt());
+                    ps.setInt(col++, maPhongChieu);
+                    ps.executeUpdate();
+                    stt++;
+                }
+            }
+
+        } catch (SQLException e) {
+            Logger.getLogger(PhongController.class.getName()).log(Level.SEVERE, null, e);
+            throw new SQLException();
         }
     }
 
@@ -133,5 +218,12 @@ public class PhongController {
                         .getName()).log(Level.SEVERE, null, e);
             }
         }
+    }
+
+    public int randomInt() {
+        Random rn = new Random();
+        int range = 2 - 1 + 1;
+        int randomNum = rn.nextInt(range) + 1;
+        return randomNum;
     }
 }
