@@ -41,7 +41,6 @@ public class PhimController {
         listPhim = new LinkedList<Phim>();
         System.out.println("Chay constructor Phim");
     }
-
     public List<Phim> layDanhSachPhim() throws SQLException {
         System.out.println("Lay danh sach phim");
         listPhim.clear();

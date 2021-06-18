@@ -248,6 +248,11 @@ public class Regis extends javax.swing.JFrame {
 
         notfiuser.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         notfiuser.setForeground(new java.awt.Color(255, 0, 0));
+        notfiuser.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                notfiuserKeyReleased(evt);
+            }
+        });
         jPanel1.add(notfiuser, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 80, 120, 20));
 
         jLabel1.setText("URL avatar");
@@ -337,9 +342,9 @@ public class Regis extends javax.swing.JFrame {
     private void REGISActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_REGISActionPerformed
        try{
            Class.forName(driver).newInstance();
-           String urlUnicode = "jdbc:mysql://free01.123host.vn:2083/doanjava_v1?user=root&password=a2DpigCp7PDOyGk&useUnicode=true&characterEncoding=utf8";
+           String urlUnicode = "jdbc:mysql://103.97.125.254:3306/doanjava_v1?user=doanjava&password=a2DpigCp7PDOyGk&useUnicode=true&characterEncoding=utf8";
            conn = DriverManager.getConnection(urlUnicode); 
-           String insert="INSERT INTO `users`(`password`, `username`, `email`,`diaChi`, `soDT`, `hoTen`, `avatar`, `maLoaiNguoiDung`) VALUES (?,?,?,?,?,?,?,?)";
+           String insert="INSERT INTO `Users`(`password`, `username`, `email`,`diaChi`, `soDT`, `hoTen`, `avatar`, `maLoaiNguoiDung`) VALUES (?,?,?,?,?,?,?,?)";
            pst=conn.prepareStatement(insert);
            String pass=txtpass.getText();
           
@@ -536,6 +541,10 @@ public class Regis extends javax.swing.JFrame {
         txtconpass.setText("");
         txtimage.setText("");
     }//GEN-LAST:event_RESETActionPerformed
+
+    private void notfiuserKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_notfiuserKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_notfiuserKeyReleased
 
     /**
      * @param args the command line arguments
