@@ -5,6 +5,11 @@
  */
 package view;
 
+import java.util.Date;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerDateModel;
+import java.util.Calendar;
+
 /**
  *
  * @author Hp
@@ -45,6 +50,9 @@ public class ThemLichChieu extends javax.swing.JFrame {
         rapcbb = new javax.swing.JComboBox<>();
         phimcbb = new javax.swing.JComboBox<>();
         hethongcbb = new javax.swing.JComboBox<>();
+        Date date=new Date();
+        SpinnerDateModel sm= new SpinnerDateModel(date,null,null,Calendar.HOUR_OF_DAY);
+        timepicker = new javax.swing.JSpinner(sm);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -119,7 +127,7 @@ public class ThemLichChieu extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnsua, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 440, 130, 40));
-        jPanel1.add(giochieu, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 130, 300, 30));
+        jPanel1.add(giochieu, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 130, 160, 30));
 
         cumrapcbb.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jPanel1.add(cumrapcbb, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 330, 300, 30));
@@ -137,6 +145,10 @@ public class ThemLichChieu extends javax.swing.JFrame {
 
         hethongcbb.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jPanel1.add(hethongcbb, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 280, 300, 30));
+
+        JSpinner.DateEditor de =new JSpinner.DateEditor(timepicker,"HH:mm:ss");
+        timepicker.setEditor(de);
+        jPanel1.add(timepicker, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 130, 130, 30));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 620, 500));
 
@@ -210,5 +222,6 @@ public class ThemLichChieu extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> phimcbb;
     private javax.swing.JComboBox<String> rapcbb;
     private javax.swing.JTextField thoiluongtxt;
+    private javax.swing.JSpinner timepicker;
     // End of variables declaration//GEN-END:variables
 }
