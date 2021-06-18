@@ -4,7 +4,10 @@
  * and open the template in the editor.
  */
 package view;
-
+import java.util.Date;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerDateModel;
+import java.util.Calendar;
 /**
  *
  * @author Hp
@@ -48,6 +51,9 @@ public class SuaLichChieu extends javax.swing.JFrame {
         rapcbb = new javax.swing.JComboBox<>();
         phimcbb = new javax.swing.JComboBox<>();
         hethongcbb = new javax.swing.JComboBox<>();
+        Date date =new Date();
+        SpinnerDateModel sm = new SpinnerDateModel(date,null,null,Calendar.HOUR_OF_DAY);
+        timepicker = new javax.swing.JSpinner(sm);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -143,7 +149,7 @@ public class SuaLichChieu extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnsua, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 510, 130, 40));
-        jPanel1.add(giochieu, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 190, 300, 30));
+        jPanel1.add(giochieu, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 190, 160, 30));
 
         cumrapcbb.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jPanel1.add(cumrapcbb, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 390, 300, 30));
@@ -162,15 +168,22 @@ public class SuaLichChieu extends javax.swing.JFrame {
         hethongcbb.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jPanel1.add(hethongcbb, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 340, 300, 30));
 
+        JSpinner.DateEditor de =new JSpinner.DateEditor(timepicker,"HH:mm:ss");
+        timepicker.setEditor(de);
+        jPanel1.add(timepicker, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 190, 130, 30));
+
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 680, 570));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnquaylaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnquaylaiActionPerformed
+    private void rapcbbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rapcbbActionPerformed
         // TODO add your handling code here:
-//        clearLC();
-    }//GEN-LAST:event_btnquaylaiActionPerformed
+    }//GEN-LAST:event_rapcbbActionPerformed
+
+    private void btnsuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsuaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnsuaActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
         // TODO add your handling code here:
@@ -189,13 +202,10 @@ public class SuaLichChieu extends javax.swing.JFrame {
             //        }
     }//GEN-LAST:event_btnXoaActionPerformed
 
-    private void btnsuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsuaActionPerformed
+    private void btnquaylaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnquaylaiActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnsuaActionPerformed
-
-    private void rapcbbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rapcbbActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rapcbbActionPerformed
+        //        clearLC();
+    }//GEN-LAST:event_btnquaylaiActionPerformed
 
     /**
      * @param args the command line arguments
@@ -254,5 +264,6 @@ public class SuaLichChieu extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> phimcbb;
     private javax.swing.JComboBox<String> rapcbb;
     private javax.swing.JTextField thoiluongtxt;
+    private javax.swing.JSpinner timepicker;
     // End of variables declaration//GEN-END:variables
 }
