@@ -17,6 +17,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import model.Database;
 
 /**
  *
@@ -25,8 +26,8 @@ import java.io.OutputStream;
 public class login extends javax.swing.JFrame {
     Connection conn=null;
     PreparedStatement pst=null;
-    String driver = "com.mysql.cj.jdbc.Driver";
     Statement stat=null;
+    String driver = "com.mysql.cj.jdbc.Driver";
     Preferences pref= Preferences.systemNodeForPackage(login.class);
     final String PREF_NAME = "Phanquyen";
     final String PREF_NAME_1 = "taikhoan";
@@ -147,15 +148,15 @@ public class login extends javax.swing.JFrame {
          }
             try{
            Class.forName(driver).newInstance();
-           String urlUnicode = "jdbc:mysql://free01.123host.vn:2083//doanjava_v1?user=root&password=a2DpigCp7PDOyGk&useUnicode=true&characterEncoding=utf8";
+           String urlUnicode ="jdbc:mysql://103.97.125.254:3306//doanjava_v1?user=doanjava&password=a2DpigCp7PDOyGk&useUnicode=true&characterEncoding=utf8";
            conn = DriverManager.getConnection(urlUnicode); 
-           String select="SELECT * FROM `users` WHERE `username`=?";
+           String select="SELECT * FROM `Users` WHERE `username`=?";
            String pass=pswtxt.getText();
            String username=usernametxt.getText();
            pst=conn.prepareStatement(select);
             pst.setString(1,username);      
             ResultSet rs = pst.executeQuery();
-            while(rs.next())
+            if(rs.next())
                 { 
                     String hash = rs.getString("password");
                     String user =rs.getString("username");  
@@ -234,9 +235,7 @@ public class login extends javax.swing.JFrame {
                      }
                      
                 }
-           
-        
-                
+                   
           
             }
              catch(SQLException se)
