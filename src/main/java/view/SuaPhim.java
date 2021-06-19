@@ -491,7 +491,7 @@ public class SuaPhim extends javax.swing.JFrame {
             linkImageVal.setText((String) o[3]);
             jSpinner1.setValue((int) o[7]);
             showAnh((String) o[3]);
-            btSua.setEnabled(false);
+            //btSua.setEnabled(false);
             jList1.setSelectedIndices((int[]) o[10]);
             helper.addChangeListener(tenPhimVal, e -> btSua.setEnabled(true));
             helper.addChangeListener(trailerVal, e -> btSua.setEnabled(true));

@@ -147,9 +147,9 @@ public class login extends javax.swing.JFrame {
          }
             try{
            Class.forName(driver).newInstance();
-           String urlUnicode = "jdbc:mysql://free01.123host.vn:2083//doanjava_v1?user=root&password=a2DpigCp7PDOyGk&useUnicode=true&characterEncoding=utf8";
+           String urlUnicode = "jdbc:mysql://103.97.125.254:3306/doanjava_v1?user=doanjava&password=a2DpigCp7PDOyGk&useUnicode=true&characterEncoding=utf8";
            conn = DriverManager.getConnection(urlUnicode); 
-           String select="SELECT * FROM `users` WHERE `username`=?";
+           String select="SELECT * FROM `Users` WHERE `username`=?";
            String pass=pswtxt.getText();
            String username=usernametxt.getText();
            pst=conn.prepareStatement(select);

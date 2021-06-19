@@ -5,7 +5,10 @@
  */
 package view;
 
-import java.awt.HeadlessException;
+import controller.LoaiNguoiDungController;
+import controller.UserController;
+import java.net.MalformedURLException;
+import model.User;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,92 +16,32 @@ import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
-import net.sf.jasperreports.engine.JRException;
-
+import model.LoaiNguoiDung;
 /**
  *
  * @author fanta
  */
 public class QLKH extends javax.swing.JFrame {
+    
+    private UserController userController;
+    private LoaiNguoiDungController loaiNguoiDungController;
+    private DefaultTableModel modelUser = null;
+    
     /**
      * Creates new form QLKH
-     */
-    
-    DefaultTableModel modelKH = null;
-    String ma;
-    String username;
-    
-    private void getRowKH (int index){
-//        cbb_LKH.setEnabled(true);
-//        txtDTL.setEnabled(true);
-//        try{
-//            ma = (String) tbKH.getValueAt(index,0);
-//            txtHoKH.setText((String)(tbKH.getValueAt(index,1)));
-//            txtTenKH.setText((String)(tbKH.getValueAt(index,2)));
-//            java.util.Date d_NgSinhKH = new SimpleDateFormat("dd-MM-yyyy").parse((String)(tbKH.getValueAt(index,3)));
-//            txtNgS.setDate(d_NgSinhKH);
-//            cbb_GTKH.setSelectedItem(tbKH.getValueAt(index,4));
-//            cbb_LKH.setSelectedItem(tbKH.getValueAt(index,5));
-//            txtDTL.setText(String.valueOf(tbKH.getValueAt(index,6)));
-//        }catch(ParseException e){System.out.println(e);} 
-    }
-    
-    private void clearKH(){
-//        txtHoKH.setText("");
-//        txtTenKH.setText("");
-//        txtDTL.setText("0");
-//        txtNgS.setDate(null);
-//        cbb_GTKH.setSelectedItem(null);
-//        cbb_LKH.setSelectedItem(null);
-//        cbb_LKH.setEnabled(false);
-//        txtDTL.setEnabled(false);
-//        txtDTL.setEditable(false);
-        
-    }
-    
-    private void setTableKH() {
-//        try (Connection con = ConnectionUtils.getMyConnection()){
-//            String SQL = "SELECT MAKH,HO,TEN,NGAYSINH,GIOITINH,LOAIKH,TICHLUY,username FROM KHACHHANG ORDER BY MAKH";
-//            Statement statement= con.createStatement();
-//            ResultSet rs=statement.executeQuery(SQL);
-//            modelKH = (DefaultTableModel) tbKH.getModel();
-//            modelKH.setRowCount(0);
-//            while(rs.next())
-//            {
-//                String MaKH = rs.getString(1);
-//                String HoKH = rs.getString(2);
-//                String TenKH = rs.getString(3);
-//                java.util.Date d_NgSinhKH = rs.getDate(4);
-////                String S_NgSinhKH = String.format("%1$td-%1$tm-%1$tY", d_NgSinhKH);
-//                String S_NgSinhKH = new SimpleDateFormat("dd-MM-yyyy").format(d_NgSinhKH);
-//                String GTKH = rs.getString(5);
-//                String LOAIKH = rs.getString(6);
-//                String TL = rs.getString(7);
-//                modelKH.addRow(new Object[]{MaKH,HoKH,TenKH,S_NgSinhKH,GTKH,LOAIKH,TL});
-//            }
-//            con.close();
-//        } 
-//    catch (ClassNotFoundException | NumberFormatException | SQLException ex) {
-//        Logger.getLogger(QLKH.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-    }
-    
-    public QLKH() {
+     */  
+    public QLKH() throws SQLException, ClassNotFoundException, ParseException, InterruptedException {
         initComponents();
-        setTableKH();
-        clearKH();
-        setLocation(100,40);
-        setResizable(false);
-        setSize(1200,560);
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setTitle("Trang admin: quản lý khách hàng");
+        userController = new UserController();
+        loaiNguoiDungController = new LoaiNguoiDungController();
+        createTableKhachHang();
     }
 
     /**
@@ -118,6 +61,7 @@ public class QLKH extends javax.swing.JFrame {
         txtSearch = new javax.swing.JTextField();
         btBack = new javax.swing.JButton();
         txtSua = new javax.swing.JButton();
+        btReset = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -137,7 +81,7 @@ public class QLKH extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Mã", "Họ và Tên", "Địa chỉ", "Số điện thoại", "Ngày sinh", "Ngày đăng ký", "Doanh số"
+                "Mã", "Họ và Tên", "Địa chỉ", "Số điện thoại", "Ngày sinh", "Loại"
             }
         ));
         tbKH.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -157,7 +101,7 @@ public class QLKH extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 153, 0));
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_search_more_32px.png"))); // NOI18N
         jLabel1.setText("Tìm kiếm");
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 80, 102, -1));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 80, 102, 30));
 
         txtSearch.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         txtSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -185,7 +129,7 @@ public class QLKH extends javax.swing.JFrame {
                 btBackActionPerformed(evt);
             }
         });
-        jPanel2.add(btBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 450, -1, 50));
+        jPanel2.add(btBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 450, -1, 50));
 
         txtSua.setBackground(new java.awt.Color(51, 51, 51));
         txtSua.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -197,7 +141,19 @@ public class QLKH extends javax.swing.JFrame {
                 txtSuaActionPerformed(evt);
             }
         });
-        jPanel2.add(txtSua, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 450, 120, 50));
+        jPanel2.add(txtSua, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 450, 120, 50));
+
+        btReset.setBackground(new java.awt.Color(51, 51, 51));
+        btReset.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btReset.setForeground(new java.awt.Color(0, 255, 0));
+        btReset.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_reboot_24px_1.png"))); // NOI18N
+        btReset.setText("Reset");
+        btReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btResetActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btReset, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 450, 120, 50));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 830, 510));
 
@@ -206,8 +162,8 @@ public class QLKH extends javax.swing.JFrame {
 
     private void btBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBackActionPerformed
         // TODO add your handling code here:
-        hide();
-        Admin.main(null);
+        dispose();
+        //Admin.main(null);
     }//GEN-LAST:event_btBackActionPerformed
 
     private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
@@ -233,14 +189,56 @@ public class QLKH extends javax.swing.JFrame {
     }//GEN-LAST:event_tbKHMouseClicked
 
     private void txtSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSuaActionPerformed
-        // TODO add your handling code here:
+        try {
+            int selectedRow = tbKH.getSelectedRow();
+            if (selectedRow < 1) {
+                JOptionPane.showMessageDialog(QLKH.this, "Chua chon khach hang", "Vui long chon khach hang", 
+                        JOptionPane.ERROR_MESSAGE);
+            }
+            int taiKhoan = (int) tbKH.getValueAt(selectedRow, 0);
+            SuaKH skh = new SuaKH();
+            skh.setTaiKhoan(taiKhoan);
+            skh.setSelectedIndex(selectedRow);
+            skh.renderListLoai();
+            skh.renderThongTinUser();
+            skh.setVisible(true);
+
+        } catch (SQLException | ClassNotFoundException | ParseException | InterruptedException ex) {
+            Logger.getLogger(QLKH.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(QLKH.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_txtSuaActionPerformed
- public void LayReportQLKH(String a) throws SQLException, JRException {
-        // TODO code application logic here
-//        String makh = a;
-//        HashMap hs= new HashMap();
-//        hs.put("makh", makh);
-//        String localDir = System.getProperty("user.dir");
+
+    private void btResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btResetActionPerformed
+        // TODO add your handling code here:
+        try {
+            this.createTableKhachHang();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(QLKH.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btResetActionPerformed
+    public void createTableKhachHang() throws InterruptedException {
+        try {
+            SimpleDateFormat DateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+            List<User> user = userController.LayDanhSachUser();
+            List<LoaiNguoiDung> loaiNguoiDung = loaiNguoiDungController.LayDanhSachLoaiNguoiDung();
+            modelUser = (DefaultTableModel) tbKH.getModel();
+            modelUser.setRowCount(0);
+            for (User u : user) {
+                Object[] o = new Object[6];
+                o[0] = u.getTaiKhoan();
+                o[1] = u.getHoTen();
+                o[2] = u.getDiaChi();
+                o[3] = u.getSoDT();
+                o[4] = DateFormatter.format(u.getNgaySinh());
+                o[5] = loaiNguoiDung.get(u.getMaLoaiNguoiDung() - 1).getTenLoai();
+                modelUser.addRow(o);
+            }
+        }
+        catch (NumberFormatException | SQLException ex) {
+            Logger.getLogger(QLKH.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     /**
      * @param args the command line arguments
@@ -268,15 +266,27 @@ public class QLKH extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(QLKH.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            new QLKH().setVisible(true);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    new QLKH().setVisible(true);
+                    Thread.sleep(5000);
+
+                } catch (SQLException | ClassNotFoundException | ParseException | InterruptedException ex) {
+                    Logger.getLogger(QLKH.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btBack;
+    private javax.swing.JButton btReset;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel2;
@@ -286,7 +296,4 @@ public class QLKH extends javax.swing.JFrame {
     private javax.swing.JButton txtSua;
     // End of variables declaration//GEN-END:variables
 
-    private void LayReport(String ma) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }
