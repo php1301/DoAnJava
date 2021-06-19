@@ -23,7 +23,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import model.Phim;
 import model.Phong;
-
 /**
  *
  * @author Hp
@@ -103,7 +102,6 @@ public class SuaLichChieu extends javax.swing.JFrame {
         SpinnerDateModel sm = new SpinnerDateModel(date,null,null,Calendar.HOUR_OF_DAY);
         timepicker = new javax.swing.JSpinner(sm);
         thoiluongtime = new javax.swing.JSpinner();
-
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -186,6 +184,7 @@ public class SuaLichChieu extends javax.swing.JFrame {
         Malctxt.setEditable(false);
         Malctxt.setBackground(new java.awt.Color(204, 204, 204));
         jPanel1.add(Malctxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 90, 300, 30));
+
         btnsua.setBackground(new java.awt.Color(51, 51, 51));
         btnsua.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnsua.setForeground(new java.awt.Color(0, 255, 0));
@@ -347,7 +346,6 @@ public class SuaLichChieu extends javax.swing.JFrame {
 
     }
     
-
     /**
      * @param args the command line arguments
      */

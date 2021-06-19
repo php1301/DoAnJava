@@ -23,7 +23,6 @@ import javax.swing.JOptionPane;
 import model.Phim;
 import model.Phong;
 
-
 /**
  *
  * @author Hp
@@ -152,6 +151,7 @@ public class ThemLichChieu extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnthem, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 440, 130, 40));
+
 
         jPanel1.add(giochieu, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 130, 160, 30));
 

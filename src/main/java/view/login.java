@@ -127,26 +127,13 @@ public class login extends javax.swing.JFrame {
         Regis register = new Regis();
         register.setVisible(true);
     }//GEN-LAST:event_regisbtnActionPerformed
-//public void saveProperties() {
-//    try {            
-//        String USER_NAME = usernametxt.getText();       
-//        //create a properties file
-//        Properties props = new Properties();
-//        props.setProperty("User name", USER_NAME);
-//        File f = new File("D:\\CSDLwJava\\Login\\login.txt");
-//        OutputStream out = new FileOutputStream( f );
-//        //If you wish to make some comments 
-//        props.store(out, "usernametxt.getText()");
-//    }
-//    catch (Exception e ) {
-//        e.printStackTrace();
-//    }
-//}
 
     private void loginbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginbtnActionPerformed
         if (usernametxt.getText().equals("") || pswtxt.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Empty information. Please try again", "Empty!", JOptionPane.ERROR_MESSAGE);
         }
+        else
+        {
         try {
             Class.forName(driver).newInstance();
             String remoteUrl = "jdbc:mysql://103.97.125.254:3306/doanjava_v1";
@@ -204,10 +191,14 @@ public class login extends javax.swing.JFrame {
 
                 } else {
 
-                    JOptionPane.showMessageDialog(null, "LOGIN UNSUCCESSFULLY", "ERORR", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "WRONG PASSWORD TRY AGAIN!!", "ERORR", JOptionPane.ERROR_MESSAGE);
 
                 }
 
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "INVALID USERNAME", "ERORR", JOptionPane.ERROR_MESSAGE);
             }
 
         } catch (SQLException se) {
@@ -239,7 +230,7 @@ public class login extends javax.swing.JFrame {
                 se.printStackTrace();
             }
         }
-
+        }
     }//GEN-LAST:event_loginbtnActionPerformed
 
     /**

@@ -8,13 +8,27 @@ package view;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.awt.Color;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import kong.unirest.Unirest;
 import org.mindrot.jbcrypt.BCrypt;
 import model.Database;
 /**
@@ -26,6 +40,7 @@ public class Regis extends javax.swing.JFrame {
     PreparedStatement pst=null;
     String driver = "com.mysql.cj.jdbc.Driver";
     Statement stat=null;
+    File file=null;
     /**
      * Creates new form Regis
      */
@@ -70,6 +85,10 @@ public class Regis extends javax.swing.JFrame {
         notifiimg = new javax.swing.JLabel();
         Addresstxt = new javax.swing.JTextField();
         Address = new javax.swing.JLabel();
+        btOpenFile = new javax.swing.JButton();
+        imageSection = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        datetxt = new com.toedter.calendar.JDateChooser();
         background = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -78,29 +97,28 @@ public class Regis extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        title.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        title.setText("    Register For Free Account");
-        jPanel1.add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, 230, 30));
+        title.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        title.setText("    REGISTER FOR FREE ACCOUNT");
+        jPanel1.add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 330, 40));
 
         Username.setText("Username");
-        jPanel1.add(Username, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, -1, -1));
+        jPanel1.add(Username, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, -1, -1));
 
         Email.setText("Email");
-        jPanel1.add(Email, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 110, -1, -1));
+        jPanel1.add(Email, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 150, -1, -1));
 
         SDT.setText("Phone number");
-        jPanel1.add(SDT, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 160, -1, -1));
+        jPanel1.add(SDT, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 300, -1, -1));
 
         Hoten.setText("Password");
-        jPanel1.add(Hoten, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 310, -1, -1));
+        jPanel1.add(Hoten, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 400, -1, -1));
 
         pssw.setText("Full Name");
-        jPanel1.add(pssw, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 260, -1, -1));
+        jPanel1.add(pssw, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 250, -1, -1));
 
         confirmpssw.setText("Confirm Password");
-        jPanel1.add(confirmpssw, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 370, -1, 20));
+        jPanel1.add(confirmpssw, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 450, -1, 20));
 
-        txtusername.setForeground(new java.awt.Color(153, 153, 153));
         txtusername.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtusernameFocusGained(evt);
@@ -119,9 +137,8 @@ public class Regis extends javax.swing.JFrame {
                 txtusernameKeyReleased(evt);
             }
         });
-        jPanel1.add(txtusername, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 80, 250, -1));
+        jPanel1.add(txtusername, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 120, 250, -1));
 
-        txtphonen.setForeground(new java.awt.Color(153, 153, 153));
         txtphonen.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtphonenFocusGained(evt);
@@ -140,9 +157,8 @@ public class Regis extends javax.swing.JFrame {
                 txtphonenKeyReleased(evt);
             }
         });
-        jPanel1.add(txtphonen, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 180, 250, -1));
+        jPanel1.add(txtphonen, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 320, 250, -1));
 
-        txtfullname.setForeground(new java.awt.Color(153, 153, 153));
         txtfullname.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtfullnameFocusGained(evt);
@@ -151,9 +167,8 @@ public class Regis extends javax.swing.JFrame {
                 txtfullnameFocusLost(evt);
             }
         });
-        jPanel1.add(txtfullname, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 280, 250, -1));
+        jPanel1.add(txtfullname, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 270, 250, -1));
 
-        txtmail.setForeground(new java.awt.Color(153, 153, 153));
         txtmail.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtmailFocusGained(evt);
@@ -172,7 +187,7 @@ public class Regis extends javax.swing.JFrame {
                 txtmailKeyPressed(evt);
             }
         });
-        jPanel1.add(txtmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, 250, -1));
+        jPanel1.add(txtmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 170, 250, -1));
 
         REGIS.setText("REGISTER");
         REGIS.addActionListener(new java.awt.event.ActionListener() {
@@ -180,7 +195,7 @@ public class Regis extends javax.swing.JFrame {
                 REGISActionPerformed(evt);
             }
         });
-        jPanel1.add(REGIS, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 470, -1, -1));
+        jPanel1.add(REGIS, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 590, -1, -1));
 
         RESET.setText("RESET");
         RESET.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -193,7 +208,7 @@ public class Regis extends javax.swing.JFrame {
                 RESETActionPerformed(evt);
             }
         });
-        jPanel1.add(RESET, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 470, -1, -1));
+        jPanel1.add(RESET, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 590, -1, -1));
 
         CANCEL.setText("CANCEL");
         CANCEL.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -206,7 +221,7 @@ public class Regis extends javax.swing.JFrame {
                 CANCELActionPerformed(evt);
             }
         });
-        jPanel1.add(CANCEL, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 470, -1, -1));
+        jPanel1.add(CANCEL, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 590, -1, -1));
 
         txtconpass.setText("jPasswordField1");
         txtconpass.addActionListener(new java.awt.event.ActionListener() {
@@ -219,7 +234,7 @@ public class Regis extends javax.swing.JFrame {
                 txtconpassKeyReleased(evt);
             }
         });
-        jPanel1.add(txtconpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 390, 250, -1));
+        jPanel1.add(txtconpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 470, 250, -1));
 
         txtpass.setText("jPasswordField1");
         txtpass.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -227,24 +242,24 @@ public class Regis extends javax.swing.JFrame {
                 txtpassKeyReleased(evt);
             }
         });
-        jPanel1.add(txtpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 330, 250, -1));
+        jPanel1.add(txtpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 420, 250, -1));
 
         notifimail.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         notifimail.setForeground(new java.awt.Color(255, 0, 0));
-        jPanel1.add(notifimail, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 130, 100, 20));
+        jPanel1.add(notifimail, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 170, 100, 20));
 
         notifiphone.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         notifiphone.setForeground(new java.awt.Color(255, 0, 0));
-        jPanel1.add(notifiphone, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 180, 120, 20));
+        jPanel1.add(notifiphone, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 320, 120, 20));
 
         notifipass.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         notifipass.setForeground(new java.awt.Color(255, 0, 0));
         notifipass.setToolTipText("");
-        jPanel1.add(notifipass, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 330, 230, 20));
+        jPanel1.add(notifipass, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 420, 230, 20));
 
         notificonfirmpass.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         notificonfirmpass.setForeground(new java.awt.Color(255, 0, 0));
-        jPanel1.add(notificonfirmpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 390, 220, 20));
+        jPanel1.add(notificonfirmpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 470, 220, 20));
 
         notfiuser.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         notfiuser.setForeground(new java.awt.Color(255, 0, 0));
@@ -253,10 +268,10 @@ public class Regis extends javax.swing.JFrame {
                 notfiuserKeyReleased(evt);
             }
         });
-        jPanel1.add(notfiuser, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 80, 120, 20));
+        jPanel1.add(notfiuser, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 120, 120, 20));
 
-        jLabel1.setText("URL avatar");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 420, -1, -1));
+        jLabel1.setText("Avatar");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 510, -1, -1));
 
         txtimage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -268,21 +283,36 @@ public class Regis extends javax.swing.JFrame {
                 txtimageKeyReleased(evt);
             }
         });
-        jPanel1.add(txtimage, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 440, 250, -1));
+        jPanel1.add(txtimage, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 530, 250, -1));
 
         notifiimg.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         notifiimg.setForeground(new java.awt.Color(255, 0, 0));
-        jPanel1.add(notifiimg, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 440, 130, 20));
-        jPanel1.add(Addresstxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 230, 250, -1));
+        jPanel1.add(notifiimg, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 550, 130, 20));
+        jPanel1.add(Addresstxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 220, 250, -1));
 
         Address.setText("Address");
-        jPanel1.add(Address, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 210, -1, -1));
+        jPanel1.add(Address, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 200, -1, -1));
+
+        btOpenFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_documents_20px_1.png"))); // NOI18N
+        btOpenFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btOpenFileActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btOpenFile, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 530, 40, 30));
+
+        imageSection.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel1.add(imageSection, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 500, 110, 120));
+
+        jLabel2.setText("Date of birth");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 350, -1, -1));
+        jPanel1.add(datetxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 370, 250, 30));
 
         background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/background1.jpg"))); // NOI18N
         background.setText("jLabel2");
-        jPanel1.add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(-210, -10, -1, -1));
+        jPanel1.add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(-410, 0, -1, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 540, 520));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 640, 640));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -344,10 +374,10 @@ public class Regis extends javax.swing.JFrame {
            Class.forName(driver).newInstance();
            String urlUnicode = "jdbc:mysql://103.97.125.254:3306/doanjava_v1?user=doanjava&password=a2DpigCp7PDOyGk&useUnicode=true&characterEncoding=utf8";
            conn = DriverManager.getConnection(urlUnicode); 
-           String insert="INSERT INTO `Users`(`password`, `username`, `email`,`diaChi`, `soDT`, `hoTen`, `avatar`, `maLoaiNguoiDung`) VALUES (?,?,?,?,?,?,?,?)";
+           String insert="INSERT INTO `Users`(`password`, `username`, `email`,`ngaySinh`,`diaChi`, `diemTichLuy`, `soDT`, `hoTen`, `avatar`, `maLoaiNguoiDung`) VALUES (?,?,?,?,?,?,?,?,?,?)";
            pst=conn.prepareStatement(insert);
            String pass=txtpass.getText();
-          
+          java.sql.Date date=new java.sql.Date(datetxt.getDate().getTime());
 
             if(pass!=null && !pass.isEmpty())
             {
@@ -356,12 +386,14 @@ public class Regis extends javax.swing.JFrame {
             }
            pst.setString(2,txtusername.getText());
            pst.setString(3,txtmail.getText());
-           pst.setString(4,Addresstxt.getText());
-           pst.setString(5,txtphonen.getText());
-           pst.setString(6,txtfullname.getText());
+           pst.setDate(4,(Date)date);
+           pst.setString(5,Addresstxt.getText());
+           pst.setInt(6,0);
+           pst.setString(7,txtphonen.getText());
+           pst.setString(8,txtfullname.getText());
           
-           pst.setString(7,txtimage.getText());
-           pst.setInt(8,3);
+           pst.setString(9,txtimage.getText());
+           pst.setInt(10,2);
          
            String confirmpass=txtconpass.getText();
  
@@ -546,6 +578,60 @@ public class Regis extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_notfiuserKeyReleased
 
+    private void btOpenFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOpenFileActionPerformed
+        // TODO add your handling code here:
+        JFileChooser fc = new JFileChooser();
+        //        fc.setCurrentDirectory(new File(System.getProperty("user.home")));
+        //        fc.setCurrentDirectory(new File(System.getProperty("user.dir")));
+        try {
+            fc.setCurrentDirectory(new File(getClass().getResource("./").toURI()));
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(ThemPhim.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("*.Images", "jpg", "gif", "png");
+        fc.addChoosableFileFilter(filter);
+        fc.setDialogTitle("Chọn ảnh");
+        int result = fc.showOpenDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            file = fc.getSelectedFile();
+            System.out.println(file);
+            imgurRequest(file);
+        }
+    }//GEN-LAST:event_btOpenFileActionPerformed
+private void imgurRequest(File f) {
+        try {
+            String imgurClientId = "4d7220bef63dd30";
+            Unirest.config().connectTimeout(1000);
+            String response = Unirest.post("https://api.imgur.com/3/image")
+                    .header("Authorization", "Client-ID " + imgurClientId)
+                    .multiPartContent()
+                    .field("image", file)
+                    .asJson()
+                    .getBody()
+                    .getObject()
+                    .getJSONObject("data")
+                    .get("link")
+                    .toString();
+            txtimage.setText(response);
+            showAnh(response);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(ThemPhim.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(Regis.this, "Xảy ra lỗi khi chọn ảnh phim vui lòng thử lại", "Có lỗi",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void showAnh(String name) throws MalformedURLException {
+        try {
+            URL url = new URL(name);
+            Image img = ImageIO.read(url.openStream());
+            Image newImg = img.getScaledInstance(imageSection.getWidth(), imageSection.getHeight(), Image.SCALE_SMOOTH);
+            ImageIcon image = new ImageIcon(newImg);
+            imageSection.setIcon(image);
+        } catch (IOException ex) {
+            Logger.getLogger(ThemPhim.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -592,8 +678,12 @@ public class Regis extends javax.swing.JFrame {
     private javax.swing.JLabel SDT;
     private javax.swing.JLabel Username;
     private javax.swing.JLabel background;
+    private javax.swing.JButton btOpenFile;
     private javax.swing.JLabel confirmpssw;
+    private com.toedter.calendar.JDateChooser datetxt;
+    private javax.swing.JLabel imageSection;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel notfiuser;
     private javax.swing.JLabel notificonfirmpass;
