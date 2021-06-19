@@ -5,22 +5,48 @@
  */
 package view;
 
+import controller.LichChieuController;
+import controller.PhimController;
+import controller.PhongController;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
 import java.util.Calendar;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import model.Phim;
+import model.Phong;
 
 /**
  *
  * @author Hp
  */
 public class ThemLichChieu extends javax.swing.JFrame {
-
+    
+    private LichChieuController lichChieuController;
+    private PhimController phimController;
+    private PhongController phongController;
+    private ArrayList<String> tenPhim;
+    private ArrayList<String> tenRap;
     /**
      * Creates new form ThemLichChieu
      */
-    public ThemLichChieu() {
+    public ThemLichChieu() throws SQLException, ClassNotFoundException, ParseException, InterruptedException {
         initComponents();
+        setTitle("Trang Thêm Lịch Chiếu");
+        lichChieuController = new LichChieuController();
+        phimController = new PhimController();
+        tenPhim = new ArrayList<>();
+        phongController = new PhongController();
+        tenRap = new ArrayList<>();
+        renderListPhim();
+        renderListPhong();
     }
 
     /**
@@ -43,16 +69,16 @@ public class ThemLichChieu extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         giavetxt = new javax.swing.JTextField();
-        thoiluongtxt = new javax.swing.JTextField();
-        btnsua = new javax.swing.JButton();
+        btnthem = new javax.swing.JButton();
         giochieu = new com.toedter.calendar.JDateChooser();
         cumrapcbb = new javax.swing.JComboBox<>();
         rapcbb = new javax.swing.JComboBox<>();
         phimcbb = new javax.swing.JComboBox<>();
         hethongcbb = new javax.swing.JComboBox<>();
-        Date date=new Date();
+        Date date=new Date(0);
         SpinnerDateModel sm= new SpinnerDateModel(date,null,null,Calendar.HOUR_OF_DAY);
         timepicker = new javax.swing.JSpinner(sm);
+        thoiluongtime = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -82,17 +108,17 @@ public class ThemLichChieu extends javax.swing.JFrame {
         jLabel6.setText("THÊM THÔNG TIN LỊCH CHIẾU");
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 20, 440, 41));
 
-        btnquaylai.setBackground(new java.awt.Color(255, 255, 255));
+        btnquaylai.setBackground(new java.awt.Color(51, 51, 51));
         btnquaylai.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnquaylai.setForeground(new java.awt.Color(255, 0, 0));
-        btnquaylai.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_back_to_32px_1.png"))); // NOI18N
+        btnquaylai.setForeground(new java.awt.Color(0, 255, 0));
+        btnquaylai.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_back_to_32px_2.png"))); // NOI18N
         btnquaylai.setText("Quay lại");
         btnquaylai.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnquaylaiActionPerformed(evt);
             }
         });
-        jPanel1.add(btnquaylai, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 440, -1, 40));
+        jPanel1.add(btnquaylai, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 440, -1, 40));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
@@ -114,19 +140,18 @@ public class ThemLichChieu extends javax.swing.JFrame {
         jLabel10.setText("Rạp");
         jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 380, 100, 30));
         jPanel1.add(giavetxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 180, 300, 30));
-        jPanel1.add(thoiluongtxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 230, 300, 30));
 
-        btnsua.setBackground(new java.awt.Color(255, 255, 255));
-        btnsua.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnsua.setForeground(new java.awt.Color(51, 204, 0));
-        btnsua.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_add_32px_1.png"))); // NOI18N
-        btnsua.setText("Thêm");
-        btnsua.addActionListener(new java.awt.event.ActionListener() {
+        btnthem.setBackground(new java.awt.Color(204, 204, 204));
+        btnthem.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnthem.setForeground(new java.awt.Color(51, 204, 0));
+        btnthem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_add_32px_1.png"))); // NOI18N
+        btnthem.setText("Thêm");
+        btnthem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnsuaActionPerformed(evt);
+                btnthemActionPerformed(evt);
             }
         });
-        jPanel1.add(btnsua, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 440, 130, 40));
+        jPanel1.add(btnthem, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 440, 130, 40));
         jPanel1.add(giochieu, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 130, 160, 30));
 
         cumrapcbb.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -141,6 +166,11 @@ public class ThemLichChieu extends javax.swing.JFrame {
         jPanel1.add(rapcbb, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 380, 300, 30));
 
         phimcbb.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        phimcbb.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                phimcbbItemStateChanged(evt);
+            }
+        });
         jPanel1.add(phimcbb, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 80, 300, 30));
 
         hethongcbb.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -150,6 +180,10 @@ public class ThemLichChieu extends javax.swing.JFrame {
         timepicker.setEditor(de);
         jPanel1.add(timepicker, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 130, 130, 30));
 
+        thoiluongtime.setModel(new javax.swing.SpinnerNumberModel(0, 0, 480, 1));
+        thoiluongtime.setEnabled(false);
+        jPanel1.add(thoiluongtime, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 230, 300, 30));
+
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 620, 500));
 
         pack();
@@ -157,17 +191,79 @@ public class ThemLichChieu extends javax.swing.JFrame {
 
     private void btnquaylaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnquaylaiActionPerformed
         // TODO add your handling code here:
-        //        clearLC();
+        dispose();
     }//GEN-LAST:event_btnquaylaiActionPerformed
 
-    private void btnsuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsuaActionPerformed
+    private void btnthemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnthemActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnsuaActionPerformed
+        int valuePhim = phimcbb.getSelectedIndex() + 1;
+        int valueRap = rapcbb.getSelectedIndex() + 1;
+        java.sql.Date ngayChieuVal = new java.sql.Date(giochieu.getDate().getTime());
+        int h = Integer.parseInt(timepicker.getValue().toString().substring(11, 13));
+        int m = Integer.parseInt(timepicker.getValue().toString().substring(14, 16));
+        int s = Integer.parseInt(timepicker.getValue().toString().substring(17, 19));
+        java.sql.Time gioChieuVal = new java.sql.Time(h, m, s);
+        Object[] o = new Object[6];
+        o[0] = valuePhim;
+        o[1] = ngayChieuVal;
+        o[2] = gioChieuVal;
+        o[3] = giavetxt.getText();
+        o[4] = valueRap;
+        o[5] = thoiluongtime.getValue();
+        try {
+            lichChieuController.themLichChieu(o);
+            JOptionPane.showMessageDialog(ThemLichChieu.this, "Thành công", "Thêm lịch chiếu thành công",
+                    JOptionPane.INFORMATION_MESSAGE);
+            dispose();
+        } catch (SQLException ex) {
+            Logger.getLogger(ThemPhim.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(ThemLichChieu.this, "Xảy ra lỗi khi thêm lịch chiếu vui lòng thử lại", "Có lỗi",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnthemActionPerformed
 
     private void rapcbbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rapcbbActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_rapcbbActionPerformed
 
+    private void phimcbbItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_phimcbbItemStateChanged
+        // TODO add your handling code here:
+        try {
+            Object[] o = phimController.getThongTinPhim(phimcbb.getSelectedIndex() + 1);
+            thoiluongtime.setValue((int) o[7]);
+        } catch (SQLException ex) {
+            Logger.getLogger(SuaLichChieu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_phimcbbItemStateChanged
+    
+    public void renderListPhim() {
+        try {
+            List<Phim> phim = phimController.layDanhSachPhim();
+            for (Phim p : phim) {
+                tenPhim.add(p.getTenPhim());
+            }
+            phimcbb.setModel(new DefaultComboBoxModel<>((String[]) tenPhim.toArray(new String[0])));
+            thoiluongtime.setValue(phim.get(0).getThoiLuong());
+        } catch (SQLException ex) {
+            Logger.getLogger(SuaLichChieu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    
+    public void renderListPhong() {
+        try {
+            List<Phong> phong = phongController.layDanhSachPhong();
+            for (Phong p : phong) {
+                tenRap.add(p.getTenRap());
+            }
+            rapcbb.setModel(new DefaultComboBoxModel<>((String[]) tenRap.toArray(new String[0])));
+            hethongcbb.setModel(new DefaultComboBoxModel<>(new String[] { "BHD Star Cineplex"}));
+            cumrapcbb.setModel(new DefaultComboBoxModel<>(new String[] { "BHDStar Hoang Van Thu"}));
+        } catch (SQLException ex) {
+            Logger.getLogger(SuaLichChieu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
     /**
      * @param args the command line arguments
      */
@@ -198,14 +294,20 @@ public class ThemLichChieu extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ThemLichChieu().setVisible(true);
+                try {
+                    new ThemLichChieu().setVisible(true);
+                    Thread.sleep(5000);
+
+                } catch (SQLException | ClassNotFoundException | ParseException | InterruptedException ex) {
+                    Logger.getLogger(QLLC.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnquaylai;
-    private javax.swing.JButton btnsua;
+    private javax.swing.JButton btnthem;
     private javax.swing.JComboBox<String> cumrapcbb;
     private javax.swing.JTextField giavetxt;
     private com.toedter.calendar.JDateChooser giochieu;
@@ -221,7 +323,7 @@ public class ThemLichChieu extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JComboBox<String> phimcbb;
     private javax.swing.JComboBox<String> rapcbb;
-    private javax.swing.JTextField thoiluongtxt;
+    private javax.swing.JSpinner thoiluongtime;
     private javax.swing.JSpinner timepicker;
     // End of variables declaration//GEN-END:variables
 }
