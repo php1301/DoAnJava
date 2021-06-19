@@ -27,8 +27,7 @@ import model.Phong;
  *
  * @author Hp
  */
-public class ThemLichChieu extends javax.swing.JFrame {
-    
+public class ThemLichChieu extends javax.swing.JFrame {    
     private LichChieuController lichChieuController;
     private PhimController phimController;
     private PhongController phongController;
@@ -152,6 +151,8 @@ public class ThemLichChieu extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnthem, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 440, 130, 40));
+
+
         jPanel1.add(giochieu, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 130, 160, 30));
 
         cumrapcbb.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -183,6 +184,7 @@ public class ThemLichChieu extends javax.swing.JFrame {
         thoiluongtime.setModel(new javax.swing.SpinnerNumberModel(0, 0, 480, 1));
         thoiluongtime.setEnabled(false);
         jPanel1.add(thoiluongtime, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 230, 300, 30));
+
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 620, 500));
 

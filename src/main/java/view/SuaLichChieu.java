@@ -27,8 +27,7 @@ import model.Phong;
  *
  * @author Hp
  */
-public class SuaLichChieu extends javax.swing.JFrame {
-    
+public class SuaLichChieu extends javax.swing.JFrame {    
     /**
      * Creates new form SuaLichChieu
      */
@@ -228,7 +227,6 @@ public class SuaLichChieu extends javax.swing.JFrame {
         thoiluongtime.setModel(new javax.swing.SpinnerNumberModel(0, 0, 480, 1));
         thoiluongtime.setEnabled(false);
         jPanel1.add(thoiluongtime, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 290, 300, 30));
-
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 680, 570));
 
         pack();
