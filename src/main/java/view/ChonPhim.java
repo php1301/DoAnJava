@@ -6,6 +6,7 @@
 package view;
 
 import controller.ComboBoxHelper;
+import controller.LichChieuController;
 import controller.PhimController;
 import controller.TheLoaiController;
 import java.awt.Cursor;
@@ -21,6 +22,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -53,10 +55,13 @@ public class ChonPhim extends javax.swing.JFrame {
     private String maLoaiNguoiDung;
     private PhimController phimController;
     private TheLoaiController theLoaiController;
+    private LichChieuController lichChieuController;
     private Object[] chiTietPhim;
     private ArrayList<String> tenPhim;
+    private List<String> ngayChieu;
+    private List<String> gioChieu;
     private List<Phim> phim;
-    
+
     public ChonPhim() {
         initComponents();
         setTitle("Trang Chọn Phim");
@@ -68,10 +73,13 @@ public class ChonPhim extends javax.swing.JFrame {
         maLoaiNguoiDung = prefs.get("maLoaiNguoiDung", defaultPrefs);
         setThongTinNguoiDung();
         phimController = new PhimController();
+        lichChieuController = new LichChieuController();
         theLoaiController = new TheLoaiController();
         tenPhim = new ArrayList<>();
+        ngayChieu = new ArrayList<>();
+        gioChieu = new ArrayList<>();
         renderComboBoxChonPhim();
-        
+
     }
 
     /**
@@ -181,9 +189,14 @@ public class ChonPhim extends javax.swing.JFrame {
             }
         });
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chọn phim trước", " " }));
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chọn ngày chiếu trước", " " }));
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -193,18 +206,18 @@ public class ChonPhim extends javax.swing.JFrame {
                 .addGap(29, 29, 29)
                 .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox1, 0, 104, Short.MAX_VALUE)
+                .addComponent(jComboBox1, 0, 119, Short.MAX_VALUE)
                 .addGap(64, 64, 64)
                 .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jComboBox2, 0, 108, Short.MAX_VALUE)
+                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(3, 3, 3)
                 .addComponent(jLabel13)
                 .addGap(38, 38, 38)
-                .addComponent(jComboBox3, 0, 107, Short.MAX_VALUE)
-                .addGap(135, 135, 135))
+                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(79, 79, 79))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -241,6 +254,7 @@ public class ChonPhim extends javax.swing.JFrame {
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_ok_48px_1.png"))); // NOI18N
         jButton1.setText("Đến trang chọn ghế");
+        jButton1.setEnabled(false);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -278,30 +292,30 @@ public class ChonPhim extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(28, 28, 28)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGap(28, 28, 28)
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                                .addComponent(trailerLabel)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(hyperlink, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGap(26, 26, 26)
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                            .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(60, 60, 60)))
+                                        .addComponent(trailerLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(hyperlink, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
+                                .addGap(26, 26, 26)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(60, 60, 60))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -470,35 +484,84 @@ public class ChonPhim extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        chiTietPhim = null;
+        gioChieu.clear();
+        ngayChieu.clear();
+        ngayChieu.add("Chọn phim trước");
+        gioChieu.add("Chọn ngày chiếu trước");
         jComboBox1.setSelectedIndex(-1);
-        jComboBox2.setSelectedIndex(-1);
-        jComboBox3.setSelectedIndex(-1);
+        ComboBoxHelper listener
+                = new ComboBoxHelper(true, false);
+        jComboBox2.addPopupMenuListener(listener);
+        jComboBox2.setModel(new DefaultComboBoxModel(ngayChieu.toArray()));
+        jComboBox3.addPopupMenuListener(listener);
+        jComboBox3.setModel(new DefaultComboBoxModel(gioChieu.toArray()));
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/placeholder.png")));
         jLabel9.setText("Tên phim");
         jLabel16.setText("Thời lượng");
         jLabel17.setText("Ngày khỏi chiếu");
         jLabel18.setText("Đánh giá");
-        
+        jLabel6.setText("Mô tả phim");
+        hyperlink.setText("");
+        jButton1.setEnabled(false);
+
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
-    private void actionListernChonPhim() {
+    private void actionListenerChonPhim() {
         jComboBox1.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent event) {
                 try {
                     JComboBox comboBox = (JComboBox) event.getSource();
-                    
-                    Object selected = comboBox.getSelectedItem();
-                    int maPhim = Integer.parseInt(selected.toString().split(" - ")[0]);
-                    chiTietPhim = phimController.getThongTinPhim(maPhim);
-                    renderTheLoai();
-                    renderThongTinPhim();
-                    constructHyperlinkTrailer();
+                    if (comboBox.getSelectedIndex() != -1) {
+                        Object selected = comboBox.getSelectedItem();
+                        int maPhim = Integer.parseInt(selected.toString().split(" - ")[0]);
+                        chiTietPhim = phimController.getThongTinPhim(maPhim);
+                        renderTheLoai();
+                        renderThongTinPhim();
+                        constructHyperlinkTrailer();
+                        renderComboBoxChonNgayChieu(maPhim);
+                    }
                 } catch (SQLException ex) {
                     Logger.getLogger(ChonPhim.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+    }
+
+    private void actionListenerChonNgayChieu() {
+        jComboBox2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                Object selectedPhim = jComboBox1.getSelectedItem();
+                Object selectedNgayChieu = jComboBox2.getSelectedItem();
+                if (!"Hiện không có ngày chiếu cho phim".equals(selectedNgayChieu.toString())) {
+                    int maPhim = Integer.parseInt(selectedPhim.toString().split(" - ")[0]);
+                    renderComboBoxChonGioChieu(maPhim, selectedNgayChieu.toString());
+                }
+            }
+        });
+    }
+
+    private void actionListenerChonGioChieu() {
+        jComboBox3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                JComboBox comboBox = (JComboBox) event.getSource();
+                Object selected = comboBox.getSelectedItem();
+                if (!"Hiện không có giờ chiếu cho phim".equals(selected.toString())) {
+                    int maLichChieu = Integer.parseInt(selected.toString().split(" - ")[0]);
+                    System.out.println("Performed" + maLichChieu);
+                    Object[] o = new Object[5];
+                    o[0] = taiKhoan;
+                    o[1] = maLichChieu;
+                    o[2] = maLoaiNguoiDung;
+                    o[3] = chiTietPhim;
+                    jButton1.setEnabled(true);
                 }
             }
         });
@@ -508,37 +571,37 @@ public class ChonPhim extends javax.swing.JFrame {
         dispose();
         User.main(null);
     }//GEN-LAST:event_jLabel8MouseClicked
-    
+
     private void constructHyperlinkTrailer() {
         hyperlink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         hyperlink.addMouseListener(new MouseAdapter() {
-            
+
             @Override
             public void mouseClicked(MouseEvent e) {
                 try {
-                    
+
                     Desktop.getDesktop().browse(new URI(hyperlink.getText()));
-                    
+
                 } catch (IOException | URISyntaxException e1) {
                     e1.printStackTrace();
                 }
             }
-            
+
             @Override
             public void mouseEntered(MouseEvent e) {
                 // the mouse has entered the label
             }
-            
+
             @Override
             public void mouseExited(MouseEvent e) {
                 // the mouse has exited the label
             }
         });
     }
-    
+
     private void renderComboBoxChonPhim() {
         try {
-            actionListernChonPhim();
+            actionListenerChonPhim();
             phim = phimController.layDanhSachPhim();
             for (Phim p : phim) {
                 tenPhim.add(p.getMaPhim() + " - " + p.getTenPhim());
@@ -550,9 +613,65 @@ public class ChonPhim extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(ChonPhim.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-    
+
+    private void renderComboBoxChonNgayChieu(int maPhim) {
+        try {
+            actionListenerChonNgayChieu();
+            ngayChieu.clear();
+            ngayChieu = lichChieuController.layLichChieuTheoNgayCuaPhim(maPhim);
+            if (ngayChieu.isEmpty()) {
+                ngayChieu.add("Hiện không có ngày chiếu cho phim");
+                gioChieu.clear();
+                gioChieu.add("Hiện không có giờ chiếu cho phim");
+                jComboBox3.setModel(new DefaultComboBoxModel(gioChieu.toArray()));
+                ComboBoxHelper listener
+                        = new ComboBoxHelper(true, false);
+                jComboBox3.addPopupMenuListener(listener);
+                jButton1.setEnabled(false);
+            } else {
+                gioChieu.clear();
+                gioChieu.add("Chọn ngày chiếu trước");
+                jComboBox3.setModel(new DefaultComboBoxModel(gioChieu.toArray()));
+                ComboBoxHelper listener
+                        = new ComboBoxHelper(true, false);
+                jComboBox3.addPopupMenuListener(listener);
+                jButton1.setEnabled(false);
+            }
+            jComboBox2.setModel(new DefaultComboBoxModel(ngayChieu.toArray()));
+            ComboBoxHelper listener
+                    = new ComboBoxHelper(true, false);
+            jComboBox2.addPopupMenuListener(listener);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ChonPhim.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    private void renderComboBoxChonGioChieu(int maPhim, String ngayChieu) {
+        try {
+            actionListenerChonGioChieu();
+            gioChieu.clear();
+            gioChieu = lichChieuController.layLichChieuTheoGioCuaPhim(maPhim, ngayChieu);
+            if (gioChieu.isEmpty()) {
+                gioChieu.add("Hiện không có giờ chiếu cho phim");
+                jButton1.setEnabled(false);
+            }
+            jComboBox3.setModel(new DefaultComboBoxModel(gioChieu.toArray()));
+            ComboBoxHelper listener
+                    = new ComboBoxHelper(true, false);
+            jComboBox3.addPopupMenuListener(listener);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ChonPhim.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(ChonPhim.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
     private void setThongTinNguoiDung() {
         try {
             jLabel22.setText(username);
@@ -561,21 +680,21 @@ public class ChonPhim extends javax.swing.JFrame {
             Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void renderThongTinPhim() {
         try {
             jLabel9.setText((String) chiTietPhim[1]);
             jLabel17.setText("Ngày khởi chiếu: " + (Date) chiTietPhim[5]);
             hyperlink.setText((String) chiTietPhim[2]);
             showAnhPhim((String) chiTietPhim[3]);
-            jLabel18.setText("Đánh giá: " + (Integer) chiTietPhim[6] + " điểm");
+            jLabel18.setText("Đánh giá: " + (Integer) chiTietPhim[6] + " điểm IMDB");
             jLabel6.setText("Mô tả phim: " + (String) chiTietPhim[4]);
             jLabel16.setText("Thời lượng: " + (Integer) chiTietPhim[7] + " phút");
         } catch (MalformedURLException ex) {
             Logger.getLogger(ChonPhim.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void showAnhPhim(String name) throws MalformedURLException {
         try {
             URL url = new URL(name);
@@ -587,7 +706,7 @@ public class ChonPhim extends javax.swing.JFrame {
             Logger.getLogger(ChonPhim.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void showAnhDaiDien(String name) throws MalformedURLException {
         try {
             URL url = new URL(name);
@@ -599,7 +718,7 @@ public class ChonPhim extends javax.swing.JFrame {
             Logger.getLogger(ChonPhim.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void renderTheLoai() {
         try {
             List<TheLoai> tloai = theLoaiController.layDanhSachTheLoai();
@@ -613,7 +732,7 @@ public class ChonPhim extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(ThemPhim.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
     private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
         // TODO add your handling code here:
@@ -631,7 +750,7 @@ public class ChonPhim extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(ChonPhim.this, "Đăng xuất thất bại", "Thất bại",
                         JOptionPane.ERROR_MESSAGE);
             }
-            
+
         }
     }//GEN-LAST:event_jLabel10MouseClicked
 
@@ -651,6 +770,10 @@ public class ChonPhim extends javax.swing.JFrame {
             jComboBox1.setModel(new DefaultComboBoxModel(filterArray.toArray()));
         }
     }//GEN-LAST:event_jTextField1KeyReleased
+
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox2ActionPerformed
 
     /**
      * @param args the command line arguments

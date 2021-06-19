@@ -386,6 +386,7 @@ public class SuaPhim extends javax.swing.JFrame {
     private void imgurRequest(File f) {
         try {
             String imgurClientId = "4d7220bef63dd30";
+            Unirest.config().reset();
             Unirest.config().connectTimeout(1000);
             String response = Unirest.post("https://api.imgur.com/3/image")
                     .header("Authorization", "Client-ID " + imgurClientId)

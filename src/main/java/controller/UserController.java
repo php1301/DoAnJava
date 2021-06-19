@@ -24,6 +24,7 @@ import model.User;
  * @author Admin
  */
 public class UserController {
+
     private Connection con;
     private List<User> listUser;
     Database db = new Database();
@@ -32,7 +33,7 @@ public class UserController {
         listUser = new LinkedList<User>();
         System.out.println("Chay constructor User");
     }
-    
+
     public List<User> LayDanhSachUser() throws SQLException {
         System.out.println("Lay danh sach User");
         listUser.clear();
@@ -40,17 +41,17 @@ public class UserController {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-                connect();
-                ps = con.prepareStatement(sql);
-                rs = ps.executeQuery();
-                while (rs.next()) {                
+            connect();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
                 int taiKhoan = rs.getInt(1);
                 String password = rs.getString(2);
                 String username = rs.getString(3);
                 String email = rs.getString(4);
                 Date ngaySinh = rs.getDate(5);
                 String diaChi = rs.getString(6);
-                int diemTichLuy  = rs.getInt(7);
+                int diemTichLuy = rs.getInt(7);
                 String soDT = rs.getString(8);
                 String hoTen = rs.getString(9);
                 String avatar = rs.getString(10);
@@ -62,12 +63,11 @@ public class UserController {
         } catch (SQLException e) {
             Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, e);
             return null;
-        }
-        finally {
+        } finally {
             disconnect(rs, ps);
         }
     }
-    
+
     public Object[] getThongTinUser(int taiKhoanArg) throws SQLException {
         System.out.println("Lay thong tin user");
         String sql = "select * from Users where taiKhoan = ?";
@@ -99,11 +99,11 @@ public class UserController {
             Logger.getLogger(UserController.class
                     .getName()).log(Level.SEVERE, null, e);
             return null;
-        }
-        finally {
+        } finally {
             disconnect(rs, ps);
         }
     }
+
     public void suaThongTinUser(int taiKhoanArg, Object[] o) throws SQLException {
         System.out.println("Sua thong tin user");
         String sql = "update Users "
@@ -111,6 +111,7 @@ public class UserController {
                 + "diaChi  = ?, "
                 + "soDT = ?, "
                 + "hoTen = ?, "
+                + "diemTichLuy = ?, "
                 + "maLoaiNguoiDung = ? "
                 + "where taiKhoan = ?";
         PreparedStatement ps = null;
@@ -126,6 +127,7 @@ public class UserController {
             ps.setString(col++, (String) o[1]);
             ps.setString(col++, (String) o[2]);
             ps.setString(col++, (String) o[0]);
+            ps.setInt(col++, (int) o[5]);
             ps.setInt(col++, (int) o[4]);
             ps.setInt(col++, taiKhoanArg);
             ps.executeUpdate();
@@ -140,7 +142,7 @@ public class UserController {
             disconnect(rs, ps);
         }
     }
-    
+
     public void xoaUser(int taiKhoanArg, int index) throws SQLException {
         System.out.println("Xoa user");
         String sql = "Delete from Users where taiKhoan = ?";
@@ -165,6 +167,7 @@ public class UserController {
             disconnect(rs, ps);
         }
     }
+
     public void connect() throws SQLException {
         try {
             db.connect();
@@ -209,5 +212,5 @@ public class UserController {
             }
         }
     }
-    
+
 }

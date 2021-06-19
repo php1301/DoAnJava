@@ -69,6 +69,7 @@ public class QLLC extends javax.swing.JFrame {
         btSua = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -84,7 +85,7 @@ public class QLLC extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Mã", "Phim", "Ngày chiếu", "Giờ chiếu", "Thời Lượng", "Giá vé", "Hệ thống rạp", "Cụm rạp", "Rạp"
+                "Mã", "Phim", "Ngày chiếu", "Giờ chiếu", "Thời Lượng", "Giá vé", "Hệ thống rạp", "Cụm rạp", "Phòng Chiếu"
             }
         ));
         tbLC.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -100,6 +101,7 @@ public class QLLC extends javax.swing.JFrame {
         }
 
         jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 840, 322));
+
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 153, 0));
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_search_more_32px.png"))); // NOI18N
@@ -121,6 +123,7 @@ public class QLLC extends javax.swing.JFrame {
             }
         });
         jPanel2.add(txtSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 60, 600, 30));
+
         btBack.setBackground(new java.awt.Color(51, 51, 51));
         btBack.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btBack.setForeground(new java.awt.Color(0, 255, 0));

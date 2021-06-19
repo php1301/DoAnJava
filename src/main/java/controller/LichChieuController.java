@@ -11,13 +11,16 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import model.Database;
 import model.LichChieu;
 
@@ -26,15 +29,16 @@ import model.LichChieu;
  * @author Trung
  */
 public class LichChieuController {
+
     private Connection con;
     private List<LichChieu> listLichChieu;
     Database db = new Database();
-    
+
     public LichChieuController() {
         listLichChieu = new LinkedList<LichChieu>();
         System.out.println("Chay constructor LichChieu");
     }
-    
+
     public List<LichChieu> layDanhSachLichChieu() throws SQLException {
         System.out.println("Lay danh sach lich chieu");
         listLichChieu.clear();
@@ -68,7 +72,7 @@ public class LichChieuController {
             disconnect(rs, ps);
         }
     }
-    
+
     public Object[] getThongTinLichChieu(int maLichChieuArg) throws SQLException {
         System.out.println("Lay thong tin lich chieu");
         String sql = "select * from LichChieu where maLichChieu = ?";
@@ -103,8 +107,8 @@ public class LichChieuController {
             disconnect(rs, ps);
         }
     }
-    
-     public void suaThongTinLichChieu(int maLichChieuArg, Object[] o) throws SQLException {
+
+    public void suaThongTinLichChieu(int maLichChieuArg, Object[] o) throws SQLException {
         System.out.println("Sua thong tin lich chieu");
         String sql = "update LichChieu "
                 + "set ngayChieu = ?, "
@@ -143,7 +147,7 @@ public class LichChieuController {
             disconnect(rs, ps);
         }
     }
-     
+
     public void themLichChieu(Object[] o) throws SQLException {
         System.out.println("Them Lich Chieu");
         String sql = "insert into LichChieu(ngayChieu, gioChieu, giaVe, thoiLuong, maRap, maHeThongRap, maCumRap, maPhim) values(?, ?, ?, ?, ? ,?, ?, ?)";
@@ -176,7 +180,7 @@ public class LichChieuController {
         }
 
     }
-    
+
     public void xoaLichChieu(int maLichChieuArg, int index) throws SQLException {
         System.out.println("Xoa lich chieu");
         String sql = "Delete from LichChieu where maLichChieu = ?";
@@ -202,7 +206,68 @@ public class LichChieuController {
             disconnect(rs, ps);
         }
     }
-    
+
+    public List<String> layLichChieuTheoNgayCuaPhim(int maPhim) throws SQLException {
+        System.out.println("Lay lich chieu theo ngay cua phim");
+        String sql = "select ngayChieu from LichChieu where maPhim = ?";
+        System.out.println(maPhim);
+        SimpleDateFormat DateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<String> ngayChieuList = new ArrayList<>();
+        try {
+            connect();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, maPhim);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                String ngayChieu = DateFormatter.format(rs.getDate(1));
+                ngayChieuList.add(ngayChieu);
+            }
+            List<String> uniqueNgayChieuList = ngayChieuList.stream().distinct().collect(Collectors.toList());
+            return uniqueNgayChieuList;
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            Logger.getLogger(LichChieuController.class
+                    .getName()).log(Level.SEVERE, null, e);
+            return null;
+        } finally {
+            disconnect(rs, ps);
+        }
+    }
+
+    public List<String> layLichChieuTheoGioCuaPhim(int maPhim, String ngayChieu) throws SQLException, ParseException {
+        System.out.println("Lay lich chieu theo gio cua phim");
+        String sql = "select maLichChieu, gioChieu from LichChieu where maPhim = ? and ngayChieu like ?";
+        System.out.println(maPhim);
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        SimpleDateFormat fm1 = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat fm2 = new SimpleDateFormat("yyyy-MM-dd");
+        List<String> gioChieuList = new ArrayList<>();
+        try {
+            connect();
+            ps = con.prepareStatement(sql);
+            Date stringToDate = new Date(fm1.parse(ngayChieu).getTime());
+            ps.setInt(1, maPhim);
+            ps.setString(2, "%" + fm2.format(stringToDate) + "%");
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int maLichChieu = rs.getInt(1);
+                String gioChieu = rs.getString(2);
+                gioChieuList.add(maLichChieu + " - " + gioChieu);
+            }
+            return gioChieuList;
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            Logger.getLogger(LichChieuController.class
+                    .getName()).log(Level.SEVERE, null, e);
+            return null;
+        } finally {
+            disconnect(rs, ps);
+        }
+    }
+
     public void connect() throws SQLException {
         try {
             db.connect();

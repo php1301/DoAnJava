@@ -345,7 +345,7 @@ public class Admin extends javax.swing.JFrame {
 
         jLabel9.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(204, 204, 204));
-        jLabel9.setText("Quản lý người dùng");
+        jLabel9.setText("Quản lý khách hàng");
 
         jLabel10.setForeground(new java.awt.Color(204, 204, 204));
         jLabel10.setText("Quản lý thông tin người dùng, loại người dùng");
@@ -1026,13 +1026,9 @@ public class Admin extends javax.swing.JFrame {
     }//GEN-LAST:event_panelUsersMouseClicked
 
     private void jPanel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel6MouseClicked
-        try {
             // TODO add your handling code here:
-            QLPhim ql = new QLPhim();
             QLPhim.main(null);
-        } catch (SQLException | ClassNotFoundException | ParseException | InterruptedException ex) {
-            Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
     }//GEN-LAST:event_jPanel6MouseClicked
 
     private void jPanel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel10MouseClicked
