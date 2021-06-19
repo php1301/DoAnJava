@@ -81,9 +81,17 @@ public class QLKH extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Mã", "Họ và Tên", "Địa chỉ", "Số điện thoại", "Ngày sinh", "Loại"
+                "Mã", "Họ và Tên", "Địa chỉ", "Số điện thoại", "Ngày sinh", "Loại", "Điểm tích lũy"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tbKH.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbKHMouseClicked(evt);
@@ -134,7 +142,7 @@ public class QLKH extends javax.swing.JFrame {
         txtSua.setBackground(new java.awt.Color(51, 51, 51));
         txtSua.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         txtSua.setForeground(new java.awt.Color(0, 255, 0));
-        txtSua.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_screwdriver_32px.png"))); // NOI18N
+        txtSua.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_wrench_24px_1.png"))); // NOI18N
         txtSua.setText("Sửa");
         txtSua.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -226,13 +234,14 @@ public class QLKH extends javax.swing.JFrame {
             modelUser = (DefaultTableModel) tbKH.getModel();
             modelUser.setRowCount(0);
             for (User u : user) {
-                Object[] o = new Object[6];
+                Object[] o = new Object[7];
                 o[0] = u.getTaiKhoan();
                 o[1] = u.getHoTen();
                 o[2] = u.getDiaChi();
                 o[3] = u.getSoDT();
                 o[4] = DateFormatter.format(u.getNgaySinh());
                 o[5] = loaiNguoiDung.get(u.getMaLoaiNguoiDung() - 1).getTenLoai();
+                o[6] = u.getDiemTichLuy();
                 modelUser.addRow(o);
             }
         }

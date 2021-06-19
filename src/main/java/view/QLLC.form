@@ -84,7 +84,7 @@
                         <Column editable="true" title="Gi&#xe1; v&#xe9;" type="java.lang.Object"/>
                         <Column editable="true" title="H&#x1ec7; th&#x1ed1;ng r&#x1ea1;p" type="java.lang.Object"/>
                         <Column editable="true" title="C&#x1ee5;m r&#x1ea1;p" type="java.lang.Object"/>
-                        <Column editable="true" title="R&#x1ea1;p" type="java.lang.Object"/>
+                        <Column editable="true" title="Ph&#xf2;ng Chi&#x1ebf;u" type="java.lang.Object"/>
                       </Table>
                     </Property>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">

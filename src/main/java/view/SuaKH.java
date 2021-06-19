@@ -48,9 +48,7 @@ public class SuaKH extends javax.swing.JFrame {
     public void setSelectedIndex(int selectedIndex) {
         this.selectedIndex = selectedIndex;
     }
-    
-    
-    
+
     /**
      * Creates new form TTKH
      */
@@ -78,7 +76,7 @@ public class SuaKH extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         ngaySinhVal = new com.toedter.calendar.JDateChooser();
         tenLoaiVal = new javax.swing.JComboBox<>();
-        soDTVal = new javax.swing.JTextField();
+        diemTichLuyVal = new javax.swing.JTextField();
         btxoa = new javax.swing.JButton();
         btBack = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
@@ -89,6 +87,8 @@ public class SuaKH extends javax.swing.JFrame {
         diaChiVal = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         maKHVal = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        soDTVal = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -98,8 +98,8 @@ public class SuaKH extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Số điện thoại");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 200, 100, 30));
+        jLabel3.setText("Điểm tích lũy");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 300, 100, 30));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
@@ -109,7 +109,7 @@ public class SuaKH extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Loại:");
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 300, 77, 30));
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 350, 77, 30));
 
         ngaySinhVal.setBackground(new java.awt.Color(204, 204, 204));
         ngaySinhVal.setDateFormatString("dd-MM-yyyy");
@@ -125,27 +125,27 @@ public class SuaKH extends javax.swing.JFrame {
                 tenLoaiValActionPerformed(evt);
             }
         });
-        jPanel1.add(tenLoaiVal, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 300, 260, 30));
+        jPanel1.add(tenLoaiVal, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 350, 260, 30));
 
-        soDTVal.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        soDTVal.addActionListener(new java.awt.event.ActionListener() {
+        diemTichLuyVal.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        diemTichLuyVal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                soDTValActionPerformed(evt);
+                diemTichLuyValActionPerformed(evt);
             }
         });
-        jPanel1.add(soDTVal, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 200, 260, 30));
+        jPanel1.add(diemTichLuyVal, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 300, 260, 30));
 
         btxoa.setBackground(new java.awt.Color(51, 51, 51));
         btxoa.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         btxoa.setForeground(new java.awt.Color(51, 255, 51));
-        btxoa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_delete_24px_1.png"))); // NOI18N
+        btxoa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_minus_32px.png"))); // NOI18N
         btxoa.setText("Xóa");
         btxoa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btxoaActionPerformed(evt);
             }
         });
-        jPanel1.add(btxoa, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 370, 110, 50));
+        jPanel1.add(btxoa, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 430, 110, 50));
 
         btBack.setBackground(new java.awt.Color(51, 51, 51));
         btBack.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -158,7 +158,7 @@ public class SuaKH extends javax.swing.JFrame {
                 btBackActionPerformed(evt);
             }
         });
-        jPanel1.add(btBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 370, -1, 50));
+        jPanel1.add(btBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 430, -1, 50));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 153, 51));
@@ -194,7 +194,7 @@ public class SuaKH extends javax.swing.JFrame {
                 btSuaActionPerformed(evt);
             }
         });
-        jPanel1.add(btSua, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 370, 110, 50));
+        jPanel1.add(btSua, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 430, 110, 50));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
@@ -218,7 +218,20 @@ public class SuaKH extends javax.swing.JFrame {
         maKHVal.setEnabled(false);
         jPanel1.add(maKHVal, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 50, 260, 30));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 710, 450));
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setText("Số điện thoại");
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 200, 100, 30));
+
+        soDTVal.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        soDTVal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                soDTValActionPerformed(evt);
+            }
+        });
+        jPanel1.add(soDTVal, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 200, 260, 30));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 710, 550));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -227,14 +240,14 @@ public class SuaKH extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_tenLoaiValActionPerformed
 
-    private void soDTValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_soDTValActionPerformed
+    private void diemTichLuyValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_diemTichLuyValActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_soDTValActionPerformed
+    }//GEN-LAST:event_diemTichLuyValActionPerformed
 
     private void btxoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btxoaActionPerformed
         // TODO add your handling code here:
         try {
-             int result = JOptionPane.showConfirmDialog(SuaKH.this, "Bạn có chắc chắc muốn xóa khách hàng này không?", "Xóa khách hàng",
+            int result = JOptionPane.showConfirmDialog(SuaKH.this, "Bạn có chắc chắc muốn xóa khách hàng này không?", "Xóa khách hàng",
                     JOptionPane.YES_NO_OPTION);
             if (result == JOptionPane.YES_OPTION) {
                 userController.xoaUser(taiKhoan, selectedIndex);
@@ -268,19 +281,20 @@ public class SuaKH extends javax.swing.JFrame {
         int value = tenLoaiVal.getSelectedIndex() + 1;
         java.sql.Date ngSinhVal;
         ngSinhVal = new java.sql.Date(ngaySinhVal.getDate().getTime());
-        Object[] o = new Object[5];
+        Object[] o = new Object[6];
         o[0] = hoTenVal.getText();
         o[1] = diaChiVal.getText();
         o[2] = soDTVal.getText();
         o[3] = ngSinhVal;
         o[4] = value;
+        o[5] = Integer.parseInt(diemTichLuyVal.getText());
         try {
             userController.suaThongTinUser(taiKhoan, o);
             JOptionPane.showMessageDialog(SuaKH.this, "Sửa thông tin khách hàng thành công", "Thành công",
                     JOptionPane.INFORMATION_MESSAGE);
             this.setVisible(false);
         } catch (SQLException ex) {
-               JOptionPane.showMessageDialog(SuaKH.this, "Xảy ra lỗi khi sửa thông tin khách hàng vui lòng chọn khách hàng khác", "Có lỗi",
+            JOptionPane.showMessageDialog(SuaKH.this, "Xảy ra lỗi khi sửa thông tin khách hàng vui lòng chọn khách hàng khác", "Có lỗi",
                     JOptionPane.ERROR_MESSAGE);
             this.setVisible(false);
         }
@@ -291,24 +305,30 @@ public class SuaKH extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_diaChiValActionPerformed
 
+    private void soDTValActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_soDTValActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_soDTValActionPerformed
+
     public void renderThongTinUser() throws MalformedURLException {
         try {
             Object[] o = userController.getThongTinUser(taiKhoan);
             maKHVal.setText(o[0].toString());
             hoTenVal.setText((String) o[8]);
             diaChiVal.setText((String) o[5]);
+            diemTichLuyVal.setText(o[6].toString());
             soDTVal.setText(o[7].toString());
             ngaySinhVal.setDate((Date) o[4]);
             tenLoaiVal.setSelectedIndex(((int) o[10]) - 1);
             //btSua.setEnabled(false);
             Helper.addChangeListener(hoTenVal, e -> btSua.setEnabled(true));
-            Helper.addChangeListener(diaChiVal,  e -> btSua.setEnabled(true));
-            Helper.addChangeListener(soDTVal,  e -> btSua.setEnabled(true));
+            Helper.addChangeListener(diaChiVal, e -> btSua.setEnabled(true));
+            Helper.addChangeListener(diemTichLuyVal, e -> btSua.setEnabled(true));
+            Helper.addChangeListener(soDTVal, e -> btSua.setEnabled(true));
         } catch (SQLException ex) {
             Logger.getLogger(SuaKH.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void renderListLoai() {
         try {
             List<LoaiNguoiDung> lNguoiDung = loaiNguoiDungController.LayDanhSachLoaiNguoiDung();
@@ -320,7 +340,7 @@ public class SuaKH extends javax.swing.JFrame {
             Logger.getLogger(SuaKH.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -376,8 +396,10 @@ public class SuaKH extends javax.swing.JFrame {
     private javax.swing.JButton btSua;
     private javax.swing.JButton btxoa;
     private javax.swing.JTextField diaChiVal;
+    private javax.swing.JTextField diemTichLuyVal;
     private javax.swing.JTextField hoTenVal;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

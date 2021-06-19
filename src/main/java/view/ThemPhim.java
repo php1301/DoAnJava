@@ -327,6 +327,7 @@ public class ThemPhim extends javax.swing.JFrame {
     private void imgurRequest(File f) {
         try {
             String imgurClientId = "4d7220bef63dd30";
+            Unirest.config().reset();
             Unirest.config().connectTimeout(1000);
             String response = Unirest.post("https://api.imgur.com/3/image")
                     .header("Authorization", "Client-ID " + imgurClientId)
@@ -402,7 +403,7 @@ public class ThemPhim extends javax.swing.JFrame {
     private void btnBack1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBack1ActionPerformed
         // TODO add your handling code here:
         dispose();
-       
+
     }//GEN-LAST:event_btnBack1ActionPerformed
 
     /**
