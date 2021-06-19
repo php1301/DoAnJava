@@ -27,12 +27,14 @@ import model.Phong;
  *
  * @author Hp
  */
-public class ThemLichChieu extends javax.swing.JFrame {    
+public class ThemLichChieu extends javax.swing.JFrame {
+
     private LichChieuController lichChieuController;
     private PhimController phimController;
     private PhongController phongController;
     private ArrayList<String> tenPhim;
     private ArrayList<String> tenRap;
+
     /**
      * Creates new form ThemLichChieu
      */
@@ -136,7 +138,7 @@ public class ThemLichChieu extends javax.swing.JFrame {
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setText("Rạp");
+        jLabel10.setText("Phòng Chiếu");
         jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 380, 100, 30));
         jPanel1.add(giavetxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 180, 300, 30));
 
@@ -151,8 +153,6 @@ public class ThemLichChieu extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnthem, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 440, 130, 40));
-
-
         jPanel1.add(giochieu, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 130, 160, 30));
 
         cumrapcbb.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -185,7 +185,6 @@ public class ThemLichChieu extends javax.swing.JFrame {
         thoiluongtime.setEnabled(false);
         jPanel1.add(thoiluongtime, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 230, 300, 30));
 
-
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 620, 500));
 
         pack();
@@ -198,8 +197,10 @@ public class ThemLichChieu extends javax.swing.JFrame {
 
     private void btnthemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnthemActionPerformed
         // TODO add your handling code here:
-        int valuePhim = phimcbb.getSelectedIndex() + 1;
-        int valueRap = rapcbb.getSelectedIndex() + 1;
+        Object selected = phimcbb.getSelectedItem();
+        Object selectedRap = rapcbb.getSelectedItem();
+        int valuePhim = Integer.parseInt(selected.toString().split(" - ")[0]);
+        int valueRap = Integer.parseInt(selectedRap.toString().split(" - ")[0]);
         java.sql.Date ngayChieuVal = new java.sql.Date(giochieu.getDate().getTime());
         int h = Integer.parseInt(timepicker.getValue().toString().substring(11, 13));
         int m = Integer.parseInt(timepicker.getValue().toString().substring(14, 16));
@@ -231,18 +232,20 @@ public class ThemLichChieu extends javax.swing.JFrame {
     private void phimcbbItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_phimcbbItemStateChanged
         // TODO add your handling code here:
         try {
-            Object[] o = phimController.getThongTinPhim(phimcbb.getSelectedIndex() + 1);
+            Object selected = phimcbb.getSelectedItem();
+            int maPhim = Integer.parseInt(selected.toString().split(" - ")[0]);
+            Object[] o = phimController.getThongTinPhim(maPhim);
             thoiluongtime.setValue((int) o[7]);
         } catch (SQLException ex) {
             Logger.getLogger(SuaLichChieu.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_phimcbbItemStateChanged
-    
+
     public void renderListPhim() {
         try {
             List<Phim> phim = phimController.layDanhSachPhim();
             for (Phim p : phim) {
-                tenPhim.add(p.getTenPhim());
+                tenPhim.add(p.getMaPhim() + " - " + p.getTenPhim());
             }
             phimcbb.setModel(new DefaultComboBoxModel<>((String[]) tenPhim.toArray(new String[0])));
             thoiluongtime.setValue(phim.get(0).getThoiLuong());
@@ -251,21 +254,22 @@ public class ThemLichChieu extends javax.swing.JFrame {
         }
 
     }
-    
+
     public void renderListPhong() {
         try {
             List<Phong> phong = phongController.layDanhSachPhong();
             for (Phong p : phong) {
-                tenRap.add(p.getTenRap());
+                tenRap.add(p.getMaRap() + " - " + p.getTenRap());
             }
             rapcbb.setModel(new DefaultComboBoxModel<>((String[]) tenRap.toArray(new String[0])));
-            hethongcbb.setModel(new DefaultComboBoxModel<>(new String[] { "BHD Star Cineplex"}));
-            cumrapcbb.setModel(new DefaultComboBoxModel<>(new String[] { "BHDStar Hoang Van Thu"}));
+            hethongcbb.setModel(new DefaultComboBoxModel<>(new String[]{"BHD Star Cineplex"}));
+            cumrapcbb.setModel(new DefaultComboBoxModel<>(new String[]{"BHDStar Hoang Van Thu"}));
         } catch (SQLException ex) {
             Logger.getLogger(SuaLichChieu.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
+
     /**
      * @param args the command line arguments
      */
