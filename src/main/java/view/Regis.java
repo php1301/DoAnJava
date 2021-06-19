@@ -7,7 +7,6 @@ package view;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.awt.Color;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
@@ -16,8 +15,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,17 +29,19 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import kong.unirest.Unirest;
 import org.mindrot.jbcrypt.BCrypt;
-import model.Database;
+
 /**
  *
  * @author Hp
  */
 public class Regis extends javax.swing.JFrame {
-    Connection conn=null;
-    PreparedStatement pst=null;
+
+    Connection conn = null;
+    PreparedStatement pst = null;
     String driver = "com.mysql.cj.jdbc.Driver";
-    Statement stat=null;
-    File file=null;
+    Statement stat = null;
+    File file = null;
+
     /**
      * Creates new form Regis
      */
@@ -273,6 +274,7 @@ public class Regis extends javax.swing.JFrame {
         jLabel1.setText("Avatar");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 510, -1, -1));
 
+        txtimage.setEnabled(false);
         txtimage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtimageActionPerformed(evt);
@@ -322,132 +324,127 @@ public class Regis extends javax.swing.JFrame {
     }//GEN-LAST:event_txtphonenActionPerformed
 
     private void txtusernameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtusernameFocusGained
-     
+
     }//GEN-LAST:event_txtusernameFocusGained
 
     private void txtusernameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtusernameFocusLost
-      
+
     }//GEN-LAST:event_txtusernameFocusLost
 
     private void txtmailFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtmailFocusGained
-      
+
     }//GEN-LAST:event_txtmailFocusGained
 
     private void txtmailFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtmailFocusLost
-       
+
     }//GEN-LAST:event_txtmailFocusLost
 
     private void txtphonenFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtphonenFocusGained
-   
+
     }//GEN-LAST:event_txtphonenFocusGained
 
     private void txtphonenFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtphonenFocusLost
-       
+
     }//GEN-LAST:event_txtphonenFocusLost
 
     private void txtfullnameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtfullnameFocusGained
-        
-      
+
+
     }//GEN-LAST:event_txtfullnameFocusGained
 
     private void txtfullnameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtfullnameFocusLost
-       
+
     }//GEN-LAST:event_txtfullnameFocusLost
 
     private void RESETMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_RESETMouseClicked
-         txtusername.setText("");
-         txtphonen.setText("");
-         txtfullname.setText("");
-         txtconpass.setText("");
-         txtmail.setText("");
-         txtpass.setText("");
-         txtimage.setText("");
+        txtusername.setText("");
+        txtphonen.setText("");
+        txtfullname.setText("");
+        txtconpass.setText("");
+        txtmail.setText("");
+        txtpass.setText("");
+        txtimage.setText("");
     }//GEN-LAST:event_RESETMouseClicked
 
     private void CANCELMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CANCELMouseClicked
-        
-          
+
+
     }//GEN-LAST:event_CANCELMouseClicked
 
     private void REGISActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_REGISActionPerformed
-       try{
-           Class.forName(driver).newInstance();
-           String urlUnicode = "jdbc:mysql://103.97.125.254:3306/doanjava_v1?user=doanjava&password=a2DpigCp7PDOyGk&useUnicode=true&characterEncoding=utf8";
-           conn = DriverManager.getConnection(urlUnicode); 
-           String insert="INSERT INTO `Users`(`password`, `username`, `email`,`ngaySinh`,`diaChi`, `diemTichLuy`, `soDT`, `hoTen`, `avatar`, `maLoaiNguoiDung`) VALUES (?,?,?,?,?,?,?,?,?,?)";
-           pst=conn.prepareStatement(insert);
-           String pass=txtpass.getText();
-          java.sql.Date date=new java.sql.Date(datetxt.getDate().getTime());
+        try {
+            Class.forName(driver).newInstance();
+            String urlUnicode = "jdbc:mysql://103.97.125.254:3306/doanjava_v1?user=doanjava&password=a2DpigCp7PDOyGk&useUnicode=true&characterEncoding=utf8";
+            conn = DriverManager.getConnection(urlUnicode);
+            String insert = "INSERT INTO `Users`(`password`, `username`, `email`,`ngaySinh`,`diaChi`, `diemTichLuy`, `soDT`, `hoTen`, `avatar`, `maLoaiNguoiDung`) VALUES (?,?,?,?,?,?,?,?,?,?)";
+            pst = conn.prepareStatement(insert);
+            String pass = txtpass.getText();
+            java.sql.Date date = new java.sql.Date(datetxt.getDate().getTime());
 
-            if(pass!=null && !pass.isEmpty())
-            {
-               String hash = BCrypt.hashpw(pass, BCrypt.gensalt(10));
-                pst.setString(1,hash);
+            if (pass != null && !pass.isEmpty()) {
+                String hash = BCrypt.hashpw(pass, BCrypt.gensalt(10));
+                pst.setString(1, hash);
             }
-           pst.setString(2,txtusername.getText());
-           pst.setString(3,txtmail.getText());
-           pst.setDate(4,(Date)date);
-           pst.setString(5,Addresstxt.getText());
-           pst.setInt(6,0);
-           pst.setString(7,txtphonen.getText());
-           pst.setString(8,txtfullname.getText());
-          
-           pst.setString(9,txtimage.getText());
-           pst.setInt(10,2);
-         
-           String confirmpass=txtconpass.getText();
- 
-            String mail=txtmail.getText();
-            String regexmail="^[a-z0-9]*@{1}([\\w]+\\.[\\w]+|[\\w]+\\.[\\w]+\\.[\\w]+\\.[\\w]+|[\\w]+\\.[\\w]+\\.[\\w]+)$";
-            String username=txtusername.getText();
-            String regexusername="^[\\w]{3,}$";
-            String userphone=txtphonen.getText();
-            String regexuserphone="^0{1}[0-9]{8,9}$";
-            String regexuserpassword="^[\\w]{8,}$";
-            String img=txtimage.getText();
-            String regeximage="^https?://(?:[a-z0-9\\-]+\\.)+[a-z]{2,6}(?:/[^/#?]+)+\\.(?:jpg|gif|png)$";
-         
-        
-           
-           if((!Pattern.matches(regexmail, mail))||(!Pattern.matches(regexusername, username))||(!Pattern.matches(regexuserphone, userphone))||(!Pattern.matches(regexuserpassword, pass))||(!Pattern.matches(pass, confirmpass))||(!Pattern.matches(regeximage, img)))
-           {
-                JOptionPane.showMessageDialog(null, "REGISTER UNSUCCESSFULLY","ERORR", JOptionPane.ERROR_MESSAGE);
-           }
-           else
-           {
-           
-           pst.executeUpdate();
-           JOptionPane.showMessageDialog(null,"REGISTER SUCCESSFULLY");
-           login lg =new login();
-           login.main(null);
-           dispose();
-           
-           }
+            pst.setString(2, txtusername.getText());
+            pst.setString(3, txtmail.getText());
+            pst.setDate(4, (Date) date);
+            pst.setString(5, Addresstxt.getText());
+            pst.setInt(6, 0);
+            pst.setString(7, txtphonen.getText());
+            pst.setString(8, txtfullname.getText());
+
+            pst.setString(9, txtimage.getText());
+            pst.setInt(10, 2);
+
+            String confirmpass = txtconpass.getText();
+
+            String mail = txtmail.getText();
+            String regexmail = "^[a-z0-9]*@{1}([\\w]+\\.[\\w]+|[\\w]+\\.[\\w]+\\.[\\w]+\\.[\\w]+|[\\w]+\\.[\\w]+\\.[\\w]+)$";
+            String username = txtusername.getText();
+            String regexusername = "^[\\w]{3,}$";
+            String userphone = txtphonen.getText();
+            String regexuserphone = "^0{1}[0-9]{8,9}$";
+            String regexuserpassword = "^[\\w]{8,}$";
+            String img = txtimage.getText();
+            String regeximage = "^https?://(?:[a-z0-9\\-]+\\.)+[a-z]{2,6}(?:/[^/#?]+)+\\.(?:jpg|gif|png)$";
+
+            if ((!Pattern.matches(regexmail, mail)) || (!Pattern.matches(regexusername, username)) || (!Pattern.matches(regexuserphone, userphone)) || (!Pattern.matches(regexuserpassword, pass)) || (!Pattern.matches(pass, confirmpass)) || (!Pattern.matches(regeximage, img))) {
+                JOptionPane.showMessageDialog(null, "REGISTER UNSUCCESSFULLY", "ERROR", JOptionPane.ERROR_MESSAGE);
+            } else {
+                pst.executeUpdate();
+                JOptionPane.showMessageDialog(null, "REGISTER SUCCESSFULLY");
+                login lg = new login();
+                login.main(null);
+                dispose();
+
+            }
             pst.close();
             conn.close();
-        }
-        
-         catch(SQLException se)
-            {
-               se.printStackTrace();
+        } catch (SQLException se) {
+            if (se instanceof SQLIntegrityConstraintViolationException) {
+                String error = se.getMessage().split(" for key ")[1].toUpperCase();
+                JOptionPane.showMessageDialog(null, "REGISTER UNSUCCESSFULLY " + error + " ALREADY EXISTED IN DATABASE", "ERROR", JOptionPane.ERROR_MESSAGE);
+            } else {
+                System.out.println(se);
+                JOptionPane.showMessageDialog(null, "REGISTER UNSUCCESSFULLY", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
-        catch(Exception e)
-           {
-      
-                e.printStackTrace();
-            }finally{
-         
-                        try{
-                                if(conn!=null)
-                                    conn.close();
-                            }catch(SQLException se)
-                            {
-                                    se.printStackTrace();
-                            }
-                    }
-       String confirm=txtconpass.getText().toString();
-       String pass=txtpass.getText().toString();
-       
+            se.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "REGISTER UNSUCCESSFULLY", "ERROR", JOptionPane.ERROR_MESSAGE);
+        } finally {
+
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+        String confirm = txtconpass.getText().toString();
+        String pass = txtpass.getText().toString();
+
     }//GEN-LAST:event_REGISActionPerformed
 
     private void txtusernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtusernameActionPerformed
@@ -455,108 +452,90 @@ public class Regis extends javax.swing.JFrame {
     }//GEN-LAST:event_txtusernameActionPerformed
 
     private void txtmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtmailActionPerformed
-    
-        
+
+
     }//GEN-LAST:event_txtmailActionPerformed
 
     private void txtmailKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtmailKeyPressed
-        String mail=txtmail.getText();
-        String regex="^[a-z0-9]*@{1}([\\w]+\\.[\\w]+|[\\w]+\\.[\\w]+\\.[\\w]+\\.[\\w]+|[\\w]+\\.[\\w]+\\.[\\w]+)$";
-        Pattern emailpattern=Pattern.compile(regex);
-        Matcher matcher=emailpattern.matcher(mail);
-        if(!matcher.matches())
-        {
+        String mail = txtmail.getText();
+        String regex = "^[a-z0-9]*@{1}([\\w]+\\.[\\w]+|[\\w]+\\.[\\w]+\\.[\\w]+\\.[\\w]+|[\\w]+\\.[\\w]+\\.[\\w]+)$";
+        Pattern emailpattern = Pattern.compile(regex);
+        Matcher matcher = emailpattern.matcher(mail);
+        if (!matcher.matches()) {
             notifimail.setText("*Invalid email ");
-        }
-        else
-        {
+        } else {
             notifimail.setText(null);
         }
     }//GEN-LAST:event_txtmailKeyPressed
 
     private void txtusernameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtusernameKeyReleased
-        String username=txtusername.getText();
-        String regex="^[\\w]{3,}$";
-        Pattern patternuser=Pattern.compile(regex);
-        Matcher match=patternuser.matcher(username);
-        if(!match.matches())
-        {
+        String username = txtusername.getText();
+        String regex = "^[\\w]{3,}$";
+        Pattern patternuser = Pattern.compile(regex);
+        Matcher match = patternuser.matcher(username);
+        if (!match.matches()) {
             notfiuser.setText("*At least 3 characters ");
-        }
-        else
-        {
+        } else {
             notfiuser.setText(null);
         }
     }//GEN-LAST:event_txtusernameKeyReleased
 
     private void txtphonenKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtphonenKeyReleased
-         String userphone=txtphonen.getText();
-        String regex="^0{1}[0-9]{8,9}$";
-        Pattern patternuser=Pattern.compile(regex);
-        Matcher match=patternuser.matcher(userphone);
-        if(!match.matches())
-        {
+        String userphone = txtphonen.getText();
+        String regex = "^0{1}[0-9]{8,9}$";
+        Pattern patternuser = Pattern.compile(regex);
+        Matcher match = patternuser.matcher(userphone);
+        if (!match.matches()) {
             notifiphone.setText("*Invalid Phone number");
-        }
-        else
-        {
+        } else {
             notifiphone.setText(null);
         }
     }//GEN-LAST:event_txtphonenKeyReleased
 
     private void txtpassKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtpassKeyReleased
-        String userpassword=txtpass.getText();
-        String regex="^[\\w]{8,}$";
-        Pattern patternuser=Pattern.compile(regex);
-        Matcher match=patternuser.matcher(userpassword);
-        if(!match.matches())
-        {
-            notifipass.setText("*Use 8 characters or more \n"+"for your password");
-        }
-        else
-        {
+        String userpassword = txtpass.getText();
+        String regex = "^[\\w]{8,}$";
+        Pattern patternuser = Pattern.compile(regex);
+        Matcher match = patternuser.matcher(userpassword);
+        if (!match.matches()) {
+            notifipass.setText("*Use 8 characters or more \n" + "for your password");
+        } else {
             notifipass.setText(null);
         }
     }//GEN-LAST:event_txtpassKeyReleased
 
     private void txtconpassKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtconpassKeyReleased
-       String userpassword=txtpass.getText();
-       String confirmpass=txtconpass.getText();
-        Pattern patternuser=Pattern.compile(confirmpass);
-        Matcher match=patternuser.matcher(userpassword);
-        if(!match.matches())
-        {
-            notificonfirmpass.setText("*Those passwords didn’t match\n "+ ".Try again.");
-        }
-        else
-        {
+        String userpassword = txtpass.getText();
+        String confirmpass = txtconpass.getText();
+        Pattern patternuser = Pattern.compile(confirmpass);
+        Matcher match = patternuser.matcher(userpassword);
+        if (!match.matches()) {
+            notificonfirmpass.setText("*Those passwords didn’t match\n " + ".Try again.");
+        } else {
             notificonfirmpass.setText(null);
         }
     }//GEN-LAST:event_txtconpassKeyReleased
 
     private void txtimageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtimageActionPerformed
-      
+
     }//GEN-LAST:event_txtimageActionPerformed
 
     private void txtimageKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtimageKeyReleased
-        String img=txtimage.getText();
-        String regex="^https?://(?:[a-z0-9\\-]+\\.)+[a-z]{2,6}(?:/[^/#?]+)+\\.(?:jpg|gif|png)$";
-        Pattern patternimg=Pattern.compile(regex);
-        Matcher match=patternimg.matcher(img);
-        if(!match.matches())
-        {
+        String img = txtimage.getText();
+        String regex = "^https?://(?:[a-z0-9\\-]+\\.)+[a-z]{2,6}(?:/[^/#?]+)+\\.(?:jpg|gif|png)$";
+        Pattern patternimg = Pattern.compile(regex);
+        Matcher match = patternimg.matcher(img);
+        if (!match.matches()) {
             notifiimg.setText("*Invalid image");
-        }
-        else
-        {
+        } else {
             notifiimg.setText(null);
         }
     }//GEN-LAST:event_txtimageKeyReleased
 
     private void CANCELActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CANCELActionPerformed
-        login lg =new login();
-           login.main(null);
-           dispose();
+        login lg = new login();
+        login.main(null);
+        dispose();
     }//GEN-LAST:event_CANCELActionPerformed
 
     private void txtconpassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtconpassActionPerformed
@@ -598,9 +577,10 @@ public class Regis extends javax.swing.JFrame {
             imgurRequest(file);
         }
     }//GEN-LAST:event_btOpenFileActionPerformed
-private void imgurRequest(File f) {
+    private void imgurRequest(File f) {
         try {
             String imgurClientId = "4d7220bef63dd30";
+            Unirest.config().reset();
             Unirest.config().connectTimeout(1000);
             String response = Unirest.post("https://api.imgur.com/3/image")
                     .header("Authorization", "Client-ID " + imgurClientId)
@@ -632,6 +612,7 @@ private void imgurRequest(File f) {
             Logger.getLogger(ThemPhim.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     /**
      * @param args the command line arguments
      */
