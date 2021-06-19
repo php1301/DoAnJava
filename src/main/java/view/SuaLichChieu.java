@@ -4,21 +4,70 @@
  * and open the template in the editor.
  */
 package view;
+import controller.Helper;
+import controller.LichChieuController;
+import controller.PhimController;
+import controller.PhongController;
+import java.net.MalformedURLException;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
 import java.util.Calendar;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import model.Phim;
+import model.Phong;
+
 /**
  *
  * @author Hp
  */
-public class SuaLichChieu extends javax.swing.JFrame {
-
+public class SuaLichChieu extends javax.swing.JFrame {    
     /**
      * Creates new form SuaLichChieu
      */
-    public SuaLichChieu() {
+    private LichChieuController lichChieuController;
+    private int maLichChieu;
+    private int selectedIndex;
+    private Helper helper;
+    private PhimController phimController;
+    private PhongController phongController;
+    private ArrayList<String> tenPhim;
+    private ArrayList<String> tenRap;
+
+    public int getMaLichChieu() {
+        return maLichChieu;
+    }
+
+    public void setMaLichChieu(int maLichChieu) {
+        this.maLichChieu = maLichChieu;
+    }
+
+    public int getSelectedIndex() {
+        return selectedIndex;
+    }
+
+    public void setSelectedIndex(int selectedIndex) {
+        this.selectedIndex = selectedIndex;
+    }
+    
+    
+    public SuaLichChieu() throws SQLException, ClassNotFoundException, ParseException, InterruptedException, MalformedURLException {
         initComponents();
+        setTitle("Trang Sửa hoặc xóa Thông Tin Lich Chieu");
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        lichChieuController = new LichChieuController();
+        helper = new Helper();
+        phimController = new PhimController();
+        tenPhim = new ArrayList<>();
+        phongController = new PhongController();
+        tenRap = new ArrayList<>();
     }
 
     /**
@@ -44,7 +93,6 @@ public class SuaLichChieu extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         giavetxt = new javax.swing.JTextField();
         Malctxt = new javax.swing.JTextField();
-        thoiluongtxt = new javax.swing.JTextField();
         btnsua = new javax.swing.JButton();
         giochieu = new com.toedter.calendar.JDateChooser();
         cumrapcbb = new javax.swing.JComboBox<>();
@@ -54,6 +102,8 @@ public class SuaLichChieu extends javax.swing.JFrame {
         Date date =new Date();
         SpinnerDateModel sm = new SpinnerDateModel(date,null,null,Calendar.HOUR_OF_DAY);
         timepicker = new javax.swing.JSpinner(sm);
+        thoiluongtime = new javax.swing.JSpinner();
+
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -88,10 +138,10 @@ public class SuaLichChieu extends javax.swing.JFrame {
         jLabel6.setText("SỬA HOẶC XÓA THÔNG TIN LỊCH CHIẾU");
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 30, 440, 41));
 
-        btnquaylai.setBackground(new java.awt.Color(255, 255, 255));
+        btnquaylai.setBackground(new java.awt.Color(51, 51, 51));
         btnquaylai.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnquaylai.setForeground(new java.awt.Color(255, 0, 0));
-        btnquaylai.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_back_to_32px_1.png"))); // NOI18N
+        btnquaylai.setForeground(new java.awt.Color(0, 255, 0));
+        btnquaylai.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_back_to_32px_2.png"))); // NOI18N
         btnquaylai.setText("Quay lại");
         btnquaylai.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -100,7 +150,7 @@ public class SuaLichChieu extends javax.swing.JFrame {
         });
         jPanel1.add(btnquaylai, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 510, -1, 40));
 
-        btnXoa.setBackground(new java.awt.Color(255, 255, 255));
+        btnXoa.setBackground(new java.awt.Color(204, 204, 204));
         btnXoa.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnXoa.setForeground(new java.awt.Color(255, 51, 0));
         btnXoa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_minus_32px.png"))); // NOI18N
@@ -136,9 +186,7 @@ public class SuaLichChieu extends javax.swing.JFrame {
         Malctxt.setEditable(false);
         Malctxt.setBackground(new java.awt.Color(204, 204, 204));
         jPanel1.add(Malctxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 90, 300, 30));
-        jPanel1.add(thoiluongtxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 290, 300, 30));
-
-        btnsua.setBackground(new java.awt.Color(255, 255, 255));
+        btnsua.setBackground(new java.awt.Color(51, 51, 51));
         btnsua.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnsua.setForeground(new java.awt.Color(0, 255, 0));
         btnsua.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_wrench_32px_1.png"))); // NOI18N
@@ -163,6 +211,11 @@ public class SuaLichChieu extends javax.swing.JFrame {
         jPanel1.add(rapcbb, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 440, 300, 30));
 
         phimcbb.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        phimcbb.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                phimcbbItemStateChanged(evt);
+            }
+        });
         jPanel1.add(phimcbb, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 140, 300, 30));
 
         hethongcbb.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -172,6 +225,9 @@ public class SuaLichChieu extends javax.swing.JFrame {
         timepicker.setEditor(de);
         jPanel1.add(timepicker, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 190, 130, 30));
 
+        thoiluongtime.setModel(new javax.swing.SpinnerNumberModel(0, 0, 480, 1));
+        thoiluongtime.setEnabled(false);
+        jPanel1.add(thoiluongtime, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 290, 300, 30));
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 680, 570));
 
         pack();
@@ -183,29 +239,114 @@ public class SuaLichChieu extends javax.swing.JFrame {
 
     private void btnsuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsuaActionPerformed
         // TODO add your handling code here:
+        int valuePhim = phimcbb.getSelectedIndex() + 1;
+        int valueRap = rapcbb.getSelectedIndex() + 1;
+        java.sql.Date ngayChieuVal = new java.sql.Date(giochieu.getDate().getTime());
+        int h = Integer.parseInt(timepicker.getValue().toString().substring(11, 13));
+        int m = Integer.parseInt(timepicker.getValue().toString().substring(14, 16));
+        int s = Integer.parseInt(timepicker.getValue().toString().substring(17, 19));
+        java.sql.Time gioChieuVal = new java.sql.Time(h, m, s);
+        Object[] o = new Object[6];
+        o[0] = valuePhim;
+        o[1] = ngayChieuVal;
+        o[2] = gioChieuVal;
+        o[3] = giavetxt.getText();
+        o[4] = valueRap;
+        o[5] = thoiluongtime.getValue();
+        try {
+            lichChieuController.suaThongTinLichChieu(maLichChieu, o);
+            JOptionPane.showMessageDialog(SuaLichChieu.this, "Sửa thông tin lịch chiếu thành công", "Thành công",
+                    JOptionPane.INFORMATION_MESSAGE);
+            this.setVisible(false);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(SuaLichChieu.this, "Xảy ra lỗi khi sửa thông tin lịch chiếu vui lòng chọn lịch chiếu khác", "Có lỗi",
+                    JOptionPane.ERROR_MESSAGE);
+            this.setVisible(false);
+        }
     }//GEN-LAST:event_btnsuaActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
         // TODO add your handling code here:
-        //        try(Connection con = ConnectionUtils.getMyConnection()){
-            //            String SQL = "DELETE FROM LICHCHIEU WHERE MALICHCHIEU = "+ ma;
-            //            Statement stat = con.createStatement();
-            //            stat.executeUpdate(SQL);
-            //            setTableLC();
-            //            clearLC();
-            //            con.close();
-            //            JOptionPane.showMessageDialog(this,"Thành công!");
-            //        } catch (Exception ex){
-            //            Logger.getLogger(QLLC.class.getName()).log(Level.SEVERE, null, ex);
-            //            JOptionPane.showMessageDialog(this,"Xóa không thành công!","Lỗi",JOptionPane.ERROR_MESSAGE);
-            //            System.out.println(ex);
-            //        }
+        try {
+            int result = JOptionPane.showConfirmDialog(SuaLichChieu.this, "Bạn có chắc chắc muốn xóa lịch chiếu này không?", "Xóa lịch chiếu",
+                    JOptionPane.YES_NO_OPTION);
+            if (result == JOptionPane.YES_OPTION) {
+                lichChieuController.xoaLichChieu(maLichChieu, selectedIndex);
+                JOptionPane.showMessageDialog(SuaLichChieu.this, "Xóa lịch chiếu thành công", "Xóa lịch chiếu",
+                        JOptionPane.INFORMATION_MESSAGE);
+                dispose();
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SuaLichChieu.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(SuaLichChieu.this, "Xảy ra lỗi khi xóa lịch chiếu vui lòng chọn lịch chiếu khác", "Có lỗi",
+                    JOptionPane.ERROR_MESSAGE);
+            dispose();
+        }
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnquaylaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnquaylaiActionPerformed
         // TODO add your handling code here:
-        //        clearLC();
+        dispose();
     }//GEN-LAST:event_btnquaylaiActionPerformed
+
+    private void phimcbbItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_phimcbbItemStateChanged
+        // TODO add your handling code here:
+        try {
+            Object[] o = phimController.getThongTinPhim(phimcbb.getSelectedIndex() + 1);
+            thoiluongtime.setValue((int) o[7]);
+        } catch (SQLException ex) {
+            Logger.getLogger(SuaLichChieu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_phimcbbItemStateChanged
+    
+    public void renderThongTinLichChieu() throws MalformedURLException {
+        try {
+            Object[] o = lichChieuController.getThongTinLichChieu(maLichChieu);
+            Malctxt.setText(o[0].toString());
+            phimcbb.setSelectedIndex(((int) o[8]) - 1);
+            giochieu.setDate((Date) o[1]);
+            timepicker.setValue(o[2]);
+            giavetxt.setText(o[3].toString());
+            thoiluongtime.setValue((int) o[4]);
+            hethongcbb.setSelectedIndex(0);
+            cumrapcbb.setSelectedIndex(0);
+            rapcbb.setSelectedIndex(((int) o[5]) - 1);
+            //btnsua.setEnabled(false);
+            helper.addChangeListener(giavetxt, e -> btnsua.setEnabled(true));
+        } catch (SQLException ex) {
+            Logger.getLogger(SuaLichChieu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void renderListPhim() {
+        try {
+            List<Phim> phim = phimController.layDanhSachPhim();
+            for (Phim p : phim) {
+                tenPhim.add(p.getTenPhim());
+            }
+            phimcbb.setModel(new DefaultComboBoxModel<>((String[]) tenPhim.toArray(new String[0])));
+        } catch (SQLException ex) {
+            Logger.getLogger(SuaLichChieu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    
+    public void renderListPhong() {
+        try {
+            List<Phong> phong = phongController.layDanhSachPhong();
+            for (Phong p : phong) {
+                tenRap.add(p.getTenRap());
+            }
+            rapcbb.setModel(new DefaultComboBoxModel<>((String[]) tenRap.toArray(new String[0])));
+            hethongcbb.setModel(new DefaultComboBoxModel<>(new String[] { "BHD Star Cineplex"}));
+            cumrapcbb.setModel(new DefaultComboBoxModel<>(new String[] { "BHDStar Hoang Van Thu"}));
+        } catch (SQLException ex) {
+            Logger.getLogger(SuaLichChieu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    
 
     /**
      * @param args the command line arguments
@@ -237,7 +378,15 @@ public class SuaLichChieu extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SuaLichChieu().setVisible(true);
+                try {
+                    new SuaLichChieu().setVisible(true);
+                    Thread.sleep(5000);
+
+                } catch (SQLException | ClassNotFoundException | ParseException | InterruptedException ex) {
+                    Logger.getLogger(QLLC.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (MalformedURLException ex) {
+                    Logger.getLogger(QLLC.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -263,7 +412,7 @@ public class SuaLichChieu extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JComboBox<String> phimcbb;
     private javax.swing.JComboBox<String> rapcbb;
-    private javax.swing.JTextField thoiluongtxt;
+    private javax.swing.JSpinner thoiluongtime;
     private javax.swing.JSpinner timepicker;
     // End of variables declaration//GEN-END:variables
 }
