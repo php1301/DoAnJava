@@ -41,15 +41,16 @@ public class PhongController {
         System.out.println("Chay constructor Phong");
     }
 
-    public List<Ghe> layDanhSachGheCuaPhong() throws SQLException {
-        System.out.println("Lay danh sach ghe cua phong");
+  public List<Ghe> layDanhSachGheCuaPhong(int maRapArg) throws SQLException {
+        System.out.println("Lay danh sach ghe cua rap " + maRapArg);
         listGhe.clear();
-        String sql = "select * from Ghe where maRap = 3 order by stt";
+        String sql = "select * from Ghe where maRap = ? order by stt";
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
             connect();
             ps = con.prepareStatement(sql);
+            ps.setInt(1, maRapArg);
             rs = ps.executeQuery();
             while (rs.next()) {
                 int maGhe = rs.getInt(1);

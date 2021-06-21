@@ -61,6 +61,7 @@ public class ChonPhim extends javax.swing.JFrame {
     private List<String> ngayChieu;
     private List<String> gioChieu;
     private List<Phim> phim;
+    private Object[] selectedPhimObject;
 
     public ChonPhim() {
         initComponents();
@@ -189,14 +190,14 @@ public class ChonPhim extends javax.swing.JFrame {
             }
         });
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chọn phim trước", " " }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chọn phim trước" }));
         jComboBox2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox2ActionPerformed(evt);
             }
         });
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chọn ngày chiếu trước", " " }));
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chọn ngày chiếu trước" }));
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -478,8 +479,22 @@ public class ChonPhim extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        setVisible(false);
-        ChonGhe.main(null);
+        ChonGhe cg;
+        try {
+            cg = new ChonGhe();
+            cg.setSelectedPhimObject(selectedPhimObject);
+            cg.setVisible(true);
+            dispose();
+        } catch (SQLException ex) {
+            Logger.getLogger(ChonPhim.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ChonPhim.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(ChonPhim.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(ChonPhim.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -555,12 +570,16 @@ public class ChonPhim extends javax.swing.JFrame {
                 Object selected = comboBox.getSelectedItem();
                 if (!"Hiện không có giờ chiếu cho phim".equals(selected.toString())) {
                     int maLichChieu = Integer.parseInt(selected.toString().split(" - ")[0]);
+                    String ngayChieu = jComboBox2.getSelectedItem().toString();
+                    String gioChieu = selected.toString().split(" - ")[1];
                     System.out.println("Performed" + maLichChieu);
-                    Object[] o = new Object[5];
-                    o[0] = taiKhoan;
-                    o[1] = maLichChieu;
-                    o[2] = maLoaiNguoiDung;
-                    o[3] = chiTietPhim;
+                    selectedPhimObject = new Object[6];
+                    selectedPhimObject[0] = taiKhoan;
+                    selectedPhimObject[1] = maLichChieu;
+                    selectedPhimObject[2] = maLoaiNguoiDung;
+                    selectedPhimObject[3] = chiTietPhim[0] + " - " + chiTietPhim[1]; // tên phim
+                    selectedPhimObject[4] = ngayChieu;
+                    selectedPhimObject[5] = gioChieu;
                     jButton1.setEnabled(true);
                 }
             }
