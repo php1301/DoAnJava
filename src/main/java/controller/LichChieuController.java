@@ -108,6 +108,40 @@ public class LichChieuController {
         }
     }
 
+    public Object[] getThongTinPhongChieu(int maLichChieuArg) throws SQLException {
+        System.out.println("Lay thong tin phong chieulich chieu");
+        String sql1 = "select giaVe, maRap from LichChieu where maLichChieu = ?";
+        String sql2 = "select tenRap from Rap where maRap = ?";
+        System.out.println(maLichChieuArg);
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Object[] o = new Object[3];
+        try {
+            connect();
+            ps = con.prepareStatement(sql1);
+            ps.setInt(1, maLichChieuArg);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                o[0] = rs.getInt(1);
+                o[1] = rs.getInt(2);
+            }
+            ps = con.prepareStatement(sql2);
+            ps.setInt(1, (int) o[1]);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                o[2] = rs.getString(1);
+            }
+            return o;
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            Logger.getLogger(LichChieuController.class
+                    .getName()).log(Level.SEVERE, null, e);
+            return null;
+        } finally {
+            disconnect(rs, ps);
+        }
+    }
+
     public void suaThongTinLichChieu(int maLichChieuArg, Object[] o) throws SQLException {
         System.out.println("Sua thong tin lich chieu");
         String sql = "update LichChieu "
