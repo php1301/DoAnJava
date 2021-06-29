@@ -621,25 +621,30 @@ public class ChonGhe extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnMuaVeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMuaVeActionPerformed
-        try {
-            // TODO add your handling code here:
+        // TODO add your handling code here:
 
-            int result = JOptionPane.showConfirmDialog(ChonGhe.this, "Bạn có chắc chắc muốn đặt vé không", "Xác nhận đặt vé",
-                    JOptionPane.YES_NO_OPTION);
-            if (result == JOptionPane.YES_OPTION) {
-                JOptionPane.showMessageDialog(ChonGhe.this, "Đặt vé thành công bạn sẽ được chuyển hướng về trang người dùng", "Đặt vé thành công",
-                        JOptionPane.INFORMATION_MESSAGE);
+        int result = JOptionPane.showConfirmDialog(ChonGhe.this, "Bạn sẽ được chuyển hướng đến trang xác nhận thanh toán", "Thông báo",
+                JOptionPane.YES_NO_OPTION);
+        if (result == JOptionPane.YES_OPTION) {
+
 //                dispose();
-                Object[] o = new Object[5];
-                o[0] = giaTong.getText().split(" ")[0];
-                o[1] = selectedPhimObject[1];
-                o[2] = selectedPhimObject[0];
-                veController.datVe(o, danhSachMaGheChon);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ChonGhe.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(ChonGhe.this, "Đặt vé thất bại", "Có lỗi",
-                    JOptionPane.ERROR_MESSAGE);
+            Object[] o = new Object[12];
+            o[0] = giaVeThuong.getText();
+            o[1] = giaVeVip.getText();
+            o[2] = tongTienThuong.getText();
+            o[3] = tongTienVip.getText();
+            o[4] = giaTong.getText();
+            o[5] = ngayChieu.getText();
+            o[6] = tenPhim.getText();
+            o[7] = maPhong.getText();
+            o[8] = gioChieu.getText();
+            o[9] = gheDaChon.getText();
+            o[10] = selectedPhimObject[1];
+            o[11] = danhSachMaGheChon;
+            ConfirmDatVe cf = new ConfirmDatVe();
+            cf.setThongTinXacNhan(o);
+            cf.setVisible(true);
+            dispose();
         }
 
     }//GEN-LAST:event_btnMuaVeActionPerformed
