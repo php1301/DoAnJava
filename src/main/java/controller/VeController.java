@@ -91,7 +91,7 @@ public class VeController {
 
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            Logger.getLogger(LichChieuController.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(VeController.class.getName()).log(Level.SEVERE, null, e);
             return null;
         } finally {
             disconnect(rs, ps);
@@ -144,7 +144,34 @@ public class VeController {
             disconnect(rs, ps);
         }
     }
-
+public Object[] getThongtinVe(int maVe) throws SQLException {
+        System.out.println("Lay thong tin Ve");
+        String sql = "select * from Ve where maVe = ?";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Object[] o = new Object[5];
+        try {
+            connect();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, maVe);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                System.out.println(rs.getInt(1));
+                o[0] = rs.getInt(1);
+                o[1] = rs.getDate(2);
+                o[2] = rs.getInt(3);
+                o[3] = rs.getInt(4);
+                o[4] = rs.getInt(5);
+            }
+            return o;
+        } catch (SQLException e) {
+            Logger.getLogger(UserController.class
+                    .getName()).log(Level.SEVERE, null, e);
+            return null;
+        } finally {
+            disconnect(rs, ps);
+        }
+    }
     public void connect() throws SQLException {
         try {
             db.connect();

@@ -42,7 +42,7 @@ public class login extends javax.swing.JFrame {
     final String PREF_NAME_8 = "Hoten";
     final String PREF_NAME_9 = "avatar";
     final String PREF_NAME_10 = "Maloainguoidung";
-
+    final String PREF_NAME_11 = "diemTichLuy";
     /**
      * Creates new form login
      */
@@ -155,6 +155,7 @@ public class login extends javax.swing.JFrame {
                 String hoten = rs.getString("hoTen") == null ? "Ho Ten" : rs.getString("hoTen");
                 String ava = rs.getString("avatar");
                 String maloainguoidung = rs.getString("maLoaiNguoiDung");
+                String diemTichLuy = rs.getString("diemTichLuy");
                 int maUser = rs.getInt("maLoaiNguoiDung");
                 boolean match = BCrypt.checkpw(pass, hash);
                 if (match && maUser == 1) {
@@ -170,6 +171,7 @@ public class login extends javax.swing.JFrame {
                     pref.put(PREF_NAME_8, hoten);
                     pref.put(PREF_NAME_9, ava);
                     pref.put(PREF_NAME_10, maloainguoidung);
+                    pref.put(PREF_NAME_11, diemTichLuy);
                     Admin admin = new Admin();
                     Admin.main(null);
                     dispose();
@@ -186,6 +188,7 @@ public class login extends javax.swing.JFrame {
                     pref.put(PREF_NAME_8, hoten);
                     pref.put(PREF_NAME_9, ava);
                     pref.put(PREF_NAME_10, maloainguoidung);
+                    pref.put(PREF_NAME_11, diemTichLuy);
                     User.main(null);
                     dispose();
 
