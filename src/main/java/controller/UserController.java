@@ -142,7 +142,44 @@ public class UserController {
             disconnect(rs, ps);
         }
     }
+    
+    public void capNhatThongTinUser(int taiKhoanArg, Object[] o) throws SQLException {
+        System.out.println("Sua thong tin user");
+        String sql = "update Users "
+                + "set ngaySinh  = ?, "
+                + "diaChi  = ?, "
+                + "soDT = ?, "
+                + "hoTen = ?, "
+                + "avatar = ? "
+                + "where taiKhoan = ?";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            connect();
+            ps = con.prepareStatement(sql);
+            int i = Connection.TRANSACTION_READ_COMMITTED;
+            con.setAutoCommit(false);
+            con.setTransactionIsolation(i);
+            int col = 1;
+            ps.setDate(col++, (Date) o[1]);
+            ps.setString(col++, (String) o[2]);
+            ps.setString(col++, (String) o[3]);
+            ps.setString(col++, (String) o[0]);
+            ps.setString(col++, (String) o[4]);
+            ps.setInt(col++, taiKhoanArg);
+            ps.executeUpdate();
+            con.commit();
 
+        } catch (SQLException e) {
+            Logger.getLogger(UserController.class
+                    .getName()).log(Level.SEVERE, null, e);
+            con.rollback();
+            throw new SQLException();
+        } finally {
+            disconnect(rs, ps);
+        }
+    }
+    
     public void xoaUser(int taiKhoanArg, int index) throws SQLException {
         System.out.println("Xoa user");
         String sql = "Delete from Users where taiKhoan = ?";
@@ -167,7 +204,30 @@ public class UserController {
             disconnect(rs, ps);
         }
     }
-
+    
+    public Object layHangUser(int diemTichLuyArg) throws SQLException {
+        System.out.println("Lay hang user");
+        String sql = "SELECT COUNT(taiKhoan) FROM `Users` WHERE diemTichLuy > ?";
+        
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Object o = new Object();
+        try {
+            connect();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, diemTichLuyArg);
+            rs = ps.executeQuery();
+            rs.next();
+            o = rs.getInt(1) + 1;
+            return o;
+         } catch (SQLException e) {
+            Logger.getLogger(UserController.class
+                    .getName()).log(Level.SEVERE, null, e);
+            return null;
+        } finally {
+            disconnect(rs, ps);
+        }
+    }
     public void connect() throws SQLException {
         try {
             db.connect();
