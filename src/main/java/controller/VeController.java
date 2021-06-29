@@ -103,6 +103,7 @@ public class VeController {
         listVe.clear();
         String sql1 = "INSERT INTO Ve(giaVe, maLichChieu, taiKhoan) values(?, ?, ?)";
         String sql2 = "INSERT INTO GheDaDat(maGhe, maLichChieu) values(?, ?)";
+        String sql3 = "INSERT INTO DatVe (maVe, maGhe) values (?, ?)";
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
@@ -122,6 +123,12 @@ public class VeController {
                 for (int g : maGhe) {
                     ps.setInt(1, g);
                     ps.setInt(2, (int) o[1]);
+                    ps.executeUpdate();
+                }
+                ps = con.prepareStatement(sql3);
+                for (int g : maGhe) {
+                    ps.setInt(1, generatedKeys.getInt(1));
+                    ps.setInt(2, g);
                     ps.executeUpdate();
                 }
             } else {

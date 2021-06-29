@@ -215,10 +215,10 @@
                               <Component id="jLabel36" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jLabel37" alignment="0" min="-2" pref="53" max="-2" attributes="0"/>
-                                  <Component id="jLabel47" alignment="0" min="-2" pref="88" max="-2" attributes="0"/>
+                                  <Component id="jLabel37" min="-2" pref="53" max="-2" attributes="0"/>
+                                  <Component id="jLabel47" min="-2" pref="116" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="783" max="32767" attributes="0"/>
+                              <EmptySpace pref="755" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -405,9 +405,9 @@
                                                       <Component id="line" min="-2" pref="210" max="-2" attributes="0"/>
                                                       <Group type="102" alignment="0" attributes="0">
                                                           <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                                                          <Group type="103" groupAlignment="0" attributes="0">
-                                                              <Component id="jLabel18" min="-2" max="-2" attributes="0"/>
-                                                              <Component id="jLabel13" min="-2" pref="113" max="-2" attributes="0"/>
+                                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                                              <Component id="jLabel18" pref="145" max="32767" attributes="0"/>
+                                                              <Component id="jLabel13" max="32767" attributes="0"/>
                                                           </Group>
                                                       </Group>
                                                   </Group>
@@ -453,7 +453,7 @@
                                           </Group>
                                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                           <Component id="jLabel18" min="-2" pref="17" max="-2" attributes="0"/>
-                                          <EmptySpace pref="115" max="32767" attributes="0"/>
+                                          <EmptySpace pref="117" max="32767" attributes="0"/>
                                       </Group>
                                       <Group type="102" alignment="1" attributes="0">
                                           <EmptySpace pref="217" max="32767" attributes="0"/>
@@ -546,7 +546,7 @@
                             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                               <Color blue="cc" green="cc" red="cc" type="rgb"/>
                             </Property>
-                            <Property name="text" type="java.lang.String" value="Phuc Pham"/>
+                            <Property name="text" type="java.lang.String" value="Phan Th&#xe0;nh B&#x1ea3;o Tr&#x1ecd;ng"/>
                           </Properties>
                         </Component>
                         <Container class="javax.swing.JPanel" name="jPanel3">
@@ -714,8 +714,8 @@
                                                       <Group type="102" alignment="0" attributes="0">
                                                           <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                                                           <Group type="103" groupAlignment="0" attributes="0">
-                                                              <Component id="jLabel28" min="-2" max="-2" attributes="0"/>
-                                                              <Component id="jLabel27" min="-2" pref="113" max="-2" attributes="0"/>
+                                                              <Component id="jLabel28" min="-2" pref="139" max="-2" attributes="0"/>
+                                                              <Component id="jLabel27" min="-2" pref="157" max="-2" attributes="0"/>
                                                           </Group>
                                                       </Group>
                                                   </Group>
@@ -764,7 +764,7 @@
                                   </Group>
                                   <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
                                   <Component id="jLabel28" min="-2" pref="17" max="-2" attributes="0"/>
-                                  <EmptySpace pref="117" max="32767" attributes="0"/>
+                                  <EmptySpace pref="118" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                         </DimensionLayout>
@@ -831,7 +831,7 @@
                             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                               <Color blue="cc" green="cc" red="cc" type="rgb"/>
                             </Property>
-                            <Property name="text" type="java.lang.String" value="PHP1301"/>
+                            <Property name="text" type="java.lang.String" value="Ph&#x1ea1;m Ho&#xe0;ng Ph&#xfa;c"/>
                           </Properties>
                         </Component>
                         <Container class="javax.swing.JPanel" name="jPanel7">
@@ -1054,8 +1054,8 @@
                                                           <EmptySpace max="-2" attributes="0"/>
                                                           <Component id="jPanel12" min="-2" max="-2" attributes="0"/>
                                                       </Group>
-                                                      <Component id="jLabel40" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                      <Component id="jLabel39" alignment="0" min="-2" pref="113" max="-2" attributes="0"/>
+                                                      <Component id="jLabel39" alignment="0" min="-2" pref="153" max="-2" attributes="0"/>
+                                                      <Component id="jLabel40" alignment="0" min="-2" pref="131" max="-2" attributes="0"/>
                                                   </Group>
                                               </Group>
                                               <Group type="102" alignment="0" attributes="0">
@@ -1105,7 +1105,7 @@
                                   </Group>
                                   <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
                                   <Component id="jLabel40" min="-2" pref="17" max="-2" attributes="0"/>
-                                  <EmptySpace pref="117" max="32767" attributes="0"/>
+                                  <EmptySpace pref="118" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                         </DimensionLayout>
@@ -1172,7 +1172,7 @@
                             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                               <Color blue="cc" green="cc" red="cc" type="rgb"/>
                             </Property>
-                            <Property name="text" type="java.lang.String" value="PHP1301"/>
+                            <Property name="text" type="java.lang.String" value="Ho&#xe0;ng Nh&#x1ead;t Trung"/>
                           </Properties>
                         </Component>
                         <Container class="javax.swing.JPanel" name="jPanel11">

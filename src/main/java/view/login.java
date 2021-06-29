@@ -36,7 +36,7 @@ public class login extends javax.swing.JFrame {
     final String PREF_NAME_2 = "pass";
     final String PREF_NAME_3 = "username";
     final String PREF_NAME_4 = "email";
-    final String PREF_NAME_5 = "Ngaysinh";
+    final String PREF_NAME_5 = "ngaySinh";
     final String PREF_NAME_6 = "Diachi";
     final String PREF_NAME_7 = "SDT";
     final String PREF_NAME_8 = "Hoten";
