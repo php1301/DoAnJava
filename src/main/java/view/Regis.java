@@ -376,7 +376,7 @@ public class Regis extends javax.swing.JFrame {
             Class.forName(driver).newInstance();
             String urlUnicode = "jdbc:mysql://103.97.125.254:3306/doanjava_v1?user=doanjava&password=a2DpigCp7PDOyGk&useUnicode=true&characterEncoding=utf8";
             conn = DriverManager.getConnection(urlUnicode);
-            String insert = "INSERT INTO `Users`(`password`, `username`, `email`,`ngaySinh`,`diaChi`, `diemTichLuy`, `soDT`, `hoTen`, `avatar`, `maLoaiNguoiDung`) VALUES (?,?,?,?,?,?,?,?,?,?)";
+            String insert = "INSERT INTO `Users`(`password`, `username`, `email`,`ngaySinh`,`diaChi`, `diemTichLuy`,`tongDiemTichLuy`, `soDT`, `hoTen`, `avatar`, `maLoaiNguoiDung`) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
             pst = conn.prepareStatement(insert);
             String pass = txtpass.getText();
             java.sql.Date date = new java.sql.Date(datetxt.getDate().getTime());
@@ -390,11 +390,12 @@ public class Regis extends javax.swing.JFrame {
             pst.setDate(4, (Date) date);
             pst.setString(5, Addresstxt.getText());
             pst.setInt(6, 0);
-            pst.setString(7, txtphonen.getText());
-            pst.setString(8, txtfullname.getText());
-
-            pst.setString(9, txtimage.getText());
-            pst.setInt(10, 2);
+             pst.setInt(7, 0);
+            pst.setString(8, txtphonen.getText());
+            pst.setString(9, txtfullname.getText());
+            
+            pst.setString(10, txtimage.getText());
+            pst.setInt(11, 2);
 
             String confirmpass = txtconpass.getText();
 

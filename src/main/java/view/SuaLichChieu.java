@@ -318,7 +318,7 @@ public class SuaLichChieu extends javax.swing.JFrame {
             hethongcbb.setSelectedIndex(0);
             cumrapcbb.setSelectedIndex(0);
             rapcbb.setSelectedIndex(((int) o[5]) - 1);
-            //btnsua.setEnabled(false);
+            btnsua.setEnabled(false);
             helper.addChangeListener(giavetxt, e -> btnsua.setEnabled(true));
         } catch (SQLException ex) {
             Logger.getLogger(SuaLichChieu.class.getName()).log(Level.SEVERE, null, ex);
