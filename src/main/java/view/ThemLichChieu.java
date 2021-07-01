@@ -219,9 +219,16 @@ public class ThemLichChieu extends javax.swing.JFrame {
                     JOptionPane.INFORMATION_MESSAGE);
             dispose();
         } catch (SQLException ex) {
-            Logger.getLogger(ThemPhim.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(ThemLichChieu.this, "Xảy ra lỗi khi thêm lịch chiếu vui lòng thử lại", "Có lỗi",
-                    JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(ThemLichChieu.class.getName()).log(Level.SEVERE, null, ex);
+            if ("45000".equals(ex.getSQLState()) || "45001".equals(ex.getSQLState())) {
+                JOptionPane.showMessageDialog(ThemLichChieu.this, ex.getMessage(), "Có lỗi",
+                        JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(ThemLichChieu.this, "Xảy ra lỗi khi sửa thông tin lịch chiếu vui lòng chọn lịch chiếu khác", "Có lỗi",
+                        JOptionPane.ERROR_MESSAGE);
+
+                this.setVisible(false);
+            }
         }
     }//GEN-LAST:event_btnthemActionPerformed
 

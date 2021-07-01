@@ -21,6 +21,7 @@ import javax.swing.JOptionPane;
  * @author Admin
  */
 public class SuaThongTinTaiKhoan extends javax.swing.JFrame {
+
     /**
      * Creates new form SuaThongTinTaiKhoan
      */
@@ -32,7 +33,7 @@ public class SuaThongTinTaiKhoan extends javax.swing.JFrame {
     private String taiKhoan;
     private String regeximage = "^https?://(?:[a-z0-9\\-]+\\.)+[a-z]{2,6}(?:/[^/#?]+)+\\.(?:jpg|gif|png)$";
     private String regexuserphone = "^0{1}[0-9]{8,9}$";
-    
+
     public SuaThongTinTaiKhoan() throws SQLException, ClassNotFoundException, ParseException, InterruptedException {
         initComponents();
         userController = new UserController();
@@ -40,9 +41,9 @@ public class SuaThongTinTaiKhoan extends javax.swing.JFrame {
         username = prefs.get("username", defaultPrefs);
         pass = prefs.get("pass", defaultPrefs);
         taiKhoan = prefs.get("userId", defaultPrefs);
-        
+
         System.out.println(taiKhoan);
-        
+
         setThongTinNguoiDung();
         RenderThongTin();
     }
@@ -130,7 +131,7 @@ public class SuaThongTinTaiKhoan extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(183, 183, 183)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(149, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -140,7 +141,6 @@ public class SuaThongTinTaiKhoan extends javax.swing.JFrame {
         );
 
         btnQuayLai.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        btnQuayLai.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_back_to_24px_1.png"))); // NOI18N
         btnQuayLai.setText("Quay lại");
         btnQuayLai.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -193,7 +193,6 @@ public class SuaThongTinTaiKhoan extends javax.swing.JFrame {
         emailVal.setEnabled(false);
 
         btnCapNhat.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        btnCapNhat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_update_24px.png"))); // NOI18N
         btnCapNhat.setText("Cập nhật");
         btnCapNhat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -264,13 +263,13 @@ public class SuaThongTinTaiKhoan extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(notifySDT, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
                             .addComponent(avatarNotify, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(91, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel11)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -319,11 +318,15 @@ public class SuaThongTinTaiKhoan extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -331,6 +334,7 @@ public class SuaThongTinTaiKhoan extends javax.swing.JFrame {
 
     private void btnQuayLaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuayLaiActionPerformed
         // TODO add your handling code here:
+        User.main(null);
         dispose();
     }//GEN-LAST:event_btnQuayLaiActionPerformed
 
@@ -344,23 +348,26 @@ public class SuaThongTinTaiKhoan extends javax.swing.JFrame {
 
     private void btnCapNhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapNhatActionPerformed
         // TODO add your handling code here:
-        if(notifySDT.getText() == "" && avatarNotify.getText() == "") {
-            java.sql.Date ngaySinh = new java.sql.Date(ngaySinhVal.getDate().getTime()); 
+        if (notifySDT.getText() == "" && avatarNotify.getText() == "") {
+            java.sql.Date ngaySinh = new java.sql.Date(ngaySinhVal.getDate().getTime());
             Object[] o = new Object[5];
             o[0] = hoTentxtVal.getText();
             o[1] = ngaySinh;
             o[2] = diaChiVal.getText();
             o[3] = sdtVal.getText();
             o[4] = avatarVal.getText();
-             try {
+            try {
                 userController.capNhatThongTinUser(Integer.parseInt(taiKhoan), o);
                 JOptionPane.showMessageDialog(SuaThongTinTaiKhoan.this, "Sửa thông tin tài khoản thành công", "Thành công",
                         JOptionPane.INFORMATION_MESSAGE);
                 this.setVisible(false);
+                User.main(null);
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(SuaThongTinTaiKhoan.this, "Xảy ra lỗi khi sửa thông tin tài khoản vui lòng nhập lại thông tin", "Có lỗi",
                         JOptionPane.ERROR_MESSAGE);
                 this.setVisible(false);
+                User.main(null);
+
             }
         }
     }//GEN-LAST:event_btnCapNhatActionPerformed
@@ -401,12 +408,13 @@ public class SuaThongTinTaiKhoan extends javax.swing.JFrame {
             Logger.getLogger(SuaThongTinTaiKhoan.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void setThongTinNguoiDung() {
-            taiKhoanVal.setText(taiKhoan);
-            userNameVal.setText(username);
-            passVal.setText(pass);
+        taiKhoanVal.setText(taiKhoan);
+        userNameVal.setText(username);
+        passVal.setText(pass);
     }
+
     /**
      * @param args the command line arguments
      */

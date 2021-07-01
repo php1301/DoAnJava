@@ -10,20 +10,29 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import controller.Helper;
-import controller.PhimController;
 import controller.VeController;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Base64;
 import java.util.Date;
-import java.util.List;
-import javax.swing.DefaultComboBoxModel;
-import model.Phim;
+import kong.unirest.Callback;
+import kong.unirest.HttpResponse;
+import kong.unirest.JsonNode;
+import kong.unirest.Unirest;
+import kong.unirest.UnirestException;
+
 /**
  *
  * @author Hp
  */
 public class XuatHoaDon extends javax.swing.JFrame {
+
     private VeController veController;
     private int maVe;
     private String tenphim;
@@ -31,6 +40,7 @@ public class XuatHoaDon extends javax.swing.JFrame {
     private Date GioChieu;
     private int selectedIndex;
     private Helper helper;
+
     /**
      * Creates new form XuatHoaDon
      */
@@ -41,6 +51,7 @@ public class XuatHoaDon extends javax.swing.JFrame {
     public void setmaVe(int MaVe) {
         this.maVe = MaVe;
     }
+
     public String gettenphim() {
         return tenphim;
     }
@@ -48,6 +59,7 @@ public class XuatHoaDon extends javax.swing.JFrame {
     public void settenphim(String ten) {
         this.tenphim = ten;
     }
+
     public Date getNgaychieu() {
         return Ngaychieu;
     }
@@ -55,6 +67,7 @@ public class XuatHoaDon extends javax.swing.JFrame {
     public void setNgaychieu(Date ngaychieu) {
         this.Ngaychieu = ngaychieu;
     }
+
     public Date getGioChieu() {
         return GioChieu;
     }
@@ -62,7 +75,7 @@ public class XuatHoaDon extends javax.swing.JFrame {
     public void setGioChieu(Date giochieu) {
         this.GioChieu = giochieu;
     }
-    
+
     public int getSelectedIndex() {
         return selectedIndex;
     }
@@ -70,13 +83,13 @@ public class XuatHoaDon extends javax.swing.JFrame {
     public void setSelectedIndex(int selectedIndex) {
         this.selectedIndex = selectedIndex;
     }
+
     public XuatHoaDon() {
         initComponents();
         setTitle("Trang Xuất Hóa Đơn");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        veController =new VeController();
-       
- 
+        veController = new VeController();
+
     }
 
     /**
@@ -91,7 +104,7 @@ public class XuatHoaDon extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         ngaychieutxt = new javax.swing.JTextField();
-        giochieutxt = new javax.swing.JTextField();
+        danhSachGhe = new javax.swing.JTextField();
         giatxt = new javax.swing.JTextField();
         ngaydattxt = new javax.swing.JTextField();
         tenphimtxt = new javax.swing.JTextField();
@@ -104,6 +117,10 @@ public class XuatHoaDon extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         btnXuat = new javax.swing.JButton();
         btnHuy = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        giochieutxt = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        tenPhong = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 0, 204));
@@ -122,9 +139,9 @@ public class XuatHoaDon extends javax.swing.JFrame {
         ngaychieutxt.setBackground(new java.awt.Color(153, 153, 153));
         jPanel1.add(ngaychieutxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 260, 250, 40));
 
-        giochieutxt.setEditable(false);
-        giochieutxt.setBackground(new java.awt.Color(153, 153, 153));
-        jPanel1.add(giochieutxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 310, 250, 40));
+        danhSachGhe.setEditable(false);
+        danhSachGhe.setBackground(new java.awt.Color(153, 153, 153));
+        jPanel1.add(danhSachGhe, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 410, 250, 40));
 
         giatxt.setEditable(false);
         giatxt.setBackground(new java.awt.Color(153, 153, 153));
@@ -144,8 +161,8 @@ public class XuatHoaDon extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Giờ chiếu");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 320, 100, -1));
+        jLabel1.setText("Ghế");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 420, 100, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -186,7 +203,7 @@ public class XuatHoaDon extends javax.swing.JFrame {
                 btnXuatActionPerformed(evt);
             }
         });
-        jPanel1.add(btnXuat, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 390, -1, -1));
+        jPanel1.add(btnXuat, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 470, -1, -1));
 
         btnHuy.setBackground(new java.awt.Color(255, 255, 255));
         btnHuy.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -201,48 +218,169 @@ public class XuatHoaDon extends javax.swing.JFrame {
                 btnHuyActionPerformed(evt);
             }
         });
-        jPanel1.add(btnHuy, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 390, -1, -1));
+        jPanel1.add(btnHuy, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 470, -1, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 580, 460));
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Giờ chiếu");
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 320, 100, -1));
+
+        giochieutxt.setEditable(false);
+        giochieutxt.setBackground(new java.awt.Color(153, 153, 153));
+        giochieutxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                giochieutxtActionPerformed(evt);
+            }
+        });
+        jPanel1.add(giochieutxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 310, 250, 40));
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("Phòng");
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 370, 100, -1));
+
+        tenPhong.setEditable(false);
+        tenPhong.setBackground(new java.awt.Color(153, 153, 153));
+        jPanel1.add(tenPhong, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 360, 250, 40));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 620, 540));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatActionPerformed
         // TODO add your handling code here:
-        
+
         int result = JOptionPane.showConfirmDialog(XuatHoaDon.this, "Bạn có chắc chắc muốn xuất hóa đơn không", "Xác nhận xuất hóa đơn",
                 JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.YES_OPTION) {
-            JOptionPane.showMessageDialog(XuatHoaDon.this, "Xuất hóa đơn thành công bạn sẽ được chuyển hướng về trang người dùng", "Xuất hóa đơn thành công",
-                    JOptionPane.INFORMATION_MESSAGE);
+            try {
+                Loader ld = new Loader();
+                ld.setVisible(true);
+                String jsonReq = "{\"maVe\":\"" + mavetxt.getText()
+                        + "\", \"tenPhim\":\"" + tenphimtxt.getText() + "\",  "
+                        + "\"ngayDat\":\"" + ngaydattxt.getText() + "\",  "
+                        + "\"gia\":\"" + giatxt.getText() + "\",  "
+                        + "\"ngayChieu\":\"" + ngaychieutxt.getText() + "\",  "
+                        + "\"gioChieu\":\"" + giochieutxt.getText() + "\",  "
+                        + "\"phongChieu\":\"" + tenPhong.getText() + "\",  "
+                        + "\"danhSachGhe\":\"" + danhSachGhe.getText() + "\"}";
+                String localUrl = "http://localhost:3000/dev/print-pdf";
+                String remoteUrl = "https://917igxdzxa.execute-api.us-east-1.amazonaws.com/dev/print-pdf";
+                Unirest.config().reset();
+                Unirest.config().connectTimeout(1000);
+                Unirest.post(remoteUrl)
+                        .header("accept", "application/json")
+                        .header("accept", "application/pdf")
+                        .body(jsonReq)
+                        .asJsonAsync(new Callback<JsonNode>() {
+                            @Override
+                            public void failed(UnirestException e) {
+                                JOptionPane.showMessageDialog(XuatHoaDon.this, "Xuất hóa đơn thất bại", "Xuất hóa đơn thất bại",
+                                        JOptionPane.ERROR_MESSAGE);
+                            }
+
+                            public void completed(HttpResponse<JsonNode> res) {
+                                FileOutputStream fos = null;
+                                try {
+                                    ld.setVisible(false);
+                                    JOptionPane.showMessageDialog(XuatHoaDon.this, "Xuất hóa đơn thành công bạn sẽ được chuyển hướng "
+                                            + "về trang người dùng", "Xuất hóa đơn thành công",
+                                            JOptionPane.INFORMATION_MESSAGE);
+                                    long output = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+                                    File file = new File("D:/" + output + ".pdf");
+                                    fos = new FileOutputStream(file);
+                                    String b64 = (String) res.getBody().getObject().get("file");
+                                    byte[] decoder = Base64.getDecoder().decode(b64);
+                                    fos.write(decoder);
+                                    System.out.println("PDF File Saved");
+
+                                } catch (FileNotFoundException ex) {
+                                    Logger.getLogger(XuatHoaDon.class.getName()).log(Level.SEVERE, null, ex);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(XuatHoaDon.class.getName()).log(Level.SEVERE, null, ex);
+                                } finally {
+                                    try {
+                                        fos.close();
+                                    } catch (IOException ex) {
+                                        Logger.getLogger(XuatHoaDon.class.getName()).log(Level.SEVERE, null, ex);
+                                        ld.setVisible(false);
+                                    }
+                                }
+                            }
+
+                            public void cancelled() {
+                                System.out.println("Request has been canceled.");
+                            }
+                        });
+                //                        .ifFailure(res -> {
+                //                            JOptionPane.showMessageDialog(XuatHoaDon.this, "Xuất hóa đơn thất bại", "Xuất hóa đơn thất bại",
+                //                                    JOptionPane.ERROR_MESSAGE);
+                //                            System.out.println(res.getBody().getObject().get("file"));
+                //                        })
+//                        .ifSuccess(res -> {
+                //                            FileOutputStream fos = null;
+                //                            try {
+                //                                JOptionPane.showMessageDialog(XuatHoaDon.this, "Xuất hóa đơn thành công bạn sẽ được chuyển hướng về trang người dùng", "Xuất hóa đơn thành công",
+                //                                        JOptionPane.INFORMATION_MESSAGE);
+                //                                long output = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+                //                                File file = new File("D:/" + output + ".pdf");
+                //                                fos = new FileOutputStream(file);
+                //                                String b64 = (String) res.getBody().getObject().get("file");
+                //                                byte[] decoder = Base64.getDecoder().decode(b64);
+                //                                fos.write(decoder);
+                //                                System.out.println("PDF File Saved");
+                //                            } catch (FileNotFoundException ex) {
+                //                                Logger.getLogger(XuatHoaDon.class.getName()).log(Level.SEVERE, null, ex);
+                //                            } catch (IOException ex) {
+                //                                Logger.getLogger(XuatHoaDon.class.getName()).log(Level.SEVERE, null, ex);
+                //                            } finally {
+                //                                try {
+                //                                    fos.close();
+                //                                } catch (IOException ex) {
+                //                                    Logger.getLogger(XuatHoaDon.class.getName()).log(Level.SEVERE, null, ex);
+                //                                }
+                //                            }
+                //
+                //                        });
+
+            } catch (Exception ex) {
+                Logger.getLogger(SuaLichChieu.class.getName()).log(Level.SEVERE, null, ex);
+
+            }
         }
     }//GEN-LAST:event_btnXuatActionPerformed
-public void renderlistVe() throws MalformedURLException {
-    SimpleDateFormat DateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+    public void renderlistVe() throws MalformedURLException {
+        SimpleDateFormat DateFormatter = new SimpleDateFormat("dd-MM-yyyy");
         try {
             Object[] o = veController.getThongtinVe(maVe);
+            Object[] o2 = veController.thongTinThemVeVe(maVe);
             mavetxt.setText(o[0].toString());
             tenphimtxt.setText(tenphim);
             ngaydattxt.setText(DateFormatter.format(o[1]));
             giatxt.setText(o[2].toString());
             ngaychieutxt.setText(DateFormatter.format(Ngaychieu));
             giochieutxt.setText(GioChieu.toString());
-           
+            tenPhong.setText((String) o2[0]);
+            danhSachGhe.setText((String) o2[1]);
         } catch (SQLException ex) {
             Logger.getLogger(SuaLichChieu.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyActionPerformed
-       dispose();
+        dispose();
         try {
             LichSuDatVe lichsudatve = new LichSuDatVe();
         } catch (SQLException ex) {
             Logger.getLogger(XuatHoaDon.class.getName()).log(Level.SEVERE, null, ex);
         }
-       LichSuDatVe.main(null);
-       
+        LichSuDatVe.main(null);
+
     }//GEN-LAST:event_btnHuyActionPerformed
+
+    private void giochieutxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_giochieutxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_giochieutxtActionPerformed
 
     /**
      * @param args the command line arguments
@@ -282,6 +420,7 @@ public void renderlistVe() throws MalformedURLException {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnHuy;
     private javax.swing.JButton btnXuat;
+    private javax.swing.JTextField danhSachGhe;
     private javax.swing.JTextField giatxt;
     private javax.swing.JTextField giochieutxt;
     private javax.swing.JLabel jLabel1;
@@ -291,10 +430,13 @@ public void renderlistVe() throws MalformedURLException {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField mavetxt;
     private javax.swing.JTextField ngaychieutxt;
     private javax.swing.JTextField ngaydattxt;
+    private javax.swing.JTextField tenPhong;
     private javax.swing.JTextField tenphimtxt;
     // End of variables declaration//GEN-END:variables
 }

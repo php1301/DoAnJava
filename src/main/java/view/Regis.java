@@ -27,6 +27,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import kong.unirest.Callback;
+import kong.unirest.HttpResponse;
+import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -390,10 +393,10 @@ public class Regis extends javax.swing.JFrame {
             pst.setDate(4, (Date) date);
             pst.setString(5, Addresstxt.getText());
             pst.setInt(6, 0);
-             pst.setInt(7, 0);
+            pst.setInt(7, 0);
             pst.setString(8, txtphonen.getText());
             pst.setString(9, txtfullname.getText());
-            
+
             pst.setString(10, txtimage.getText());
             pst.setInt(11, 2);
 
@@ -579,27 +582,32 @@ public class Regis extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btOpenFileActionPerformed
     private void imgurRequest(File f) {
-        try {
-            String imgurClientId = "4d7220bef63dd30";
-            Unirest.config().reset();
-            Unirest.config().connectTimeout(1000);
-            String response = Unirest.post("https://api.imgur.com/3/image")
-                    .header("Authorization", "Client-ID " + imgurClientId)
-                    .multiPartContent()
-                    .field("image", file)
-                    .asJson()
-                    .getBody()
-                    .getObject()
-                    .getJSONObject("data")
-                    .get("link")
-                    .toString();
-            txtimage.setText(response);
-            showAnh(response);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(ThemPhim.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(Regis.this, "Xảy ra lỗi khi chọn ảnh phim vui lòng thử lại", "Có lỗi",
-                    JOptionPane.ERROR_MESSAGE);
-        }
+        Loader ld = new Loader();
+        ld.setVisible(true);
+        String imgurClientId = "4d7220bef63dd30";
+        Unirest.config().reset();
+        Unirest.config().connectTimeout(1000);
+        Unirest.post("https://api.imgur.com/3/image")
+                .header("Authorization", "Client-ID " + imgurClientId)
+                .multiPartContent()
+                .field("image", file)
+                .asJsonAsync(new Callback<JsonNode>() {
+                    @Override
+                    public void completed(HttpResponse<JsonNode> hr) {
+                        String url = hr.getBody()
+                                .getObject()
+                                .getJSONObject("data")
+                                .get("link")
+                                .toString();
+                        txtimage.setText(url);
+                        try {
+                            showAnh(url);
+                            ld.setVisible(false);
+                        } catch (MalformedURLException ex) {
+                            Logger.getLogger(Regis.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                });
     }
 
     private void showAnh(String name) throws MalformedURLException {

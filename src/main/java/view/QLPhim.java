@@ -9,7 +9,6 @@ import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import controller.PhimController;
-import java.io.File;
 import java.net.MalformedURLException;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -259,7 +258,7 @@ public class QLPhim extends javax.swing.JFrame {
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         try {
             int selectedRow = tbPhim.getSelectedRow();
-            if (selectedRow < 1) {
+            if (selectedRow < 0) {
                 JOptionPane.showMessageDialog(QLPhim.this, "Chua chon phim", "Vui long chon phim",
                         JOptionPane.ERROR_MESSAGE);
             }

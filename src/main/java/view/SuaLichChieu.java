@@ -263,9 +263,17 @@ public class SuaLichChieu extends javax.swing.JFrame {
                     JOptionPane.INFORMATION_MESSAGE);
             this.setVisible(false);
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(SuaLichChieu.this, "Xảy ra lỗi khi sửa thông tin lịch chiếu vui lòng chọn lịch chiếu khác", "Có lỗi",
-                    JOptionPane.ERROR_MESSAGE);
-            this.setVisible(false);
+            Logger.getLogger(SuaLichChieu.class.getName()).log(Level.SEVERE, null, ex);
+            if ("45000".equals(ex.getSQLState()) || "45001".equals(ex.getSQLState())) {
+                JOptionPane.showMessageDialog(SuaLichChieu.this, ex.getMessage(), "Có lỗi",
+                        JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(SuaLichChieu.this, "Xảy ra lỗi khi sửa thông tin lịch chiếu vui lòng chọn lịch chiếu khác", "Có lỗi",
+                        JOptionPane.ERROR_MESSAGE);
+
+                this.setVisible(false);
+            }
+
         }
     }//GEN-LAST:event_btnsuaActionPerformed
 

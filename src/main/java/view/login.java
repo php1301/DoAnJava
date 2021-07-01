@@ -41,7 +41,7 @@ public class login extends javax.swing.JFrame {
     final String PREF_NAME_7 = "SDT";
     final String PREF_NAME_8 = "Hoten";
     final String PREF_NAME_9 = "avatar";
-    final String PREF_NAME_10 = "Maloainguoidung";
+    final String PREF_NAME_10 = "maLoaiNguoiDung";
     final String PREF_NAME_11 = "diemTichLuy";
     /**
      * Creates new form login
