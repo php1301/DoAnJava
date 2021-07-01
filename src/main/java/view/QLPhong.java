@@ -204,7 +204,7 @@ public class QLPhong extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
             int selectedRow = tblPhong.getSelectedRow();
-            if (selectedRow < 1) {
+            if (selectedRow < 0) {
                 JOptionPane.showMessageDialog(QLPhong.this, "Chua chon phong", "Vui long chon phong",
                         JOptionPane.ERROR_MESSAGE);
             }

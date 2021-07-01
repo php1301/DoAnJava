@@ -64,6 +64,7 @@ private DoanhThuController DoanhThuController;
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbdoanhthu = new javax.swing.JTable();
+        btnBack = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -144,6 +145,18 @@ private DoanhThuController DoanhThuController;
 
         jPanel3.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 160, 620, 250));
 
+        btnBack.setBackground(new java.awt.Color(255, 255, 255));
+        btnBack.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnBack.setForeground(new java.awt.Color(255, 0, 0));
+        btnBack.setText("Quay lại");
+        btnBack.setPreferredSize(new java.awt.Dimension(221, 49));
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btnBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 430, 110, 40));
+
         getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 750, 490));
 
         pack();
@@ -177,6 +190,23 @@ private DoanhThuController DoanhThuController;
     private void selectPhimItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_selectPhimItemStateChanged
         // TODO add your handling code here:
     }//GEN-LAST:event_selectPhimItemStateChanged
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        dispose();
+        //        comboBox.addActionListener(new ActionListener() {
+            //            public void actionPerformed(ActionEvent event) {
+                //                JComboBox comboBox = (JComboBox) event.getSource();
+                //
+                //                Object selected = comboBox.getSelectedItem();
+                //                if(selected.toString().equals("item1"))
+                //                field.setText("30");
+                //                else if(selected.toString().equals("item2"))
+                //                    field.setText("40");
+                //
+                //            }
+            //        });
+    }//GEN-LAST:event_btnBackActionPerformed
 
     private void renderComboBoxChonPhim() {
         try {
@@ -231,6 +261,7 @@ private DoanhThuController DoanhThuController;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBack;
     private javax.swing.JButton btnXuatdoanhthu;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;

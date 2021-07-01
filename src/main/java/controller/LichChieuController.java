@@ -176,7 +176,7 @@ public class LichChieuController {
             Logger.getLogger(LichChieuController.class
                     .getName()).log(Level.SEVERE, null, e);
             con.rollback();
-            throw new SQLException();
+            throw new SQLException(e.getMessage(), e.getSQLState());
         } finally {
             disconnect(rs, ps);
         }
@@ -208,7 +208,7 @@ public class LichChieuController {
             // TODO Auto-generated catch block
             Logger.getLogger(LichChieuController.class.getName()).log(Level.SEVERE, null, e);
             con.rollback();
-            throw new SQLException();
+            throw new SQLException(e.getMessage(), e.getSQLState());
         } finally {
             disconnect(rs, ps);
         }

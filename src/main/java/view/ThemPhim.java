@@ -24,6 +24,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import kong.unirest.Callback;
+import kong.unirest.HttpResponse;
+import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import model.TheLoai;
 
@@ -325,27 +328,32 @@ public class ThemPhim extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_trailerValActionPerformed
     private void imgurRequest(File f) {
-        try {
-            String imgurClientId = "4d7220bef63dd30";
-            Unirest.config().reset();
-            Unirest.config().connectTimeout(1000);
-            String response = Unirest.post("https://api.imgur.com/3/image")
-                    .header("Authorization", "Client-ID " + imgurClientId)
-                    .multiPartContent()
-                    .field("image", file)
-                    .asJson()
-                    .getBody()
-                    .getObject()
-                    .getJSONObject("data")
-                    .get("link")
-                    .toString();
-            linkImageVal.setText(response);
-            showAnh(response);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(ThemPhim.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(ThemPhim.this, "Xảy ra lỗi khi chọn ảnh phim vui lòng thử lại", "Có lỗi",
-                    JOptionPane.ERROR_MESSAGE);
-        }
+        Loader ld = new Loader();
+        ld.setVisible(true);
+        String imgurClientId = "4d7220bef63dd30";
+        Unirest.config().reset();
+        Unirest.config().connectTimeout(1000);
+        Unirest.post("https://api.imgur.com/3/image")
+                .header("Authorization", "Client-ID " + imgurClientId)
+                .multiPartContent()
+                .field("image", file)
+                .asJsonAsync(new Callback<JsonNode>() {
+                    @Override
+                    public void completed(HttpResponse<JsonNode> hr) {
+                        String url = hr.getBody()
+                                .getObject()
+                                .getJSONObject("data")
+                                .get("link")
+                                .toString();
+                        linkImageVal.setText(url);
+                        try {
+                            showAnh(url);
+                            ld.setVisible(false);
+                        } catch (MalformedURLException ex) {
+                            Logger.getLogger(Regis.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                });
     }
 
     private void showAnh(String name) throws MalformedURLException {

@@ -199,7 +199,7 @@ public class QLKH extends javax.swing.JFrame {
     private void txtSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSuaActionPerformed
         try {
             int selectedRow = tbKH.getSelectedRow();
-            if (selectedRow < 1) {
+            if (selectedRow < 0) {
                 JOptionPane.showMessageDialog(QLKH.this, "Chua chon khach hang", "Vui long chon khach hang", 
                         JOptionPane.ERROR_MESSAGE);
             }

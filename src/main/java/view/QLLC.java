@@ -194,7 +194,7 @@ public class QLLC extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             int selectedRow = tbLC.getSelectedRow();
-            if (selectedRow < 1) {
+            if (selectedRow < 0) {
                 JOptionPane.showMessageDialog(QLLC.this, "Chua chon lich chieu", "Vui long chon lich chieu", 
                         JOptionPane.ERROR_MESSAGE);
             }

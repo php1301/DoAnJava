@@ -28,6 +28,9 @@ import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 import kong.unirest.Unirest;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import kong.unirest.Callback;
+import kong.unirest.HttpResponse;
+import kong.unirest.JsonNode;
 import model.TheLoai;
 
 /**
@@ -384,25 +387,32 @@ public class SuaPhim extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btOpenFileActionPerformed
     private void imgurRequest(File f) {
-        try {
-            String imgurClientId = "4d7220bef63dd30";
-            Unirest.config().reset();
-            Unirest.config().connectTimeout(1000);
-            String response = Unirest.post("https://api.imgur.com/3/image")
-                    .header("Authorization", "Client-ID " + imgurClientId)
-                    .multiPartContent()
-                    .field("image", file)
-                    .asJson()
-                    .getBody()
-                    .getObject()
-                    .getJSONObject("data")
-                    .get("link")
-                    .toString();
-            linkImageVal.setText(response);
-            showAnh(response);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(ThemPhim.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       Loader ld = new Loader();
+        ld.setVisible(true);
+        String imgurClientId = "4d7220bef63dd30";
+        Unirest.config().reset();
+        Unirest.config().connectTimeout(1000);
+        Unirest.post("https://api.imgur.com/3/image")
+                .header("Authorization", "Client-ID " + imgurClientId)
+                .multiPartContent()
+                .field("image", file)
+                .asJsonAsync(new Callback<JsonNode>() {
+                    @Override
+                    public void completed(HttpResponse<JsonNode> hr) {
+                        String url = hr.getBody()
+                                .getObject()
+                                .getJSONObject("data")
+                                .get("link")
+                                .toString();
+                        linkImageVal.setText(url);
+                        try {
+                            showAnh(url);
+                            ld.setVisible(false);
+                        } catch (MalformedURLException ex) {
+                            Logger.getLogger(Regis.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                });
     }
 
     private void btSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSuaActionPerformed

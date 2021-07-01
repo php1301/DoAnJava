@@ -98,10 +98,48 @@ public class VeController {
         }
     }
 
+    public Object[] thongTinThemVeVe(int maVe) throws SQLException {
+        System.out.println("Lay them ten rap, danh sach ghe");
+        String sql1 = "select tenRap\n"
+                + "from Rap r, LichChieu lc, Ve v \n"
+                + "where v.maVe = ? and v.maLichChieu = lc.maLichChieu and lc.maRap = r.maRap";
+        String sql2 = "select tenGhe\n"
+                + "from Ve v, DatVe dv, Ghe g\n"
+                + "where v.maVe = ? and v.maVe = dv.maVe and dv.maGhe = g.maGhe";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Object o[] = new Object[2];
+        try {
+            StringBuilder tenGhe = new StringBuilder("");
+            connect();
+            ps = con.prepareStatement(sql1);
+            ps.setInt(1, maVe);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                o[0] = rs.getString(1); // ten phong chieu
+            }
+            ps = con.prepareStatement(sql2);
+            ps.setInt(1, maVe);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                tenGhe.append(rs.getString(1)).append(" "); // ten ghe
+            }
+            o[1] = tenGhe.toString();
+            return o;
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            Logger.getLogger(VeController.class.getName()).log(Level.SEVERE, null, e);
+            return null;
+        } finally {
+            disconnect(rs, ps);
+        }
+    }
+
     public void datVe(Object[] o, ArrayList<Integer> maGhe) throws SQLException {
         System.out.println("Dat ve");
         listVe.clear();
-        String sql1 = "INSERT INTO Ve(giaVe, maLichChieu, taiKhoan) values(?, ?, ?)";
+        String sql1 = "INSERT INTO Ve(giaVe, maLichChieu, taiKhoan, diemTichLuySuDung) values(?, ?, ?, ?)";
         String sql2 = "INSERT INTO GheDaDat(maGhe, maLichChieu) values(?, ?)";
         String sql3 = "INSERT INTO DatVe (maVe, maGhe) values (?, ?)";
         PreparedStatement ps = null;
@@ -116,6 +154,7 @@ public class VeController {
             ps.setInt(col++, Integer.parseInt((String) o[0]));
             ps.setInt(col++, (int) o[1]);
             ps.setInt(col++, Integer.parseInt((String) o[2]));
+            ps.setInt(col++, Integer.parseInt((String) o[3]));
             ps.executeUpdate();
             ResultSet generatedKeys = ps.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -144,7 +183,8 @@ public class VeController {
             disconnect(rs, ps);
         }
     }
-public Object[] getThongtinVe(int maVe) throws SQLException {
+
+    public Object[] getThongtinVe(int maVe) throws SQLException {
         System.out.println("Lay thong tin Ve");
         String sql = "select * from Ve where maVe = ?";
         PreparedStatement ps = null;
@@ -172,6 +212,7 @@ public Object[] getThongtinVe(int maVe) throws SQLException {
             disconnect(rs, ps);
         }
     }
+
     public void connect() throws SQLException {
         try {
             db.connect();
