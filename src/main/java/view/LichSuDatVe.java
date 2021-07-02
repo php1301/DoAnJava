@@ -73,6 +73,7 @@ public class LichSuDatVe extends javax.swing.JFrame {
         txtSearch = new javax.swing.JTextField();
         jLabel37 = new javax.swing.JLabel();
         btnXuat = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -140,6 +141,18 @@ public class LichSuDatVe extends javax.swing.JFrame {
         });
         jPanel6.add(btnXuat, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 270, -1, -1));
 
+        btnBack.setBackground(new java.awt.Color(204, 255, 204));
+        btnBack.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnBack.setForeground(new java.awt.Color(255, 0, 255));
+        btnBack.setText("Quay lại");
+        btnBack.setPreferredSize(new java.awt.Dimension(221, 49));
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+        jPanel6.add(btnBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 270, 110, 50));
+
         getContentPane().add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 376));
 
         pack();
@@ -201,6 +214,12 @@ public class LichSuDatVe extends javax.swing.JFrame {
             Logger.getLogger(LichSuDatVe.class.getName()).log(Level.SEVERE, null, ex);
         }     
     }//GEN-LAST:event_btnXuatActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        User.main(null);
+        dispose();
+      
+    }//GEN-LAST:event_btnBackActionPerformed
     public void createTableLichSuVe() throws InterruptedException, SQLException {
         try {
             SimpleDateFormat DateFormatter = new SimpleDateFormat("dd-MM-yyyy");
@@ -264,6 +283,7 @@ public class LichSuDatVe extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBack;
     private javax.swing.JButton btnXuat;
     private javax.swing.JLabel jLabel37;
     private javax.swing.JPanel jPanel6;
